@@ -1,5 +1,6 @@
 #include "Logger.hpp"
 
+// Do we really want to create a log file for each server run?
 Logger::Logger(const std::string& filename)
     : file_(filename.empty() ? nullptr : new std::ofstream(filename.c_str()))
 {
@@ -9,6 +10,7 @@ Logger::Logger(const std::string& filename)
     }
 }
 
+// Do we really want to delete the log file ?
 Logger::~Logger()
 {
     if (file_) {

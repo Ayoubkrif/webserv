@@ -1,7 +1,7 @@
 #pragma once
 
-#include <exception>
 #include <string>
+#include <exception>
 
 // Custom exception class allowing chained exceptions with error codes
 class CustomException : public std::exception {
