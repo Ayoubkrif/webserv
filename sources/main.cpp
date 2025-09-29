@@ -8,7 +8,8 @@ int main(int argc, char **argv) {
 
 	std::string	configFile = argc == 2 ? argv[1] : DEFAULT_CONFIG;
 
-	parseConfig();
+	// 2 - argc -> fallback strategy already set since we're using DEFAULT_CONFIG
+	parseConfig(configFilePath, 2 - argc);
 
 	startServer();
 

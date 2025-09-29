@@ -1,8 +1,9 @@
 #pragma once
 
+#include <string>
 #include <iostream>
-#include <strings>
+#include <fstream>
+#include <stdexcept>
 
-#define USAGE "Usage: ./webserv <configuration file>"
-
-#define DEFAULT_CONFIG "configs/default_config"
+#include "errors.hpp"
+#include "defines.hpp"
