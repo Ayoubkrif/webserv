@@ -113,3 +113,16 @@ int parseConfig(const std::string& configFilePath, bool allowFallback)
 
     return SUCCESS;
 }
+
+/* INTUITION:
+
+    After checking the config file extension, we try to open the primary config file.
+    If it fails and fallback is not allowed, we throw the exception immediately.
+    If fallback is allowed, we try to open the fallback config file.
+
+    Then, we start parsing the opened config file line by line. If any I/O error occurs during reading,
+    we throw a CustomException with the appropriate message.
+
+    We create a std::string std::queue containing the different server blocks and their directives.
+    We start by parsing the main server block, then we parse remaining server blocks one by one.
+*/
