@@ -1,6 +1,7 @@
 #pragma once
 
 static const char DEFAULT_CONFIG[] = "configs/default.conf";
+static const char DEFAULT_CONFIG_MESSAGE[] = "Using default config: ";
 
 static const int SUCCESS = 0;
 

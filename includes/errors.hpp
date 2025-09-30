@@ -6,6 +6,7 @@ static const char INVALID_FILE_MESSAGE[] = ": invalid file.";
 static const int INVALID_FILE_CODE = 2;
 
 static const char USAGE[] = "Usage: ./webserv <configuration file>";
+static const int USAGE_CODE = 64;
 
 static const char OPEN_ERROR[] = ": unable to open file.";
 static const int OPEN_ERROR_CODE = 3;

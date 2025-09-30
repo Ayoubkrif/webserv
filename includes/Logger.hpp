@@ -5,6 +5,7 @@
 #include <string>
 #include <cstring>
 #include <fstream>
+#include <sstream>
 #include <iostream>
 
 #include "defines.hpp"
@@ -22,7 +23,6 @@ enum L_State{
     OFF
 };
 
-
 enum Mode{
     CONSOLE_OUTPUT,
     FILE_OUTPUT
@@ -34,8 +34,7 @@ class Logger{
     static L_State state;
     static std::ofstream file_;
 	static std::string file_name;
-    static std::map<LogPrio, std::string> initMap();
-    static std::map<LogPrio, std::string> prio_str;
+    static std::map<LogPrio, std::pair<std::string, std::ostream*> > levels;
 	
 	public:
 
@@ -48,6 +47,7 @@ class Logger{
 
         static void         setFileName(std::string);
         static void         setState(L_State);
+        static void         initLevels(void);
 
         static std::string  getCurrentTime();
         static void         enableFileLog();

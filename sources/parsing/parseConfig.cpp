@@ -8,10 +8,10 @@
 
 // Try to open 'path' into 'out'. If the stream throws, translate to CustomException.
 // C++98: enable stream exceptions temporarily so open() throws std::ios::failure.
-static void tryOpenOrThrow(const std::string& path, std::ifstream& out)
-{
-
+static void tryOpenOrThrow(const std::string& path, std::ifstream& out) {
+    
     out.exceptions(std::ios::failbit | std::ios::badbit);
+    
     try {
         // check extension
         if (path.substr(path.find_last_of(".") + 1) != "conf") {
@@ -23,7 +23,7 @@ static void tryOpenOrThrow(const std::string& path, std::ifstream& out)
         out.exceptions(std::ios::goodbit);
         throw CustomException(std::string(e.what()), OPEN_ERROR_CODE);
     }
- 
+
     out.exceptions(std::ios::goodbit);
 }
 
@@ -58,7 +58,9 @@ static void openWithOptionalFallback(const std::string& primary,
         
 		try {
             tryOpenOrThrow(fallback, out);
-            std::cerr << "Using default config: " << fallback << std::endl;
+            std::ostringstream oss;
+            oss << DEFAULT_CONFIG_MESSAGE << fallback;
+            Logger::logMsg(INFO, oss.str());
             return;
         } catch (const CustomException& fallbackEx) {
             throw make_nested(primaryEx, fallbackEx);

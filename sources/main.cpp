@@ -3,9 +3,10 @@
 int main(int argc, char **argv) {
 
 	if (argc > 2) {
-		return errorMessage(USAGE, 1);
+		return errorMessage(USAGE, USAGE_CODE);
 	}
 
+	// If no parameter was passed, we apply the default config && disable the fallback strategy
 	std::string configFile = argc == 2 ? argv[1] : DEFAULT_CONFIG;
 	bool allowFallback = (argc == 2);
 
@@ -21,6 +22,7 @@ int main(int argc, char **argv) {
 		}
 		return errorMessage(msg.c_str(), e.get_code());
 	} catch (const std::exception& e) {
+		// Temp catch
 		return errorMessage(e.what(), OPEN_ERROR_CODE);
 	}
 	
