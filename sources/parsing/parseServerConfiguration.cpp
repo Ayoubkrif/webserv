@@ -24,11 +24,12 @@ Server parseServer(std::string serverConfig) {
     }
     return server;
 }
-
 /*
 void parseServerConfiguration() {
 
     std::vector<std::string> serverConfigs;
+    std::vector<Server> servers;
+    std::string::iterator start;
 
     while () {
         std::string server;

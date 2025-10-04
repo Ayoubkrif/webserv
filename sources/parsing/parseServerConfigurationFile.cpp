@@ -50,41 +50,27 @@ static void openWithOptionalFallback(
     }
 }
 
-/* OLD
-// Parse the already-open stream. Convert stream errors to CustomException.
-static void parseStream(std::ifstream& configFile)
-{
-    std::string line;
-    try {
-        while (std::getline(configFile, line)) {
-			std::cout << line << std::endl;
-			// parseLine(line);	
-			// (void)line;
-        }
-        if (configFile.bad()) {
-            throw CustomException(std::string(IO_CONFIG_ERROR), READ_ERROR_CODE);
-        }
-    } catch (const std::ios::failure& e) {
-        throw CustomException(std::string(e.what()), READ_ERROR_CODE);
-    }
-}
-*/
-
-static void parseStream(std::ifstream& configFile)
+static std::string parseStream(std::ifstream& configFile)
 {
     Server server;
     std::string serverConfig, line;
     try {
         while (std::getline(configFile, line)) {
+            if (*line.begin() == '#')
+                continue ;
             serverConfig.append(line);
         }
+        std::cout << serverConfig << std::endl;
+/*
         server = parseServer(serverConfig);
         if (configFile.bad()) {
             throw CustomException(std::string(IO_CONFIG_ERROR), READ_ERROR_CODE);
         }
+*/
     } catch (const std::ios::failure& e) {
         throw CustomException(std::string(e.what()), READ_ERROR_CODE);
     }
+    return serverConfig;
 }
 
 /*
