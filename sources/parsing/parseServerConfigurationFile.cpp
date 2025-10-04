@@ -59,14 +59,14 @@ static std::string normalizeWhitespaces(std::string& line) {
     while (it != line.end() && isspace(static_cast<unsigned char>(*it))) {
         ++it;
     }
-    for ( ; it != end; ++it) {
-        bool check = isspace(static_cast<unsigned char>(*it));
-        if (check && !space) {
-            processed += ' ';
-            space = true;
-        } else if (!check){
+    for (; it != end; ++it) {
+        bool is_space = isspace(static_cast<unsigned char>(*it));
+        if (!is_space) {
             processed += *it;
             space = false;
+        } else if (!space) {
+            processed += ' ';
+            space = true;
         }
     }
     if (!processed.empty() && *processed.end() == ' ') {
