@@ -60,12 +60,11 @@ static std::string normalizeWhitespaces(std::string& line) {
         ++it;
     }
     for ( ; it != end; ++it) {
-        if (isspace(static_cast<unsigned char>(*it))) {
-            if (!space) {
-                processed += ' ';
-                space = true;
-            }
-        } else {
+        bool check = isspace(static_cast<unsigned char>(*it));
+        if (check && !space) {
+            processed += ' ';
+            space = true;
+        } else if (!check){
             processed += *it;
             space = false;
         }
