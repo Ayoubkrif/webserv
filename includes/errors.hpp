@@ -20,6 +20,8 @@ static const int READ_ERROR_CODE = 5;
 static const char IO_CONFIG_ERROR[] = "I/O error while reading config";
 
 static const char INVALID_CONFIG_FILE[] = "Invalid config file";
+static const char INVALID_CONFIG_FORMAT[] = "Invalid config format";
+static const int PARSING_ERROR = 6;
 
 // Prototype for error reporting function implemented in sources/utilities/errors.cpp
 int errorMessage(const char *message, int ecode);

@@ -19,3 +19,11 @@ static const char LIGHTMAGENTA[] = "\x1B[95m";
 static const int GST = 4;
 
 static const char LOADING_DEFAULT[] = "Loading default config file";
+
+static const char CONF_EXTENSION[] = "conf";
+
+// Parsing keywords
+
+static const char SERVER_KEYWORD[] = "server";
+static const char PORT_KEYWORD[] = "port";
+static const char METHODS_KEYWORD[] = "methods";

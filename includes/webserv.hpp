@@ -1,10 +1,12 @@
 #pragma once
 
+#include <queue>
 #include <string>
 #include <vector>
 #include <cstddef> 
 #include <fstream>
 #include <iostream>
+#include <iterator>
 #include <stdexcept>
 
 #include "Logger.hpp"
@@ -17,7 +19,8 @@
 // Forward declarations for functions implemented in sources
 //std::vector<Server>	parseConfig(const std::string& configFilePath, bool allowFallback);
 int	parseConfig(const std::string& configFilePath, bool allowFallback);
+Server parseServer(std::string serverConfig);
+
 void startServer();
 void runServer();
 void exitServer();
-

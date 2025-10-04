@@ -1,5 +1,4 @@
 #include "webserv.hpp"
-#include "customException.hpp"
 
 #include <fstream>
 #include <iostream>
@@ -8,13 +7,10 @@
 
 // Try to open 'path' into 'out'. If the stream throws, translate to CustomException.
 // C++98: enable stream exceptions temporarily so open() throws std::ios::failure.
-static void tryOpenOrThrow(const std::string& path, std::ifstream& out) {
-    
+static void tryOpenOrThrow(const std::string& path, std::ifstream& out) { 
     out.exceptions(std::ios::failbit | std::ios::badbit);
-    
     try {
-        // check extension
-        if (path.substr(path.find_last_of(".") + 1) != "conf") {
+        if (path.substr(path.find_last_of(".") + 1) != CONF_EXTENSION) {
             throw CustomException(INVALID_CONFIG_EXTENSION, INVALID_CONFIG_EXTENSION_CODE);
         }
         out.open(path.c_str());
@@ -23,33 +19,16 @@ static void tryOpenOrThrow(const std::string& path, std::ifstream& out) {
         out.exceptions(std::ios::goodbit);
         throw CustomException(std::string(e.what()), OPEN_ERROR_CODE);
     }
-
     out.exceptions(std::ios::goodbit);
 }
 
-/*
-// Build a nested CustomException whose message is 'inner' and whose nested_message
-// contains the outer failure context (possibly already containing a nested_message).
-static inline CustomException make_nested(const CustomException& outer, const CustomException& inner)
-{
-    std::string nested = outer.what();
-
-    if (!outer.get_nested_message().empty()) {
-        nested += " ";
-        nested += outer.get_nested_message();
-    }
-
-    return CustomException(std::string(inner.what()), inner.get_code(), std::string(), nested);
-}
-*/
-
 // Try opening primary; if it fails and allowFallback is true, try fallback.
 // If both fail, throw a CustomException that contains both messages (nested).
-static void openWithOptionalFallback(const std::string& primary,
-                                     const std::string& fallback,
-                                     std::ifstream& out,
-                                     bool allowFallback)
-{
+static void openWithOptionalFallback(
+        const std::string& primary,
+        const std::string& fallback,
+        std::ifstream& out,
+        bool allowFallback) {
     try {
         tryOpenOrThrow(primary, out);
         return;
@@ -71,17 +50,35 @@ static void openWithOptionalFallback(const std::string& primary,
     }
 }
 
+/* OLD
 // Parse the already-open stream. Convert stream errors to CustomException.
 static void parseStream(std::ifstream& configFile)
 {
     std::string line;
-
     try {
         while (std::getline(configFile, line)) {
 			std::cout << line << std::endl;
 			// parseLine(line);	
 			// (void)line;
         }
+        if (configFile.bad()) {
+            throw CustomException(std::string(IO_CONFIG_ERROR), READ_ERROR_CODE);
+        }
+    } catch (const std::ios::failure& e) {
+        throw CustomException(std::string(e.what()), READ_ERROR_CODE);
+    }
+}
+*/
+
+static void parseStream(std::ifstream& configFile)
+{
+    Server server;
+    std::string serverConfig, line;
+    try {
+        while (std::getline(configFile, line)) {
+            serverConfig.append(line);
+        }
+        server = parseServer(serverConfig);
         if (configFile.bad()) {
             throw CustomException(std::string(IO_CONFIG_ERROR), READ_ERROR_CODE);
         }
@@ -102,18 +99,16 @@ static void parseStream(std::ifstream& configFile)
 int parseConfig(const std::string& configFilePath, bool allowFallback)
 {
     std::ifstream configFile;
-
     // Try to open primary or fallback (may throw CustomException)
 	try {	
     	openWithOptionalFallback(configFilePath, DEFAULT_CONFIG, configFile, allowFallback);
+        parseStream(configFile);
 	} catch (const CustomException& e) {
 		//Logger::logMsg("Failed to open config file: %s", CONSOLE_OUTPUT, e.what());
 		throw;
 	}
-
     // Parse the open stream (may throw CustomException)
-    parseStream(configFile);
-
+//    parseStream(configFile);
     return SUCCESS;
 }
 
