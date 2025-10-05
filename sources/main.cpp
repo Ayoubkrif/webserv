@@ -6,7 +6,7 @@
 /*   By: cuistobal <marvin@42.fr>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 16:43:59 by cuistobal         #+#    #+#             */
-/*   Updated: 2025/10/05 07:30:02 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/10/05 10:11:00 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,21 @@ int main(int argc, char **argv) {
 	// If no parameter was passed, we apply the default config && disable the fallback strategy
 	std::string configFile = argc == 2 ? argv[1] : DEFAULT_CONFIG;	
 	bool allowFallback = (argc == 2);
-    std::string configFileContent;
+	std::vector<std::string> configFileContent;
     std::vector<Server> servers;
 	try {
 		configFileContent = parseConfig(configFile, allowFallback);
+
+/*
+		std::vector<std::string>::iterator it = configFileContent.begin();
+	
+		for (; it < configFileContent.end(); it++) {
+			std::cout << *it << std::endl; 
+		}
+*/
         ConfigParser configParser(configFileContent);
         servers = configParser.parse();
         
-
 		startServer();
 /*
 		runServer();

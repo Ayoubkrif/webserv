@@ -9,16 +9,18 @@ class Server {
 	unsigned short	_port;
 	// We can use bit masks for aloowed methods
 	unsigned short	_methods;
-	std::string	_host;
-	std::string	_root_path;
+	std::string	_name;
+	std::string	_root;
 	// Unsure about this one
 	std::vector<std::string> _contents;	
 
 //	std::vector<Clients> clients;
 
+	Server();
+
 	public:
 
-	Server();
+	Server(unsigned short port, std::string name, std::string root);
 	~Server();
 	Server(const Server& src);
 

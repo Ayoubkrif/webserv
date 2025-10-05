@@ -5,7 +5,7 @@ void parseLocation() {
 
 }
 */
-
+/*
 Server parseServer(std::string serverConfig) {
     Server server;
     size_t end, start = serverConfig.find(SERVER_KEYWORD);
@@ -22,8 +22,9 @@ Server parseServer(std::string serverConfig) {
     } catch (const CustomException& e) {
         Logger::logMsg(ERROR, e.what());
     }
-    return server;
+	return server;
 }
+*/
 /*
 void parseServerConfiguration() {
 

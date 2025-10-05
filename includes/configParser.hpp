@@ -29,7 +29,7 @@ class ConfigParser {
 */
     // Attributs
     char _state;
-    std::string _content;
+	std::vector<std::string> _content;
 /*
     std::vector<Server> servers;
     Server *currentServer;
@@ -48,8 +48,9 @@ class ConfigParser {
 
     public:
 
-        ConfigParser(std::string& configFileContent);
+        ConfigParser(std::vector<std::string>& configFileContent);
         ~ConfigParser();
 
         std::vector<Server> parse();
+		Server parseServer(const std::vector<std::string>& block);
 };

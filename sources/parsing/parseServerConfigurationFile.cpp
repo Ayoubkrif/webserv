@@ -52,7 +52,6 @@ static void openWithOptionalFallback(
 
 static inline bool isGrammarToken(const char c) {
 	return (c == GRAMMAR_OPEN || c == GRAMMAR_CLOSE || c == GRAMMAR_STOP);
-	//	|| c == ':');
 }
 
 // Supress excessive whitespaces and add some (pretty clear comment right xd)
@@ -87,6 +86,48 @@ static std::string normalizeWhitespaces(std::string& line) {
     return processed;
 }
 
+static std::vector<std::string> parseStream(std::ifstream& configFile) {
+    std::vector<std::string> tokens;
+    std::string line;
+
+    try {
+        while (std::getline(configFile, line)) {
+            if (!line.empty() && *line.begin() == '#') {
+                continue;
+            }
+            line = normalizeWhitespaces(line);
+            std::string currentToken;
+            for (std::string::iterator it = line.begin(); it != line.end(); ++it) {
+                char c = *it;
+                if (isGrammarToken(c)) {
+                    if (!currentToken.empty()) {
+                        tokens.push_back(currentToken);
+                        currentToken.clear();
+                    }
+                    tokens.push_back(std::string(1, c));  // Ajouter {, }, ; comme tokens
+                } else if (isspace(static_cast<unsigned char>(c))) {
+                    if (!currentToken.empty()) {
+                        tokens.push_back(currentToken);
+                        currentToken.clear();
+                    }
+                } else {
+                    currentToken += c;
+                }
+            }
+            if (!currentToken.empty()) {
+                tokens.push_back(currentToken);
+            }
+        }
+        if (configFile.bad()) {
+            throw CustomException(std::string(IO_CONFIG_ERROR), READ_ERROR_CODE);
+        }
+    } catch (const std::ios::failure& e) {
+        throw CustomException(std::string(e.what()), READ_ERROR_CODE);
+    }
+    return tokens;
+}
+
+/*
 static std::string parseStream(std::ifstream& configFile)
 {
     Server server;
@@ -98,17 +139,12 @@ static std::string parseStream(std::ifstream& configFile)
             line = normalizeWhitespaces(line);
             serverConfig.append(line);
         }
-/*
-        server = parseServer(serverConfig);
-        if (configFile.bad()) {
-            throw CustomException(std::string(IO_CONFIG_ERROR), READ_ERROR_CODE);
-        }
-*/
     } catch (const std::ios::failure& e) {
         throw CustomException(std::string(e.what()), READ_ERROR_CODE);
     }
     return serverConfig;
 }
+*/
 
 /*
  * parseConfig :
@@ -119,10 +155,10 @@ static std::string parseStream(std::ifstream& configFile)
  * Signature: int parseConfig(const std::string& configFilePath, bool allowFallback)
  * Note: erreurs graves sont propagées via exceptions pour être traitées dans main.
  */
-std::string parseConfig(const std::string& configFilePath, bool allowFallback)
+std::vector<std::string> parseConfig(const std::string& configFilePath, bool allowFallback)
 {
     std::ifstream configFile;
-    std::string configFileContent;
+	std::vector<std::string> configFileContent;
 	try {	
     	openWithOptionalFallback(configFilePath, DEFAULT_CONFIG, configFile, allowFallback);
         configFileContent = parseStream(configFile);

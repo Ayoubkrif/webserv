@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <cstddef> 
+#include <cstdlib>
 #include <fstream>
 #include <iostream>
 #include <iterator>
@@ -19,7 +20,7 @@
 
 // Forward declarations for functions implemented in sources
 //std::vector<Server>	parseConfig(const std::string& configFilePath, bool allowFallback);
-std::string parseConfig(const std::string& configFilePath, bool allowFallback);
+std::vector<std::string> parseConfig(const std::string& configFilePath, bool allowFallback);
 Server parseServer(std::string serverConfig);
 
 void startServer();
