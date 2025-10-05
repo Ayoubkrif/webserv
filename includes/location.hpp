@@ -18,5 +18,7 @@ class Location {
 		Location(const Location& src);
         ~Location();
 
-    Location operator=(const Location& src);
+    	Location& operator=(const Location& src);
+
+		void print();
 };

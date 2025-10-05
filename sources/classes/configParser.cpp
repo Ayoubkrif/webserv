@@ -87,6 +87,7 @@ Location parseLocation(const std::vector<std::string>& locationBlock) {
 		// Additional missing directives here -> autoindex, index
     }
 	Location location(path, methods);
+//	location.print();
     return location;
 }
 
@@ -172,7 +173,11 @@ std::vector<Server> ConfigParser::parse() {
 	std::vector<std::vector<std::string> >::const_iterator it = serverBlocks.begin();
 
     for ( ;it != serverBlocks.end(); ++it) {
-        servers.push_back(parseServer(*it));
+		Server tmp = parseServer(*it);
+        //servers.push_back(parseServer(*it));
+        servers.push_back(tmp);
+
+	//	std::cout << "[DEBUG] Server has " << tmp._locations.size() << " locations" << std::endl;
     }
     return servers;
 }

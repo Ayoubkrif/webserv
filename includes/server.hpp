@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <string>
+#include <iostream>
 #include "location.hpp"
 
 class Server {
@@ -21,14 +22,17 @@ class Server {
 	public:
 
 	Server(
-			unsigned short port, 
-			std::string name, 
-			std::string root, 
-			std::vector<Location> locations);
+			unsigned short& port, 
+			std::string& name, 
+			std::string& root, 
+			std::vector<Location>& locations);
 	~Server();
 	Server(const Server& src);
 
 	Server& operator=(const Server& server);
+
+	void print();
+	std::vector<Location> getLocations() const;	
 
 	void addConnection();
 	void endConnection();
