@@ -2,16 +2,16 @@
 
 #include <vector>
 #include <string>
+#include "location.hpp"
 
 class Server {
 
 	// ports range from 0 to 65535
 	unsigned short	_port;
-	// We can use bit masks for aloowed methods
-	unsigned short	_methods;
 	std::string	_name;
 	std::string	_root;
 	// Unsure about this one
+	std::vector<Location> _locations;	
 	std::vector<std::string> _contents;	
 
 //	std::vector<Clients> clients;
@@ -20,7 +20,11 @@ class Server {
 
 	public:
 
-	Server(unsigned short port, std::string name, std::string root);
+	Server(
+			unsigned short port, 
+			std::string name, 
+			std::string root, 
+			std::vector<Location> locations);
 	~Server();
 	Server(const Server& src);
 
