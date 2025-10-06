@@ -19,7 +19,7 @@ CONF_EXTENSION	includes/defines.hpp	/^static const char CONF_EXTENSION[] = "conf
 CONSOLE_OUTPUT	includes/Logger.hpp	/^    CONSOLE_OUTPUT,$/;"	e	enum:Mode
 CYAN	includes/defines.hpp	/^static const char CYAN[] = "\\x1B[36m";$/;"	v	typeref:typename:const char[]
 ConfigParser	includes/configParser.hpp	/^class ConfigParser {$/;"	c
-ConfigParser	sources/classes/configParser.cpp	/^ConfigParser::ConfigParser(std::vector<std::string>& configTokens) {$/;"	f	class:ConfigParser
+ConfigParser	sources/classes/configParser.cpp	/^ConfigParser::ConfigParser(std::vector<std::string>& configTokens)$/;"	f	class:ConfigParser
 CustomException	includes/customException.hpp	/^class CustomException : public std::exception {$/;"	c
 CustomException	sources/classes/configException.cpp	/^CustomException::CustomException(const std::string& msg, int c, const std::string& cause_msg)$/;"	f	class:CustomException
 CustomException	sources/classes/configException.cpp	/^CustomException::CustomException(const std::string& msg, int c, const std::string& cause_msg, co/;"	f	class:CustomException
@@ -126,7 +126,7 @@ clientSocket	tests/client.cpp	/^int clientSocket(t_server *server) {$/;"	f	typer
 code	includes/customException.hpp	/^    int code;$/;"	m	class:CustomException	typeref:typename:int
 endConnection	sources/classes/server.cpp	/^void	endConnection() {$/;"	f	typeref:typename:void
 errorMessage	sources/utilities/errors.cpp	/^int	errorMessage(const char *message, int ecode) {$/;"	f	typeref:typename:int
-extractLocationBlock	sources/classes/configParser.cpp	/^std::vector<std::string> extractLocationBlock($/;"	f	typeref:typename:std::vector<std::string>
+extractLocationBlock	sources/classes/configParser.cpp	/^static std::vector<std::string> extractLocationBlock($/;"	f	typeref:typename:std::vector<std::string>	file:
 fclean	Makefile	/^fclean: clean$/;"	t
 getColorCode	sources/classes/logger.cpp	/^std::string Logger::getColorCode(LogPrio level) {$/;"	f	class:Logger	typeref:typename:std::string
 getCurrentTime	sources/classes/logger.cpp	/^std::string Logger::getCurrentTime() {$/;"	f	class:Logger	typeref:typename:std::string
@@ -137,6 +137,7 @@ get_nested_message	sources/classes/configException.cpp	/^const std::string& Cust
 hostName	tests/client.cpp	/^	const char *hostName;$/;"	m	struct:server	typeref:typename:const char *	file:
 initFile	sources/classes/logger.cpp	/^void Logger::initFile(const std::string& filename) {$/;"	f	class:Logger	typeref:typename:void
 initLevels	sources/classes/logger.cpp	/^void Logger::initLevels() {$/;"	f	class:Logger	typeref:typename:void
+intToString	sources/classes/configParser.cpp	/^static std::string intToString(int value) {$/;"	f	typeref:typename:std::string	file:
 isComment	sources/parsing/parseStream.cpp	/^static inline bool isComment(const std::string& line) {$/;"	f	typeref:typename:bool	file:
 isGrammarToken	sources/parsing/parseServerConfigurationFile.cpp	/^static inline bool isGrammarToken(const char c) {$/;"	f	typeref:typename:bool	file:
 isGrammarToken	sources/parsing/parseStream.cpp	/^static inline bool isGrammarToken(const char c) {$/;"	f	typeref:typename:bool	file:
@@ -158,9 +159,14 @@ operator =	sources/classes/locations.cpp	/^Location& Location::operator=(const L
 operator =	sources/classes/logger.cpp	/^Logger& Logger::operator=(const Logger& other) {$/;"	f	class:Logger	typeref:typename:Logger &
 operator =	sources/classes/server.cpp	/^Server& Server::operator=(const Server& server) {$/;"	f	class:Server	typeref:typename:Server &
 parse	sources/classes/configParser.cpp	/^std::vector<Server> ConfigParser::parse() {$/;"	f	class:ConfigParser	typeref:typename:std::vector<Server>
+parseClientMaxBodySizeDirective	sources/classes/configParser.cpp	/^static unsigned int parseClientMaxBodySizeDirective(std::vector<std::string>::const_iterator& it/;"	f	typeref:typename:unsigned int	file:
 parseConfig	sources/parsing/parseServerConfigurationFile.cpp	/^std::vector<std::string> parseConfig(const std::string& configFilePath, bool allowFallback)$/;"	f	typeref:typename:std::vector<std::string>
-parseLocation	sources/classes/configParser.cpp	/^Location parseLocation(const std::vector<std::string>& locationBlock) {$/;"	f	typeref:typename:Location
+parseErrorPage	sources/classes/configParser.cpp	/^static std::pair<int, std::string> parseErrorPage($/;"	f	typeref:typename:std::pair<int,std::string>	file:
+parseListenDirective	sources/classes/configParser.cpp	/^static unsigned short parseListenDirective(std::vector<std::string>::const_iterator& it, const s/;"	f	typeref:typename:unsigned short	file:
+parseLocation	sources/classes/configParser.cpp	/^static Location parseLocation(const std::vector<std::string>& locationBlock) {$/;"	f	typeref:typename:Location	file:
+parseRootDirective	sources/classes/configParser.cpp	/^static std::string parseRootDirective(std::vector<std::string>::const_iterator& it, const std::v/;"	f	typeref:typename:std::string	file:
 parseServer	sources/classes/configParser.cpp	/^Server ConfigParser::parseServer(const std::vector<std::string>& block) {$/;"	f	class:ConfigParser	typeref:typename:Server
+parseServerNameDirective	sources/classes/configParser.cpp	/^static std::string parseServerNameDirective(std::vector<std::string>::const_iterator& it, const /;"	f	typeref:typename:std::string	file:
 parseStream	sources/parsing/parseServerConfigurationFile.cpp	/^static std::vector<std::string> parseStream(std::ifstream& configFile) {$/;"	f	typeref:typename:std::vector<std::string>	file:
 parseStream	sources/parsing/parseStream.cpp	/^std::vector<std::string> parseStream(std::ifstream& configFile) {$/;"	f	typeref:typename:std::vector<std::string>
 parseString	sources/parsing/parseServerConfigurationFile.cpp	/^static void parseString($/;"	f	typeref:typename:void	file:
@@ -171,7 +177,7 @@ processLine	sources/parsing/parseStream.cpp	/^static std::vector<std::string> pr
 re	Makefile	/^re: fclean all$/;"	t
 run	Makefile	/^run: re $/;"	t
 server	tests/client.cpp	/^typedef struct server {$/;"	s	file:
-splitServerBlocks	sources/classes/configParser.cpp	/^std::vector<std::vector<std::string> > splitServerBlocks(const std::vector<std::string>& tokens)/;"	f	typeref:typename:std::vector<std::vector<std::string>>
+splitServerBlocks	sources/classes/configParser.cpp	/^static std::vector<std::vector<std::string> > splitServerBlocks(const std::vector<std::string>& /;"	f	typeref:typename:std::vector<std::vector<std::string>>	file:
 startServer	sources/classes/server.cpp	/^void Server::startServer() {$/;"	f	class:Server	typeref:typename:void
 startServers	sources/execution/startServer.cpp	/^void startServers(std::vector<Server>& servers) {$/;"	f	typeref:typename:void
 stopServer	sources/classes/server.cpp	/^void Server::stopServer() {$/;"	f	class:Server	typeref:typename:void
@@ -179,7 +185,7 @@ t_server	tests/client.cpp	/^} t_server;$/;"	t	typeref:struct:server	file:
 tokenizeLine	sources/parsing/parseStream.cpp	/^static std::vector<std::string> tokenizeLine(const std::string& line) {$/;"	f	typeref:typename:std::vector<std::string>	file:
 tryOpenOrThrow	sources/parsing/parseServerConfigurationFile.cpp	/^static void tryOpenOrThrow(const std::string& path, std::ifstream& out) { $/;"	f	typeref:typename:void	file:
 what	sources/classes/configException.cpp	/^const char* CustomException::what() const throw() {$/;"	f	class:CustomException	typeref:typename:const char *
-~ConfigParser	sources/classes/configParser.cpp	/^ConfigParser::~ConfigParser() {$/;"	f	class:ConfigParser
+~ConfigParser	sources/classes/configParser.cpp	/^ConfigParser::~ConfigParser() {}$/;"	f	class:ConfigParser
 ~CustomException	sources/classes/configException.cpp	/^CustomException::~CustomException() throw() {}$/;"	f	class:CustomException
 ~Location	sources/classes/locations.cpp	/^Location::~Location() {$/;"	f	class:Location
 ~Logger	sources/classes/logger.cpp	/^Logger::~Logger() {$/;"	f	class:Logger

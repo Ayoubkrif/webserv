@@ -7,20 +7,9 @@ ConfigParser::ConfigParser(std::vector<std::string>& configTokens) {
 
 ConfigParser::~ConfigParser() {
 }
-/*
-static inline bool checkPath(std::string path) {
-	try {
-		
-	} catch {
-
-		return false;
-	}
-	return true;
-}
-*/
 
 // Extrait un bloc "server" du vecteur de tokens
-std::vector<std::vector<std::string> > splitServerBlocks(const std::vector<std::string>& tokens) {
+static std::vector<std::vector<std::string> > splitServerBlocks(const std::vector<std::string>& tokens) {
     std::vector<std::vector<std::string> > blocks;
     std::vector<std::string>::const_iterator it = tokens.begin();
 
@@ -52,7 +41,7 @@ std::vector<std::vector<std::string> > splitServerBlocks(const std::vector<std::
     return blocks;
 }
 
-Location parseLocation(const std::vector<std::string>& locationBlock) {
+static Location parseLocation(const std::vector<std::string>& locationBlock) {
 	std::string path, root;
 	std::vector<std::string> methods;
     std::vector<std::string>::const_iterator it = locationBlock.begin();
@@ -90,7 +79,7 @@ Location parseLocation(const std::vector<std::string>& locationBlock) {
     return location;
 }
 
-std::vector<std::string> extractLocationBlock(
+static std::vector<std::string> extractLocationBlock(
     std::vector<std::string>::const_iterator& it,
     const std::vector<std::string>::const_iterator& end) {
     std::vector<std::string> locationBlock;
@@ -124,16 +113,57 @@ std::vector<std::string> extractLocationBlock(
     return locationBlock;
 }
 
-std::pair<int, std::string> parseErrorPage(std::vector<std::string>::const_iterator& it) {
+
+static std::pair<int, std::string> parseErrorPage(
+		std::vector<std::string>::const_iterator& it) {
 	int	errorCode;
 	std::pair<int, std::string> pair;
 
-	errorCode = atoi((*it).c_str());
-	it++;
+	errorCode = atoi((*it++).c_str());
 	pair = make_pair(errorCode, *it);
 	it++;
 	return pair;
 }
+
+/*
+static int parsePort(
+		std::vector<std::string>::const_iterator it,
+    	const std::vector<std::string>::const_iterator end) {}
+
+
+static int parsePort(
+		std::vector<std::string>::const_iterator it,
+    	const std::vector<std::string>::const_iterator end) {}
+
+
+*/
+static std::string parseName(
+		std::vector<std::string>::const_iterator it,
+    	const std::vector<std::string>::const_iterator end) {
+	if (it == end)
+		throw CustomException("Missing path after 'root'", 1);
+	return *it++;
+}
+
+static std::string parseRoot(
+		std::vector<std::string>::const_iterator it,
+    	const std::vector<std::string>::const_iterator end) {
+	if (it == end)
+		throw CustomException("Missing path after 'root'", 1);
+	return *it++;
+}
+
+static int parsePort(
+		std::vector<std::string>::const_iterator& it,
+    	const std::vector<std::string>::const_iterator end) {
+	if (it == end)
+		throw CustomException("Missing port after 'listen'", 1);
+    int tmp = atoi((*it).c_str());
+	if (tmp < 0 || tmp > USHRT_MAX)
+		throw CustomException(INVALID_PORT, 1);
+    ++it;
+	return static_cast<unsigned short>(tmp);
+} 
 
 // Parse un bloc "server" (vecteur de tokens) et retourne un objet Server
 Server ConfigParser::parseServer(const std::vector<std::string>& block) {
@@ -152,23 +182,11 @@ Server ConfigParser::parseServer(const std::vector<std::string>& block) {
         std::string directive = *it;
         ++it;
         if (directive == "listen") {
-            if (it == block.end())
-				throw CustomException("Missing port after 'listen'", 1);
-            int tmp = atoi((*it).c_str());
-			if (tmp < 0 || tmp > 65535)
-				throw CustomException(INVALID_PORT, 1);
-			port = tmp;
-            ++it;
+			port = parsePort(it, block.end());
         } else if (directive == "root") {
-            if (it == block.end())
-				throw CustomException("Missing path after 'root'", 1);
-			root = *it;
-            ++it;
+			root = parseRoot(it, block.end());
         } else if (directive == "server_name") {
-            if (it == block.end())
-				throw CustomException("Missing name after 'server_name'", 1);
-            name = *it;
-            ++it;
+            name = parseName(it, block.end());
         } else if (directive == "location") {
 			std::vector<std::string> locationBlock = extractLocationBlock(it, block.end());
 			Location location = parseLocation(locationBlock);
@@ -186,7 +204,6 @@ Server ConfigParser::parseServer(const std::vector<std::string>& block) {
 				throw CustomException("Invalid value after 'client_max_body_size'. Can't be < 0", 1);
 			client_max_body_size = tmp;
 		}
-        // Ajouter d'autres directives ici
     }
 	Server server(port, client_max_body_size, root, locations, errorPages, name);
     return server;
@@ -201,7 +218,7 @@ std::vector<Server> ConfigParser::parse() {
 // try/catch logic to fallback on default settings if the .conf file is invalid
 
     for ( ;it != serverBlocks.end(); ++it) {
-		Server tmp = parseServer(*it);
+		Server tmp = parseServer(*it);	
         //servers.push_back(parseServer(*it));
         servers.push_back(tmp);
     }
