@@ -1,9 +1,11 @@
 #include "webserv.hpp"
 
+// Code duplciation
 static inline bool isComment(const std::string& line) {
     return !line.empty() && *line.begin() == '#';
 }
 
+// Code duplciation
 static inline bool isGrammarToken(const char c) {
 	return (c == GRAMMAR_OPEN || c == GRAMMAR_CLOSE || c == GRAMMAR_STOP);
 }

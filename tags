@@ -163,6 +163,7 @@ parseLocation	sources/classes/configParser.cpp	/^Location parseLocation(const st
 parseServer	sources/classes/configParser.cpp	/^Server ConfigParser::parseServer(const std::vector<std::string>& block) {$/;"	f	class:ConfigParser	typeref:typename:Server
 parseStream	sources/parsing/parseServerConfigurationFile.cpp	/^static std::vector<std::string> parseStream(std::ifstream& configFile) {$/;"	f	typeref:typename:std::vector<std::string>	file:
 parseStream	sources/parsing/parseStream.cpp	/^std::vector<std::string> parseStream(std::ifstream& configFile) {$/;"	f	typeref:typename:std::vector<std::string>
+parseString	sources/parsing/parseServerConfigurationFile.cpp	/^static void parseString($/;"	f	typeref:typename:void	file:
 portNumber	tests/client.cpp	/^	const char *portNumber;$/;"	m	struct:server	typeref:typename:const char *	file:
 print	sources/classes/locations.cpp	/^void Location::print() {$/;"	f	class:Location	typeref:typename:void
 print	sources/classes/server.cpp	/^void Server::print() {$/;"	f	class:Server	typeref:typename:void
