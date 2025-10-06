@@ -61,7 +61,8 @@ static std::string normalizeWhitespaces(std::string& line) {
     std::string::iterator it = line.begin();
     std::string::iterator end = line.end();
     
-    while (it != line.end() && isspace(static_cast<unsigned char>(*it))) {
+    while (it != line.end() && isspace(static_cast<unsigned char>(*it))) 
+	{
         ++it;
     }
     for (; it != end; ++it) {
