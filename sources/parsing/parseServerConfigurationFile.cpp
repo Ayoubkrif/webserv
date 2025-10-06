@@ -87,6 +87,36 @@ static std::string normalizeWhitespaces(std::string& line) {
     return processed;
 }
 
+// Helper to split the logic && mnake parse stream more readable
+static void parseString(
+		std::vector<std::string>& tokens,
+		std::string& line,
+		std::string& currentToken) {
+
+	for (std::string::iterator it = line.begin(); it != line.end(); ++it) {
+		char c = *it;
+        if (isGrammarToken(c)) {
+			if (!currentToken.empty()) {
+                tokens.push_back(currentToken);
+                currentToken.clear();
+            }
+            tokens.push_back(std::string(1, c));
+        } else if (isspace(static_cast<unsigned char>(c))) {
+			if (!currentToken.empty()) {
+				tokens.push_back(currentToken);
+                currentToken.clear();
+            }
+        } else {
+			currentToken += c;
+        }
+    }
+
+    if (!currentToken.empty()) {
+        tokens.push_back(currentToken);
+    }
+}
+
+// Main aprsing loop for the config file
 static std::vector<std::string> parseStream(std::ifstream& configFile) {
     std::vector<std::string> tokens;
     std::string line;
@@ -98,26 +128,7 @@ static std::vector<std::string> parseStream(std::ifstream& configFile) {
             }
             line = normalizeWhitespaces(line);
             std::string currentToken;
-            for (std::string::iterator it = line.begin(); it != line.end(); ++it) {
-                char c = *it;
-                if (isGrammarToken(c)) {
-                    if (!currentToken.empty()) {
-                        tokens.push_back(currentToken);
-                        currentToken.clear();
-                    }
-                    tokens.push_back(std::string(1, c));
-                } else if (isspace(static_cast<unsigned char>(c))) {
-                    if (!currentToken.empty()) {
-                        tokens.push_back(currentToken);
-                        currentToken.clear();
-                    }
-                } else {
-                    currentToken += c;
-                }
-            }
-            if (!currentToken.empty()) {
-                tokens.push_back(currentToken);
-            }
+			parseString(tokens, line, currentToken);
         }
         if (configFile.bad()) {
             throw CustomException(std::string(IO_CONFIG_ERROR), READ_ERROR_CODE);

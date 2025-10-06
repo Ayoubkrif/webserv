@@ -51,7 +51,7 @@ static std::vector<std::string> tokenizeLine(const std::string& line) {
                 tokens.push_back(currentToken);
                 currentToken.clear();
             }
-            tokens.push_back(std::string(1, c));  // Ajouter {, }, ; comme tokens
+            tokens.push_back(std::string(1, c));
         } else if (isspace(static_cast<unsigned char>(c))) {
             if (!currentToken.empty()) {
                 tokens.push_back(currentToken);
@@ -61,18 +61,15 @@ static std::vector<std::string> tokenizeLine(const std::string& line) {
             currentToken += c;
         }
     }
-
-    // Ajouter le dernier token si nécessaire
     if (!currentToken.empty()) {
         tokens.push_back(currentToken);
     }
-
     return tokens;
 }
 
 static std::vector<std::string> processLine(std::string& line) {
     if (isComment(line)) {
-        return std::vector<std::string>();  // Ligne vide (commentaire ignoré)
+        return std::vector<std::string>();
     }
     std::string normalizedLine = normalizeWhitespaces(line);
     return tokenizeLine(normalizedLine);
