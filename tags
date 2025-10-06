@@ -124,6 +124,7 @@ extractLocationBlock	sources/classes/configParser.cpp	/^std::vector<std::string>
 fclean	Makefile	/^fclean: clean$/;"	t
 getColorCode	sources/classes/logger.cpp	/^std::string Logger::getColorCode(LogPrio level) {$/;"	f	class:Logger	typeref:typename:std::string
 getCurrentTime	sources/classes/logger.cpp	/^std::string Logger::getCurrentTime() {$/;"	f	class:Logger	typeref:typename:std::string
+getLocations	sources/classes/server.cpp	/^std::vector<Location> Server::getLocations() const {$/;"	f	class:Server	typeref:typename:std::vector<Location>
 get_cause	sources/classes/configException.cpp	/^const std::string& CustomException::get_cause() const {$/;"	f	class:CustomException	typeref:typename:const std::string &
 get_code	sources/classes/configException.cpp	/^int CustomException::get_code() const {$/;"	f	class:CustomException	typeref:typename:int
 get_nested_message	sources/classes/configException.cpp	/^const std::string& CustomException::get_nested_message() const {$/;"	f	class:CustomException	typeref:typename:const std::string &
@@ -147,7 +148,7 @@ nested_message	includes/customException.hpp	/^    std::string nested_message;$/;
 normalizeWhitespaces	sources/parsing/parseServerConfigurationFile.cpp	/^static std::string normalizeWhitespaces(std::string& line) {$/;"	f	typeref:typename:std::string	file:
 normalizeWhitespaces	sources/parsing/parseStream.cpp	/^static std::string normalizeWhitespaces(std::string& line) {$/;"	f	typeref:typename:std::string	file:
 openWithOptionalFallback	sources/parsing/parseServerConfigurationFile.cpp	/^static void openWithOptionalFallback($/;"	f	typeref:typename:void	file:
-operator =	sources/classes/locations.cpp	/^Location Location::operator=(const Location& src) {$/;"	f	class:Location	typeref:typename:Location
+operator =	sources/classes/locations.cpp	/^Location& Location::operator=(const Location& src) {$/;"	f	class:Location	typeref:typename:Location &
 operator =	sources/classes/logger.cpp	/^Logger& Logger::operator=(const Logger& other) {$/;"	f	class:Logger	typeref:typename:Logger &
 operator =	sources/classes/server.cpp	/^Server& Server::operator=(const Server& server) {$/;"	f	class:Server	typeref:typename:Server &
 parse	sources/classes/configParser.cpp	/^std::vector<Server> ConfigParser::parse() {$/;"	f	class:ConfigParser	typeref:typename:std::vector<Server>
@@ -157,6 +158,8 @@ parseServer	sources/classes/configParser.cpp	/^Server ConfigParser::parseServer(
 parseStream	sources/parsing/parseServerConfigurationFile.cpp	/^static std::vector<std::string> parseStream(std::ifstream& configFile) {$/;"	f	typeref:typename:std::vector<std::string>	file:
 parseStream	sources/parsing/parseStream.cpp	/^std::vector<std::string> parseStream(std::ifstream& configFile) {$/;"	f	typeref:typename:std::vector<std::string>
 portNumber	tests/client.cpp	/^	const char *portNumber;$/;"	m	struct:server	typeref:typename:const char *	file:
+print	sources/classes/locations.cpp	/^void Location::print() {$/;"	f	class:Location	typeref:typename:void
+print	sources/classes/server.cpp	/^void Server::print() {$/;"	f	class:Server	typeref:typename:void
 processLine	sources/parsing/parseStream.cpp	/^static std::vector<std::string> processLine(std::string& line) {$/;"	f	typeref:typename:std::vector<std::string>	file:
 re	Makefile	/^re: fclean all$/;"	t
 run	Makefile	/^run: re $/;"	t

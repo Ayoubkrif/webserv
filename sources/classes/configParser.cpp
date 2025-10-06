@@ -176,8 +176,6 @@ std::vector<Server> ConfigParser::parse() {
 		Server tmp = parseServer(*it);
         //servers.push_back(parseServer(*it));
         servers.push_back(tmp);
-
-	//	std::cout << "[DEBUG] Server has " << tmp._locations.size() << " locations" << std::endl;
     }
     return servers;
 }

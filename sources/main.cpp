@@ -6,7 +6,7 @@
 /*   By: cuistobal <marvin@42.fr>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 16:43:59 by cuistobal         #+#    #+#             */
-/*   Updated: 2025/10/05 11:56:23 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/10/06 07:01:57 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,27 +20,23 @@ int main(int argc, char **argv) {
 		logger.logMsg(ERROR, USAGE);
 		return USAGE_CODE;
 	}
-	// If no parameter was passed, we apply the default config && disable the fallback strategy
 	std::string configFile = argc == 2 ? argv[1] : DEFAULT_CONFIG;	
 	bool allowFallback = (argc == 2);
 	std::vector<std::string> configFileContent;
     std::vector<Server> servers;
 	try {
 		configFileContent = parseConfig(configFile, allowFallback);
-
-/*
-		std::vector<std::string>::iterator it = configFileContent.begin();
-	
-		for (; it < configFileContent.end(); it++) {
-			std::cout << *it << std::endl; 
-		}
-*/
         ConfigParser configParser(configFileContent);
         servers = configParser.parse();
         
 		std::vector<Server>::iterator it = servers.begin();
 		for ( ; it != servers.end(); it++) {
 			it->print();
+			std::vector<Location> locations = it->getLocations();
+			std::vector<Location>::iterator it = locations.begin();
+			for (; it != locations.end(); it++) {
+				it->print();
+			}	
 		}
 
 		startServer();
@@ -51,7 +47,6 @@ int main(int argc, char **argv) {
 */
 
 	} catch (const CustomException& e) {
-		// Build a single-line message using e.what() and nested message if any
 		std::string msg = std::string(e.what());
 		if (!e.get_nested_message().empty()) {
 			msg += " ";
@@ -59,9 +54,7 @@ int main(int argc, char **argv) {
 		}
 		return errorMessage(msg.c_str(), e.get_code());
 	} catch (const std::exception& e) {
-		// Temp catch
 		return errorMessage(e.what(), OPEN_ERROR_CODE);
-	}
-	
+	}	
 	return SUCCESS;
 }

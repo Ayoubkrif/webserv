@@ -6,6 +6,7 @@ Server::Server(const Server& other) {
 	_port = other._port;
 	_name = other._name;
 	_root = other._root;
+	_locations = other._locations;
 }
 
 Server::~Server() {

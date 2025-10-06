@@ -104,7 +104,7 @@ static std::vector<std::string> parseStream(std::ifstream& configFile) {
                         tokens.push_back(currentToken);
                         currentToken.clear();
                     }
-                    tokens.push_back(std::string(1, c));  // Ajouter {, }, ; comme tokens
+                    tokens.push_back(std::string(1, c));
                 } else if (isspace(static_cast<unsigned char>(c))) {
                     if (!currentToken.empty()) {
                         tokens.push_back(currentToken);
@@ -126,25 +126,6 @@ static std::vector<std::string> parseStream(std::ifstream& configFile) {
     }
     return tokens;
 }
-
-/*
-static std::string parseStream(std::ifstream& configFile)
-{
-    Server server;
-    std::string serverConfig, line;
-    try {
-        while (std::getline(configFile, line)) {
-            if (*line.begin() == '#')
-                continue ;
-            line = normalizeWhitespaces(line);
-            serverConfig.append(line);
-        }
-    } catch (const std::ios::failure& e) {
-        throw CustomException(std::string(e.what()), READ_ERROR_CODE);
-    }
-    return serverConfig;
-}
-*/
 
 /*
  * parseConfig :
