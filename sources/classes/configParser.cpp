@@ -124,6 +124,17 @@ std::vector<std::string> extractLocationBlock(
     return locationBlock;
 }
 
+std::pair<int, std::string> parseErrorPage(std::vector<std::string>::const_iterator& it) {
+	int	errorCode;
+	std::pair<int, std::string> pair;
+
+	errorCode = atoi((*it).c_str());
+	it++;
+	pair = make_pair(errorCode, *it);
+	it++;
+	return pair;
+}
+
 // Parse un bloc "server" (vecteur de tokens) et retourne un objet Server
 Server ConfigParser::parseServer(const std::vector<std::string>& block) {
 	unsigned short port;
@@ -165,7 +176,8 @@ Server ConfigParser::parseServer(const std::vector<std::string>& block) {
 		} else if (directive == "error_page") {
 			if (it == block.end())	
 				throw CustomException("Missing error code && path after 'error_page'", 1);
-			
+			std::pair<int, std::string> tmp = parseErrorPage(it);
+			errorPages.insert(tmp);
 		} else if (directive == "client_max_body_size") {
 			if (it == block.end())	
 				throw CustomException("Missing value after 'client_max_body_size'", 1);

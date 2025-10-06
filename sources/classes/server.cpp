@@ -55,6 +55,13 @@ void Server::print() {
 	std::cout << _port << std::endl;
 	std::cout << _name << std::endl;
 	std::cout << _root << std::endl;
+
+	std::map<int, std::string>::iterator i = _errorPages.begin();	
+	for ( ; i != _errorPages.end(); i++) {
+		std::pair<int, std::string> tmp = *i;
+		std::cout << tmp.first << ": " << tmp.second << std::endl;
+	}
+
 	std::vector<Location>::iterator it = _locations.begin();	
 	for ( ; it != _locations.end(); it++) {
 		it->print();
