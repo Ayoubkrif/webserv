@@ -4,10 +4,13 @@
 #include <vector>
 #include <string>
 #include <iostream>
+
+#include "config.hpp"
 #include "location.hpp"
 
 class Server {
 
+	Config _config;
 	// ports range from 0 to 65535
 	unsigned short	_port;
 	unsigned int _maxBodySize;

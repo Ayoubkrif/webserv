@@ -1,16 +1,19 @@
 #pragma once
 
+#include <map>
 #include <string>
 #include <vector>
-#include <map>
+
+#include "errors.hpp"
+#include "config.hpp"
 #include "server.hpp"
 #include "location.hpp"
-#include "errors.hpp"
 
 class ConfigParser {
 
+	std::vector<Config> _configs;
 	std::vector<std::string> _content;
-    void tokenize(const std::string &content);
+   // void tokenize(const std::string &content);
 
     ConfigParser();
     ConfigParser operator=(const ConfigParser& src);
