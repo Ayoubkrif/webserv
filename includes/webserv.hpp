@@ -7,6 +7,7 @@
 #include <cstddef> 
 #include <cstdlib>
 #include <fstream>
+#include <signal.h>
 #include <iostream>
 #include <iterator>
 #include <stdexcept>

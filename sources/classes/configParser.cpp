@@ -57,13 +57,7 @@ static Location parseLocation(const std::vector<std::string>& locationBlock) {
     while (it != locationBlock.end() && *it != "}") {
         std::string directive = *it;
         ++it;
-        if (directive == "root") {
-            if (it == locationBlock.end()) {
-                throw CustomException("Missing path after 'root' in location", 1);
-            }
-            root = *it;
-            ++it;
-        } else if (directive == "allow_methods") {
+		if (directive == "allow_methods") {
             while (it != locationBlock.end() && *it != ";" && *it != "}") {
                 methods.push_back(*it);
                 ++it;
