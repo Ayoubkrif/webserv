@@ -19,8 +19,8 @@ node_modules/
 *.sublime-workspace
 
 #	$(bear -- make re) files
-	compile_commands.json
-	.cache/
+compile_commands.json
+.cache/
 
 # OS files
 .DS_Store
