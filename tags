@@ -19,6 +19,8 @@ CC	Makefile	/^CC = g++$/;"	m
 CONF_EXTENSION	includes/defines.hpp	/^static const char CONF_EXTENSION[] = "conf";$/;"	v	typeref:typename:const char[]
 CONSOLE_OUTPUT	includes/Logger.hpp	/^    CONSOLE_OUTPUT,$/;"	e	enum:Mode
 CYAN	includes/defines.hpp	/^static const char CYAN[] = "\\x1B[36m";$/;"	v	typeref:typename:const char[]
+Config	includes/config.hpp	/^class Config {$/;"	c
+Config	sources/classes/config.cpp	/^Config::Config(unsigned short port,$/;"	f	class:Config
 ConfigParser	includes/configParser.hpp	/^class ConfigParser {$/;"	c
 ConfigParser	sources/classes/configParser.cpp	/^ConfigParser::ConfigParser(std::vector<std::string>& configTokens) {$/;"	f	class:ConfigParser
 CustomException	includes/customException.hpp	/^class CustomException : public std::exception {$/;"	c
@@ -83,9 +85,8 @@ SERVER_STOP	includes/defines.hpp	/^static const char SERVER_STOP[] = "Stoping se
 SRCS	Makefile	/^SRCS = $(shell find sources -name "*.cpp")$/;"	m
 SUCCESS	includes/defines.hpp	/^static const int SUCCESS = 0;$/;"	v	typeref:typename:const int
 Server	includes/server.hpp	/^class Server {$/;"	c
-Server	sources/classes/server.cpp	/^Server::Server($/;"	f	class:Server
-Server	sources/classes/server.cpp	/^Server::Server() {}$/;"	f	class:Server
-Server	sources/classes/server.cpp	/^Server::Server(const Server& other) {$/;"	f	class:Server
+Server	sources/classes/server.cpp	/^Server::Server(const Config& cfg) : _config(cfg) {}$/;"	f	class:Server
+Server	sources/classes/server.cpp	/^Server::Server(const Server& other) : _config(other._config) {}$/;"	f	class:Server
 USAGE	includes/errors.hpp	/^static const char USAGE[] = "Usage: .\/webserv <configuration file>";$/;"	v	typeref:typename:const char[]
 USAGE_CODE	includes/errors.hpp	/^static const int USAGE_CODE = 64;$/;"	v	typeref:typename:const int
 WARNING	includes/Logger.hpp	/^	WARNING,$/;"	e	enum:LogPrio
@@ -93,9 +94,11 @@ WHITE	includes/defines.hpp	/^static const char WHITE[] = "\\x1B[37m";$/;"	v	type
 YELLOW	includes/defines.hpp	/^static const char YELLOW[] = "\\x1B[33m";$/;"	v	typeref:typename:const char[]
 _colors	includes/Logger.hpp	/^    static std::map<LogPrio, std::string> _colors;$/;"	m	class:Logger	typeref:typename:std::map<LogPrio,std::string>
 _colors	sources/classes/logger.cpp	/^std::map<LogPrio, std::string> Logger::_colors;$/;"	m	class:Logger	typeref:typename:std::map<LogPrio,std::string>
+_config	includes/server.hpp	/^	Config _config;$/;"	m	class:Server	typeref:typename:Config
+_configs	includes/configParser.hpp	/^	std::vector<Config> _configs;$/;"	m	class:ConfigParser	typeref:typename:std::vector<Config>
 _content	includes/configParser.hpp	/^	std::vector<std::string> _content;$/;"	m	class:ConfigParser	typeref:typename:std::vector<std::string>
-_contents	includes/server.hpp	/^	std::vector<std::string> _contents;	$/;"	m	class:Server	typeref:typename:std::vector<std::string>
-_errorPages	includes/server.hpp	/^	std::map<int, std::string> _errorPages;$/;"	m	class:Server	typeref:typename:std::map<int,std::string>
+_contents	includes/config.hpp	/^	std::vector<std::string> _contents;	$/;"	m	class:Config	typeref:typename:std::vector<std::string>
+_errorPages	includes/config.hpp	/^	std::map<int, std::string> _errorPages;$/;"	m	class:Config	typeref:typename:std::map<int,std::string>
 _file	includes/Logger.hpp	/^    static std::ofstream _file;$/;"	m	class:Logger	typeref:typename:std::ofstream
 _file	sources/classes/logger.cpp	/^std::ofstream Logger::_file;$/;"	m	class:Logger	typeref:typename:std::ofstream
 _fileName	includes/Logger.hpp	/^	static std::string _fileName;$/;"	m	class:Logger	typeref:typename:std::string
@@ -104,15 +107,15 @@ _initialized	includes/Logger.hpp	/^    static bool _initialized;$/;"	m	class:Log
 _initialized	sources/classes/logger.cpp	/^bool Logger::_initialized = false;$/;"	m	class:Logger	typeref:typename:bool
 _levels	includes/Logger.hpp	/^    static std::map<LogPrio, std::pair<std::string, std::ostream*> > _levels;$/;"	m	class:Logger	typeref:typename:std::map<LogPrio,std::pair<std::string,std::ostream * >>
 _levels	sources/classes/logger.cpp	/^std::map<LogPrio, std::pair<std::string, std::ostream*> > Logger::_levels;$/;"	m	class:Logger	typeref:typename:std::map<LogPrio,std::pair<std::string,std::ostream * >>
-_locations	includes/server.hpp	/^	std::vector<Location> _locations;	$/;"	m	class:Server	typeref:typename:std::vector<Location>
-_maxBodySize	includes/server.hpp	/^	unsigned int _maxBodySize;$/;"	m	class:Server	typeref:typename:unsigned int
+_locations	includes/config.hpp	/^	std::vector<Location> _locations;	$/;"	m	class:Config	typeref:typename:std::vector<Location>
+_maxBodySize	includes/config.hpp	/^	unsigned int _maxBodySize;$/;"	m	class:Config	typeref:typename:unsigned int
 _methods	includes/location.hpp	/^    std::vector<std::string> _methods;$/;"	m	class:Location	typeref:typename:std::vector<std::string>
-_name	includes/server.hpp	/^	std::string	_name;$/;"	m	class:Server	typeref:typename:std::string
+_name	includes/config.hpp	/^	std::string	_name;$/;"	m	class:Config	typeref:typename:std::string
 _path	includes/location.hpp	/^	std::string _path;$/;"	m	class:Location	typeref:typename:std::string
-_port	includes/server.hpp	/^	unsigned short	_port;$/;"	m	class:Server	typeref:typename:unsigned short
+_port	includes/config.hpp	/^	unsigned short	_port;$/;"	m	class:Config	typeref:typename:unsigned short
 _prio	includes/Logger.hpp	/^    static LogPrio _prio;$/;"	m	class:Logger	typeref:typename:LogPrio
 _prio	sources/classes/logger.cpp	/^LogPrio Logger::_prio = DEBUG;$/;"	m	class:Logger	typeref:typename:LogPrio
-_root	includes/server.hpp	/^	std::string	_root;$/;"	m	class:Server	typeref:typename:std::string
+_root	includes/config.hpp	/^	std::string	_root;$/;"	m	class:Config	typeref:typename:std::string
 _socket	includes/server.hpp	/^	int _socket;$/;"	m	class:Server	typeref:typename:int
 _state	includes/Logger.hpp	/^    static L_State _state;$/;"	m	class:Logger	typeref:typename:L_State
 _state	sources/classes/logger.cpp	/^L_State Logger::_state = ON;$/;"	m	class:Logger	typeref:typename:L_State
@@ -129,8 +132,17 @@ extractLocationBlock	sources/classes/configParser.cpp	/^static std::vector<std::
 fclean	Makefile	/^fclean: clean$/;"	t
 g_signal_received	sources/main.cpp	/^volatile sig_atomic_t g_signal_received = 0;$/;"	v	typeref:typename:volatile sig_atomic_t
 getColorCode	sources/classes/logger.cpp	/^std::string Logger::getColorCode(LogPrio level) {$/;"	f	class:Logger	typeref:typename:std::string
+getContent	sources/classes/config.cpp	/^std::vector<std::string> Config::getContent() const {$/;"	f	class:Config	typeref:typename:std::vector<std::string>
 getCurrentTime	sources/classes/logger.cpp	/^std::string Logger::getCurrentTime() {$/;"	f	class:Logger	typeref:typename:std::string
+getErrorPages	sources/classes/config.cpp	/^std::map<int, std::string> Config::getErrorPages() const {$/;"	f	class:Config	typeref:typename:std::map<int,std::string>
+getLocations	sources/classes/config.cpp	/^std::vector<Location> Config::getLocations() const {$/;"	f	class:Config	typeref:typename:std::vector<Location>
 getLocations	sources/classes/server.cpp	/^std::vector<Location> Server::getLocations() const {$/;"	f	class:Server	typeref:typename:std::vector<Location>
+getMaxBodySize	sources/classes/config.cpp	/^unsigned int Config::getMaxBodySize() const {$/;"	f	class:Config	typeref:typename:unsigned int
+getMethod	sources/classes/locations.cpp	/^std::vector<std::string> Location::getMethod() const {$/;"	f	class:Location	typeref:typename:std::vector<std::string>
+getName	sources/classes/config.cpp	/^std::string Config::getName() const {$/;"	f	class:Config	typeref:typename:std::string
+getPath	sources/classes/locations.cpp	/^std::string Location::getPath() const {$/;"	f	class:Location	typeref:typename:std::string
+getPort	sources/classes/config.cpp	/^unsigned short Config::getPort() const {$/;"	f	class:Config	typeref:typename:unsigned short
+getRoot	sources/classes/config.cpp	/^std::string Config::getRoot() const {$/;"	f	class:Config	typeref:typename:std::string
 get_cause	sources/classes/configException.cpp	/^const std::string& CustomException::get_cause() const {$/;"	f	class:CustomException	typeref:typename:const std::string &
 get_code	sources/classes/configException.cpp	/^int CustomException::get_code() const {$/;"	f	class:CustomException	typeref:typename:int
 get_nested_message	sources/classes/configException.cpp	/^const std::string& CustomException::get_nested_message() const {$/;"	f	class:CustomException	typeref:typename:const std::string &
@@ -156,6 +168,7 @@ messages	tests/client.html	/^    <ul id="messages"><\/ul>$/;"	I
 nested_message	includes/customException.hpp	/^    std::string nested_message;$/;"	m	class:CustomException	typeref:typename:std::string
 normalizeWhitespaces	sources/parsing/parseStream.cpp	/^static std::string normalizeWhitespaces(std::string& line) {$/;"	f	typeref:typename:std::string	file:
 openWithOptionalFallback	sources/parsing/parseServerConfigurationFile.cpp	/^static void openWithOptionalFallback($/;"	f	typeref:typename:void	file:
+operator =	sources/classes/config.cpp	/^Config& Config::operator=(const Config& src) {$/;"	f	class:Config	typeref:typename:Config &
 operator =	sources/classes/locations.cpp	/^Location& Location::operator=(const Location& src) {$/;"	f	class:Location	typeref:typename:Location &
 operator =	sources/classes/logger.cpp	/^Logger& Logger::operator=(const Logger& other) {$/;"	f	class:Logger	typeref:typename:Logger &
 operator =	sources/classes/server.cpp	/^Server& Server::operator=(const Server& server) {$/;"	f	class:Server	typeref:typename:Server &
@@ -189,8 +202,9 @@ toString	sources/classes/server.cpp	/^inline std::string toString(int number) {$
 tokenizeLine	sources/parsing/parseStream.cpp	/^static std::vector<std::string> tokenizeLine(const std::string& line) {$/;"	f	typeref:typename:std::vector<std::string>	file:
 tryOpenOrThrow	sources/parsing/parseServerConfigurationFile.cpp	/^static void tryOpenOrThrow(const std::string& path, std::ifstream& out) { $/;"	f	typeref:typename:void	file:
 what	sources/classes/configException.cpp	/^const char* CustomException::what() const throw() {$/;"	f	class:CustomException	typeref:typename:const char *
+~Config	sources/classes/config.cpp	/^Config::~Config() {}$/;"	f	class:Config
 ~ConfigParser	sources/classes/configParser.cpp	/^ConfigParser::~ConfigParser() {$/;"	f	class:ConfigParser
 ~CustomException	sources/classes/configException.cpp	/^CustomException::~CustomException() throw() {}$/;"	f	class:CustomException
 ~Location	sources/classes/locations.cpp	/^Location::~Location() {$/;"	f	class:Location
 ~Logger	sources/classes/logger.cpp	/^Logger::~Logger() {$/;"	f	class:Logger
-~Server	sources/classes/server.cpp	/^Server::~Server() {$/;"	f	class:Server
+~Server	sources/classes/server.cpp	/^Server::~Server() {}$/;"	f	class:Server
