@@ -1,7 +1,6 @@
 #include "webserv.hpp"
 
 ConfigParser::ConfigParser(std::vector<std::string>& configTokens) {
-    _state = OUTSIDE;
     _content = configTokens;
 }
 
