@@ -1,7 +1,10 @@
 #pragma once
 
 // Return codes
-static const int SUCCESS = 0;
+static const int	SUCCESS = 0;
+
+// Return codes
+static const unsigned int	BUFFER_SIZE = 4096;
 
 // Color flags
 static const char RESET[] = "\x1B[0m";
