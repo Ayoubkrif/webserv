@@ -3,7 +3,7 @@
 // Return codes
 static const int	SUCCESS = 0;
 
-// Return codes
+// Recv buffersize
 static const unsigned int	BUFFER_SIZE = 4096;
 
 // Color flags
