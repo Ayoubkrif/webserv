@@ -6,7 +6,7 @@
 /*   By: cbordeau <cbordeau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 11:48:19 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/10/11 13:22:24 by cbordeau         ###   ########.fr       */
+/*   Updated: 2025/10/11 15:51:27 by aykrifa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <fcntl.h>
 
-int main()
+int	createServerSocket(void)
 {
-	printf("Server started.\n");
-
-	const size_t bufferSize = 1000;
 	const char *portNumber = "6969";
-	const int backlog = 1;
-	
 	struct addrinfo hints;
+
 	memset(&hints, 0, sizeof(struct addrinfo));
-
-
 	hints.ai_flags = AI_PASSIVE;
 	hints.ai_family = AF_INET;
 	hints.ai_socktype = SOCK_STREAM;
@@ -65,8 +60,19 @@ int main()
 		exit(EXIT_FAILURE);
 	}
 	freeaddrinfo(results);
+	return (serverSocket);
+}
 
+int main()
+{
+	printf("Server started.\n");
+
+	int	serverSocket = createServerSocket();
 	printf("Server socket created and bound.\n");
+	
+	const size_t bufferSize = 1000;
+	const int backlog = 10;
+
 
 	if (listen(serverSocket, backlog) == -1)
 	{
@@ -75,7 +81,10 @@ int main()
 	}
 
 	printf("Server started listening.\n");
-
+	// fnctl F_SETFD modifie les flags de serverSocket
+	// flags += Non bloquant
+	// fcntl F_GETFL renvoie les flags de Serversocket
+	fcntl(serverSocket, F_SETFD, fcntl(serverSocket, F_GETFL) | O_NONBLOCK);
 	while (1)
 	{
 		printf("Server still running.\n");
