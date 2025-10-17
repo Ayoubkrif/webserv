@@ -1,27 +1,30 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Locations.hpp                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aykrifa <aykrifa@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/17 12:06:50 by aykrifa           #+#    #+#             */
+/*   Updated: 2025/10/17 12:07:39 by aykrifa          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #pragma once
 
 #include <vector>
 #include <string>
 
-class Location {
-	
-	std::string _path;
-    std::vector<std::string> _methods;
-	
-	Location();
-
+class	Location
+{
     public:
 
-        Location(
-				std::string& path, 
-				std::vector<std::string> methods);
+        Location(void);
 		Location(const Location& src);
         ~Location();
 
     	Location& operator=(const Location& src);
-
-		void print();
-
-		std::string getPath() const;
-		std::vector<std::string> getMethod() const;
+	
+	private:
+		;
 };

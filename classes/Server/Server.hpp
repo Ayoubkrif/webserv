@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Server.hpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aykrifa <aykrifa@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/17 12:11:18 by aykrifa           #+#    #+#             */
+/*   Updated: 2025/10/17 15:35:16 by aykrifa          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #pragma once
 
 #include <map>
@@ -5,33 +17,30 @@
 #include <string>
 #include <iostream>
 
-#include "Config.hpp"
-#include "Locations.hpp"
-
-class Server {
-
-	Config _config;
-	int _socket;
-
+class	Server
+{
 	public:
 
-	Server(const Config& cfg);
-	Server(const Server& src);
+		Server(void);
+		Server(const Server& src);
 
-	~Server();
+		~Server();
 
-	Server& operator=(const Server& server);
+		Server& operator=(const Server& server);
 
-	void print();
-	std::vector<Location> getLocations() const;    
-
-	// Access config
-	const Config& getConfig() const;
-
-	void startServer();
-	void stopServer();
-	void listening();
-
-	void addConnection();
-	void endConnection();
+		void print();
+		/*std::vector<Location> getLocations() const;    */
+		/**/
+		/*// Access config*/
+		/*const Config& getConfig() const;*/
+		/**/
+		/*void startServer();*/
+		/*void stopServer();*/
+		/*void listening();*/
+		/**/
+		/*void addConnection();*/
+		/*void endConnection();*/
+		/**/
+	private:
+		;
 };
