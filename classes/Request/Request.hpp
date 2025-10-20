@@ -6,7 +6,7 @@
 /*   By: cbordeau <bordeau@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 14:38:54 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/10/19 15:31:16 by cbordeau         ###   LAUSANNE.ch       */
+/*   Updated: 2025/10/20 13:37:40 by cbordeau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ typedef enum method
 	GET = 0,
 	POST,
 	DELETE,
+	OTHER,
 } methode;
 
 class Request
@@ -44,24 +45,38 @@ protected:
 	std::string	_authorization;
 
 	bool	_connection;
+
+public:
+	Request();
 };
 
 class Get : public Request
 {
+private:
+	bool			_ifModif;
 	std::string	_ifModifiedSince;
+public:
+	Get();
 };
 
 class Post : public Request
 {
+private:
 	int			_expect;
 	std::string	_contentType;
 	int			_contentLength;
 	bool		_transfer_encoding;
+
+public:
+	Post();
 };
 
 class Delete : public Request
 {
+private:
 	std::string	_contentType;
 	int			_contentLength;
 	bool		_transfer_encoding;
+public:
+	Delete();
 };

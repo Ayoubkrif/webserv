@@ -1,28 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Request.cpp                                        :+:      :+:    :+:   */
+/*   Delete.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cbordeau <cbordeau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/20 13:30:23 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/10/20 13:39:41 by cbordeau         ###   ########.fr       */
+/*   Created: 2025/10/20 13:40:52 by cbordeau          #+#    #+#             */
+/*   Updated: 2025/10/20 13:42:06 by cbordeau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Request.hpp"
-
-Request::Request() : _hEnd(0), _bEnd(0), _method(OTHER), _connection(1)
-{
-}
-
-Get::Get(): Request(), _ifModif(0)
-{
-}
-
-Post::Post(): Request(), _expect(-1), _contentLength(-1), _transfer_encoding(0)
-{
-}
 
 Delete::Delete(): Request(), _contentLength(-1), _transfer_encoding(0)
 {
