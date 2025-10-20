@@ -61,3 +61,26 @@ class Logger{
         static void         logMsg(LogPrio level, const std::string& message);
 		static std::string	getColorCode(LogPrio level);
 };
+/*class	Logger*/
+/*{*/
+/*	public:*/
+/**/
+/*        Logger(const std::string& filename = "");*/
+/*        ~Logger();*/
+/**/
+/*        static void			addFile(std::string, int mode);*/
+/*        static void			Msg(LogPrio level, const std::string& message);*/
+/*        static void			Msg(std::string file, const std::string& message);*/
+/*        static std::string	getCurrentTime();*/
+/**/
+/*	private:*/
+/*		static std::map<std::string, std::ofstream>	_filePool;*/
+/*		static std::vector<std::ofstream &>	_debugFile;*/
+/*		static std::vector<std::ofstream &>	_infoFile;*/
+/*		static std::vector<std::ofstream &>	_warningFile;*/
+/*		static std::vector<std::ofstream &>	_erroFile;*/
+/*		static std::vector<std::ofstream &>	_fatalFile;*/
+/*		Logger(const Logger& other);*/
+/*		Logger& operator=(const Logger& other);*/
+/**/
+/*};*/
