@@ -6,7 +6,7 @@
 /*   By: aykrifa <aykrifa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 12:11:18 by aykrifa           #+#    #+#             */
-/*   Updated: 2025/10/19 15:09:21 by aykrifa          ###   ########.fr       */
+/*   Updated: 2025/10/20 13:48:15 by aykrifa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,4 @@ class	Server
 	private:
 		std::string				_name;
 		std::vector<Location>	_location;
-		Location				_Template;
 };
