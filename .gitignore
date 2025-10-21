@@ -5,8 +5,11 @@
 *.d
 *.obj
 *.out
+objs/
 
 # Executable
+/Webserv
+/WebServ
 /webserv
 
 # Dependency directories
