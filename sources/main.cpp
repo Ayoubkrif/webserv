@@ -6,7 +6,7 @@
 /*   By: cuistobal <marvin@42.fr>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 16:43:59 by cuistobal         #+#    #+#             */
-/*   Updated: 2025/10/07 09:03:22 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/10/21 15:43:17 by aykrifa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,26 +21,22 @@ void signal_handler(int signal) {
 	exit(0);
 }
 
-int main(int argc, char **argv) {
-
-	Logger	logger;
-
-	if (argc > 2) {
-		logger.logMsg(ERROR, USAGE);
-		return USAGE_CODE;
+int main(int argc, char **argv)
+{
+	if (argc > 2)
+	{
+		return (USAGE_CODE);
 	}
-
 	signal(SIGINT, signal_handler);
     signal(SIGQUIT, signal_handler);
-
-	std::string configFile = argc == 2 ? argv[1] : DEFAULT_CONFIG;	
-	bool allowFallback = (argc == 2);
-	std::vector<std::string> configFileContent;
-    std::vector<Server> servers;
-	try {
-		configFileContent = parseConfig(configFile, allowFallback);
-        ConfigParser configParser(configFileContent);
-        servers = configParser.parse();
+	(void)argv;
+	try
+	{
+		// std::vector<ServerSocket>	ServerSocket;
+		// std::vector<std::string>	token;
+		std::string	file = extractStr(argv[1]);
+		commentFilter(file);
+		std::cout << file << std::endl;
         
 /* DEBUG
 		std::vector<Server>::iterator it = servers.begin();
@@ -53,22 +49,11 @@ int main(int argc, char **argv) {
 			}	
 		}
 */
-		startServers(servers);
-/*
-		runServer();
-	
-		exitServer();
-*/
-
-	} catch (const CustomException& e) {
-		std::string msg = std::string(e.what());
-		if (!e.get_nested_message().empty()) {
-			msg += " ";
-			msg += e.get_nested_message();
-		}
-		return errorMessage(msg.c_str(), e.get_code());
-	} catch (const std::exception& e) {
-		return errorMessage(e.what(), OPEN_ERROR_CODE);
-	}	
-	return SUCCESS;
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << e.what();
+		return (1);
+	}
+	return (SUCCESS);
 }
