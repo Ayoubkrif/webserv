@@ -6,7 +6,7 @@
 /*   By: cbordeau <cbordeau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 13:43:32 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/11/14 10:21:12 by cbordeau         ###   ########.fr       */
+/*   Updated: 2025/11/14 11:01:28 by cbordeau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	parse_buffer(Request *request)
 	if (move_cursor(&cursor, request->getBuffer(), DCRLF) && !request->get_hEnd())
 	{
 		request->tokenize(cursor, HEADER);
+		parse_header(request);
 		//body is full in buffer
 		if (move_cursor(&cursor, request->getBuffer(), DCRLF))
 		{
@@ -34,39 +35,33 @@ void	parse_buffer(Request *request)
 	std::cout << "buffer is : " << request->getBuffer() << std::endl;
 }
 
-// int	find_type(std::string str, int end)
-// {
-// 	//map.at(token)?
-// 	//strncmp(str, tab[i], end);
-// 	return -1;
-// }
-//
-// void	parse_header(std::string *header, Request *request)
-// {
-// 	std::string::size_type	cursor = 0;
-// 	std::string				token;
-//
-// 	get_token(header, &token, &cursor);
-// 	//parse_request(token, event);
-// 	int type;
-// 	while (1)
-// 	{
-// 		cursor = header->find(":");
-// 		if (cursor != std::string::npos)
-// 		{
-// 			type = find_type(*header, cursor);
-// 			cursor += 1;
-// 			header->erase(0, cursor);
-// 			cursor = header->find(CRLF);
-// 		}
-// 		else
-// 			;
-// 			//throw error;
-// 		if (type < 0)
-// 			break;
-// 		get_token(header, &token, &cursor);
-// 		//fct[type](token, event);
-// 		
-// 	}
-// 	//check_complete_header(event);
-// }
+void	parse_header(Request *request)
+{
+	std::string::size_type	cursor = 0;
+	std::string				token;
+
+	request->getToken(&token, &cursor);
+	//parse_request(token, event);
+	int type;
+	while (1)
+	{
+		cursor = request->getHeader().find(":");
+		if (cursor != std::string::npos)
+		{
+			type = request->getField(&cursor);
+			// type = find_type(*header, cursor);
+			// cursor += 1;
+			// header->erase(0, cursor);
+			// cursor = header->find(CRLF);
+		}
+		else
+			;
+			//throw error;
+		if (type < 0)
+			break;
+		request->getToken(&token, &cursor);
+		//fct[type](token, event);
+		
+	}
+	//check_complete_header(event);
+}

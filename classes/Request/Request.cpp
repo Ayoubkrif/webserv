@@ -6,7 +6,7 @@
 /*   By: cbordeau <cbordeau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 13:30:23 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/11/14 09:45:03 by cbordeau         ###   ########.fr       */
+/*   Updated: 2025/11/14 11:02:28 by cbordeau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,4 +80,37 @@ void	Request::tokenize(std::string::size_type cursor, int mode)
 		this->_body.append(this->_buffer, 0, cursor);
 		this->_buffer.erase(0, cursor + 3);
 	}
+}
+
+void	Request::getToken(std::string *token, std::string::size_type *cursor)
+{
+	*cursor = this->_header.find(CRLF);
+	if (*cursor != std::string::npos)
+	{
+		token->assign(this->_header, 0, *cursor);
+		*cursor += 2;
+		this->_header.erase(0, *cursor);
+	}
+	// else
+	// 	;
+		//throw error;
+}
+
+int	find_type(std::string str, int end)
+{
+	//map.at(token)?
+	//strncmp(str, tab[i], end);
+	(void)end;
+	(void)str;
+	return -1;
+}
+
+int	Request::getField(std::string::size_type *cursor)
+{
+	int	type;
+	type = find_type(this->_header, *cursor);
+	*cursor += 1;
+	this->_header.erase(0, *cursor);
+	*cursor = this->_header.find(CRLF);
+	return type;
 }

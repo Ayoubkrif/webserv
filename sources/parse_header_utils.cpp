@@ -6,7 +6,7 @@
 /*   By: cbordeau <bordeau@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 13:39:14 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/11/14 09:43:55 by cbordeau         ###   ########.fr       */
+/*   Updated: 2025/11/14 10:34:02 by cbordeau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,16 +51,16 @@ int	move_cursor(std::string::size_type *cursor, std::string str, std::string toF
 // 	}
 // }
 
-void	get_token(std::string *header, std::string *token, std::string::size_type *cursor)
-{
-	*cursor = header->find(CRLF);
-	if (*cursor != std::string::npos)
-	{
-		token->assign(*header, 0, *cursor);
-		*cursor += 2;
-		header->erase(0, *cursor);
-	}
-	// else
-	// 	;
-		//throw error;
-}
+// void	get_token(std::string *header, std::string *token, std::string::size_type *cursor)
+// {
+// 	*cursor = header->find(CRLF);
+// 	if (*cursor != std::string::npos)
+// 	{
+// 		token->assign(*header, 0, *cursor);
+// 		*cursor += 2;
+// 		header->erase(0, *cursor);
+// 	}
+// 	// else
+// 	// 	;
+// 		//throw error;
+// }

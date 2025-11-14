@@ -6,13 +6,15 @@
 /*   By: cbordeau <bordeau@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 14:38:54 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/11/14 09:54:25 by cbordeau         ###   ########.fr       */
+/*   Updated: 2025/11/14 10:56:37 by cbordeau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
 #include <string>
+const std::string DCRLF = "\r\n\r\n";
+const std::string CRLF = "\r\n";
 
 typedef enum method
 {
@@ -25,16 +27,16 @@ typedef enum method
 class Request
 {
 protected:
-	int _start; //pour chuncked request, pour verifier le temps
+	int			_start; //pour chuncked request, pour verifier le temps
 	
 	std::string	_header;
 	std::string	_body;
 	std::string	_buffer;
 
-	bool _hEnd;
-	bool _bEnd;
+	bool		_hEnd;
+	bool		_bEnd;
 
-	method _method;
+	method 		_method;
 	std::string	_uri;
 
 	std::string	_host;
@@ -44,16 +46,16 @@ protected:
 	std::string	_language;
 	std::string	_authorization;
 
-	bool	_connection;
+	bool		_connection;
 
 public:
 	Request();
 
-	void	appendHeader(std::string, int start, int end);
-	void	appendBody(std::string, int start, int end);
-	void	appendBuffer(std::string, int start, int end);
-	void	set_hEnd(bool value);
-	void	set_bEnd(bool value);
+	void		appendHeader(std::string, int start, int end);
+	void		appendBody(std::string, int start, int end);
+	void		appendBuffer(std::string, int start, int end);
+	void		set_hEnd(bool value);
+	void		set_bEnd(bool value);
 
 	std::string	getHeader();
 	std::string	getBody();
@@ -62,35 +64,37 @@ public:
 	bool		get_bEnd();
 
 	void		tokenize(std::string::size_type cursor, int mode);
+	void		getToken(std::string *header, std::string::size_type *cursor);
+	int			getField(std::string::size_type *cursor);
 };
 
-// class Get : public Request
-// {
-// private:
-// 	bool			_ifModif;
-// 	std::string	_ifModifiedSince;
-// public:
-// 	Get();
-// };
-//
-// class Post : public Request
-// {
-// private:
-// 	int			_expect;
-// 	std::string	_contentType;
-// 	int			_contentLength;
-// 	bool		_transfer_encoding;
-//
-// public:
-// 	Post();
-// };
-//
-// class Delete : public Request
-// {
-// private:
-// 	std::string	_contentType;
-// 	int			_contentLength;
-// 	bool		_transfer_encoding;
-// public:
-// 	Delete();
-// };
+class Get : public Request
+{
+private:
+	bool		_ifModif;
+	std::string	_ifModifiedSince;
+public:
+	Get();
+};
+
+class Post : public Request
+{
+private:
+	int			_expect;
+	std::string	_contentType;
+	int			_contentLength;
+	bool		_transfer_encoding;
+
+public:
+	Post();
+};
+
+class Delete : public Request
+{
+private:
+	std::string	_contentType;
+	int			_contentLength;
+	bool		_transfer_encoding;
+public:
+	Delete();
+};
