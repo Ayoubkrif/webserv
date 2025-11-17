@@ -6,7 +6,7 @@
 #    By: cbordeau <cbordeau@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/19 13:28:35 by cbordeau          #+#    #+#              #
-#    Updated: 2025/11/14 09:54:37 by cbordeau         ###   ########.fr        #
+#    Updated: 2025/11/17 14:46:27 by cbordeau         ###   LAUSANNE.ch        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 NAME       = WebServ
 CPP        = c++
 CPPFLAGS   = -Wall -Wextra -Werror -std=c++98 -g3
-INCLUDES   = -Iincludes -Iclasses/Request
+INCLUDES   = -Iincludes -Iclasses/Request -Iclasses/HeaderParsing
 
 # Dossiers
 SRC_PATH   = sources
@@ -26,7 +26,9 @@ SOURCES = \
 	$(SRC_PATH)/main.cpp \
 	$(SRC_PATH)/parse_header.cpp \
 	$(SRC_PATH)/parse_header_utils.cpp \
-	$(CLASS_PATH)/Request/Request.cpp
+	$(CLASS_PATH)/Request/Request.cpp \
+	$(CLASS_PATH)/HeaderParser/HeaderParser.cpp \
+	$(CLASS_PATH)/HeaderParser/FieldsParse.cpp 
 	# $(CLASS_PATH)/Request/Get.cpp \
 	# $(CLASS_PATH)/Request/Post.cpp \
 	# $(CLASS_PATH)/Request/Delete.cpp 
@@ -56,7 +58,8 @@ clean:
 fclean: clean
 	rm -f $(NAME)
 
-re: fclean all
+re: fclean
+	make all
 
 bear:
 	bear -- make re

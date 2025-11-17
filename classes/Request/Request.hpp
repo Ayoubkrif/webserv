@@ -6,7 +6,7 @@
 /*   By: cbordeau <bordeau@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 14:38:54 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/11/14 10:56:37 by cbordeau         ###   ########.fr       */
+/*   Updated: 2025/11/17 14:06:44 by cbordeau         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,21 @@ public:
 	void		tokenize(std::string::size_type cursor, int mode);
 	void		getToken(std::string *header, std::string::size_type *cursor);
 	int			getField(std::string::size_type *cursor);
+
+	void		parseHost(std::string, Request*);
+	void		parseAccept(std::string, Request*);
+	void		parseAcceptEncoding(std::string, Request*);
+	void		parseCookies(std::string, Request*);
+	void		parseLanguage(std::string, Request*);
+	void		parseAuthorization(std::string, Request*);
+	void		parseConnection(std::string, Request*);
+
+	void		parseIfModifiedSince(std::string, Request*);
+
+	void		parseExpect(std::string, Request*);
+	void		parseContentType(std::string, Request*);
+	void		parseContentLength(std::string, Request*);
+	void		parseTransferEncoding(std::string, Request*);
 };
 
 class Get : public Request

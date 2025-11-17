@@ -6,7 +6,7 @@
 /*   By: cbordeau <bordeau@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 13:39:53 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/11/14 09:32:01 by cbordeau         ###   ########.fr       */
+/*   Updated: 2025/11/17 14:09:46 by cbordeau         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 #include <iostream>
 #include "../classes/Request/Request.hpp"
 
-const std::string DCRLF = "\r\n\r\n";
-const std::string CRLF = "\r\n";
+// const std::string DCRLF = "\r\n\r\n";
+// const std::string CRLF = "\r\n";
 
 #define HEADER 0
 #define BODY 1
@@ -30,4 +30,4 @@ void	tokenize(std::string *buffer, Request *request, int mode);
 void	get_token(std::string *header, std::string *token, std::string::size_type *cursor);
 
 void	parse_buffer(Request *request);
-void	parse_header(std::string *header, Request *request);
+void	parse_header(Request *request);

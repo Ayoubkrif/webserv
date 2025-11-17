@@ -6,11 +6,13 @@
 /*   By: cbordeau <cbordeau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 13:30:23 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/11/14 11:02:28 by cbordeau         ###   ########.fr       */
+/*   Updated: 2025/11/17 13:13:01 by cbordeau         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Request.hpp"
+#include "../HeaderParser/HeaderParser.hpp"
+#include <cstring>
 
 Request::Request() : _hEnd(0), _bEnd(0), _method(OTHER), _connection(1)
 {
@@ -96,21 +98,36 @@ void	Request::getToken(std::string *token, std::string::size_type *cursor)
 		//throw error;
 }
 
-int	find_type(std::string str, int end)
+int	find_type(std::string str)
 {
-	//map.at(token)?
-	//strncmp(str, tab[i], end);
-	(void)end;
-	(void)str;
+	int index = 0;
+	for (int i = 0; str[i] !=':'; i++)
+	{
+		if (str[i] >= 'A' && str[i] <= 'Z')
+			str[i] += 32;
+		if (str[i] >= 'a' && str[i] <= 'z')
+		{
+			index += str[i] - 97;
+		}
+		else
+			index += str[i];
+	}
+	if (index <= 0 || index > 207)
+		return -1;
+	for (int i = 0; i < 3; i++)
+	{
+	if (!HeaderParsing::fields[index][i].empty() && !HeaderParsing::fields[index][i].compare(str))
+		return index;
+	}
 	return -1;
 }
 
 int	Request::getField(std::string::size_type *cursor)
 {
 	int	type;
-	type = find_type(this->_header, *cursor);
-	*cursor += 1;
+	type = find_type(this->_header.substr(0, *cursor));
+	// *cursor += 1;
 	this->_header.erase(0, *cursor);
-	*cursor = this->_header.find(CRLF);
+	// *cursor = this->_header.find(CRLF);
 	return type;
 }

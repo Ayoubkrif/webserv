@@ -6,11 +6,12 @@
 /*   By: cbordeau <cbordeau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 13:43:32 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/11/14 11:01:28 by cbordeau         ###   ########.fr       */
+/*   Updated: 2025/11/17 14:15:40 by cbordeau         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/parsing_header.hpp"
+#include "../classes/HeaderParser/HeaderParser.hpp"
 
 void	parse_buffer(Request *request)
 {
@@ -49,18 +50,14 @@ void	parse_header(Request *request)
 		if (cursor != std::string::npos)
 		{
 			type = request->getField(&cursor);
-			// type = find_type(*header, cursor);
-			// cursor += 1;
-			// header->erase(0, cursor);
-			// cursor = header->find(CRLF);
 		}
-		else
-			;
+		// else
+		// 	;
 			//throw error;
 		if (type < 0)
 			break;
 		request->getToken(&token, &cursor);
-		//fct[type](token, event);
+		(request->*HeaderParsing::ptr[type])(token, request);
 		
 	}
 	//check_complete_header(event);
