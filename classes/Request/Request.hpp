@@ -6,7 +6,7 @@
 /*   By: cbordeau <bordeau@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 14:38:54 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/11/17 14:06:44 by cbordeau         ###   LAUSANNE.ch       */
+/*   Updated: 2025/11/18 11:38:03 by cbordeau         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,20 +67,20 @@ public:
 	void		getToken(std::string *header, std::string::size_type *cursor);
 	int			getField(std::string::size_type *cursor);
 
-	void		parseHost(std::string, Request*);
-	void		parseAccept(std::string, Request*);
-	void		parseAcceptEncoding(std::string, Request*);
-	void		parseCookies(std::string, Request*);
-	void		parseLanguage(std::string, Request*);
-	void		parseAuthorization(std::string, Request*);
-	void		parseConnection(std::string, Request*);
+	void		parseHost(std::string);
+	void		parseAccept(std::string);
+	void		parseAcceptEncoding(std::string);
+	void		parseCookies(std::string);
+	void		parseLanguage(std::string);
+	void		parseAuthorization(std::string);
+	void		parseConnection(std::string);
 
-	void		parseIfModifiedSince(std::string, Request*);
+	void		parseIfModifiedSince(std::string);
 
-	void		parseExpect(std::string, Request*);
-	void		parseContentType(std::string, Request*);
-	void		parseContentLength(std::string, Request*);
-	void		parseTransferEncoding(std::string, Request*);
+	void		parseExpect(std::string);
+	void		parseContentType(std::string);
+	void		parseContentLength(std::string);
+	void		parseTransferEncoding(std::string);
 };
 
 class Get : public Request

@@ -6,14 +6,14 @@
 /*   By: cbordeau <bordeau@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 10:45:29 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/11/17 14:19:50 by cbordeau         ###   LAUSANNE.ch       */
+/*   Updated: 2025/11/18 11:55:33 by cbordeau         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "HeaderParser.hpp"
 
 std::string HeaderParsing::fields[207][3] = {};
-void (Request::*HeaderParsing::ptr[210])(std::string, Request*) = {NULL};
+void (Request::*HeaderParsing::ptr[210])(std::string) = {NULL};
 
 void HeaderParsing::initFields()
 {
@@ -28,9 +28,9 @@ void HeaderParsing::initFields()
 	HeaderParsing::fields[150][0] = "accept-encoding";
 	HeaderParsing::fields[150][1] = "cache-control";
 	HeaderParsing::fields[164][0] = "authorization";
-	HeaderParsing::fields[185][0] = "content-type";
 	HeaderParsing::fields[187][0] = "if-none-match";
 	HeaderParsing::fields[189][0] = "content-length";
+	HeaderParsing::fields[191][0] = "content-type";
 	HeaderParsing::fields[201][0] = "transfer-encoding";
 	HeaderParsing::fields[205][0] = "if-modified-since";
 
@@ -45,9 +45,9 @@ void HeaderParsing::initFields()
 	HeaderParsing::ptr[150] = &Request::parseAcceptEncoding;
 	// HeaderParsing::ptr[151] = &Request::parseCacheControl;
 	HeaderParsing::ptr[164] = &Request::parseAuthorization;
-	HeaderParsing::ptr[185] = &Request::parseContentType;
 	// HeaderParsing::ptr[187] = &Request::parseIfNoneMatch;
 	HeaderParsing::ptr[189] = &Request::parseContentLength;
+	HeaderParsing::ptr[191] = &Request::parseContentType;
 	HeaderParsing::ptr[201] = &Request::parseTransferEncoding;
 	HeaderParsing::ptr[205] = &Request::parseIfModifiedSince;
 }

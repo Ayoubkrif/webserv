@@ -6,58 +6,69 @@
 /*   By: cbordeau <bordeau@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 14:24:44 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/11/17 16:41:47 by cbordeau         ###   LAUSANNE.ch       */
+/*   Updated: 2025/11/18 11:39:27 by cbordeau         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "HeaderParser.hpp"
 #include <iostream>
 
-void	Request::parseHost(std::string str, Request* request)
+void	Request::parseHost(std::string str)
 {
 	std::cout << "Host is : " << str << std::endl;
 }
 
-void	Request::parseAccept(std::string, Request*)
+void	Request::parseAccept(std::string str)
 {
+	std::cout << "Accept is : " << str << std::endl;
 }
 
-void	Request::parseAcceptEncoding(std::string, Request*)
+void	Request::parseAcceptEncoding(std::string str)
 {
+	std::cout << "Accept Encoding is : " << str << std::endl;
 }
 
-void	Request::parseCookies(std::string, Request*)
+void	Request::parseCookies(std::string str)
 {
+	std::cout << "Cookies is : " << str << std::endl;
 }
 
-void	Request::parseLanguage(std::string, Request*)
+void	Request::parseLanguage(std::string str)
 {
+	std::cout << "Language is : " << str << std::endl;
 }
 
-void	Request::parseAuthorization(std::string, Request*)
+void	Request::parseAuthorization(std::string str)
 {
+	std::cout << "Authorization is : " << str << std::endl;
 }
 
-void	Request::parseConnection(std::string, Request*)
+void	Request::parseConnection(std::string str)
 {
+	std::cout << "Connection is : " << str << std::endl;
 }
 
-void	Request::parseIfModifiedSince(std::string, Request*)
+void	Request::parseIfModifiedSince(std::string str)
 {
+	std::cout << "If Modified Since is : " << str << std::endl;
 }
 
-void	Request::parseExpect(std::string, Request*)
+void	Request::parseExpect(std::string str)
 {
+	std::cout << "Expect is : " << str << std::endl;
 }
 
-void	Request::parseContentType(std::string, Request*)
+void	Request::parseContentType(std::string str)
 {
+	std::cout << "Content Type is : " << str << std::endl;
 }
 
-void	Request::parseContentLength(std::string, Request*)
+void	Request::parseContentLength(std::string str)
 {
+	std::cout << "Content Length is : " << str << std::endl;
 }
 
-void	Request::parseTransferEncoding(std::string, Request*)
+void	Request::parseTransferEncoding(std::string str)
 {
+	std::cout << "Transfer Encoding is : " << str << std::endl;
 }

@@ -6,13 +6,15 @@
 /*   By: cbordeau <cbordeau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 13:30:23 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/11/17 17:09:29 by cbordeau         ###   LAUSANNE.ch       */
+/*   Updated: 2025/11/18 11:51:38 by cbordeau         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Request.hpp"
 #include "../HeaderParser/HeaderParser.hpp"
 #include <cstring>
+#include <iostream>
+#include <strings.h>
 
 Request::Request() : _hEnd(0), _bEnd(0), _method(OTHER), _connection(1)
 {
@@ -73,34 +75,37 @@ void	Request::tokenize(std::string::size_type cursor, int mode)
 	if (mode == 0)
 	{
 		this->_hEnd = 1;
-		this->_header.append(this->_buffer, 0, cursor);
+		this->_header.append(this->_buffer, 0, cursor + 2);
 		this->_buffer.erase(0, cursor + 3);
 	}
 	if (mode == 1)
 	{
 		this->_bEnd = 1;
-		this->_body.append(this->_buffer, 0, cursor);
+		this->_body.append(this->_buffer, 0, cursor + 2);
 		this->_buffer.erase(0, cursor + 3);
 	}
 }
 
 void	Request::getToken(std::string *token, std::string::size_type *cursor)
 {
+	// std::cout << "Token  before assign is " << *token << std::endl;
 	*cursor = this->_header.find(CRLF);
 	if (*cursor != std::string::npos)
 	{
 		token->assign(this->_header, 0, *cursor);
+		// std::cout << "Token after assign is " << *token << std::endl;
 		*cursor += 2;
 		this->_header.erase(0, *cursor);
 	}
-	// else
-	// 	;
+	else if (*cursor == std::string::npos)
+		std::cout << "Cursor is at NULL" << std::endl;
 		//throw error;
 }
 
 int	find_type(std::string str)
 {
 	int index = 0;
+	// std::cout << str << std::endl;
 	for (int i = 0; str[i] !=':'; i++)
 	{
 		if (str[i] >= 'A' && str[i] <= 'Z')
@@ -112,21 +117,28 @@ int	find_type(std::string str)
 		else
 			index += str[i];
 	}
+	if (!str.empty())
+		str.resize(str.size() - 1);
+	// std::cout << "index is " << index << " str is " << str << std::endl;
 	if (index <= 0 || index > 207)
 		return -1;
 	for (int i = 0; i < 3; i++)
 	{
-	if (!HeaderParsing::fields[index][i].empty() && !HeaderParsing::fields[index][i].compare(str))
-		return index + i;
-
+	  // std::cout << "Field at index is "<< HeaderParsing::fields[index][i] << std::endl;
+		if (!HeaderParsing::fields[index][i].empty() && !HeaderParsing::fields[index][i].compare(str))
+			return index + i;
 	}
+	std::cout << "Wrong index is " << index << std::endl;
 	return -1;
 }
 
 int	Request::getField(std::string::size_type *cursor)
 {
 	int	type;
-	type = find_type(this->_header.substr(0, *cursor));
+	std::string field;
+	*cursor += 1;
+	field.assign(this->_header.substr(0, *cursor));
+	type = find_type(field);
 	// *cursor += 1;
 	this->_header.erase(0, *cursor);
 	// *cursor = this->_header.find(CRLF);
