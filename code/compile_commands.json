@@ -1,0 +1,40 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/c++",
+      "-c",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-std=c++98",
+      "-g3",
+      "-Iincludes",
+      "-Iclasses/ArgChecker",
+      "-o",
+      "build/classes/ArgChecker/ArgChecker.o",
+      "classes/ArgChecker/ArgChecker.cpp"
+    ],
+    "directory": "/home/ayoub/Desktop/webserv/42_Webserv/code",
+    "file": "/home/ayoub/Desktop/webserv/42_Webserv/code/classes/ArgChecker/ArgChecker.cpp",
+    "output": "/home/ayoub/Desktop/webserv/42_Webserv/code/build/classes/ArgChecker/ArgChecker.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/c++",
+      "-c",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-std=c++98",
+      "-g3",
+      "-Iincludes",
+      "-Iclasses/ArgChecker",
+      "-o",
+      "build/sources/main.o",
+      "sources/main.cpp"
+    ],
+    "directory": "/home/ayoub/Desktop/webserv/42_Webserv/code",
+    "file": "/home/ayoub/Desktop/webserv/42_Webserv/code/sources/main.cpp",
+    "output": "/home/ayoub/Desktop/webserv/42_Webserv/code/build/sources/main.o"
+  }
+]
