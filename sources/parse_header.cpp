@@ -6,7 +6,7 @@
 /*   By: cbordeau <cbordeau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 13:43:32 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/11/19 17:37:23 by cbordeau         ###   LAUSANNE.ch       */
+/*   Updated: 2025/11/20 08:09:16 by cbordeau         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	parse_header(Request *request)
 	request->getToken(&token, &cursor);
 	//parse_request(token, event);
 	//if CGI parse_header in cgi mode
+	//state CGI but same parsing function?
 	
 	// std::cout << "header after first getToken is " << request->getHeader() << std::endl;
 	// std::cout << "Token is " << token << std::endl;

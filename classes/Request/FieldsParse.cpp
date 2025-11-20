@@ -6,7 +6,7 @@
 /*   By: cbordeau <bordeau@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 14:24:44 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/11/19 17:38:38 by cbordeau         ###   LAUSANNE.ch       */
+/*   Updated: 2025/11/20 17:23:21 by cbordeau         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 void	Request::parseHost(std::string str)
 {
+	//format: <host>:<port>
+	//<port> optional
 	std::cout << "Host is : " << str << std::endl;
 }
 
@@ -33,31 +35,53 @@ void	Request::parseAccept(std::string str)
 
 void	Request::parseAcceptEncoding(std::string str)
 {
+	//liste des encodages de contenu que le client accept
+	//meme format que accept
+	//format xxx, xxx;q=nb.nb
+	//inutile pour static
+	//a passer a la CGI HTTP_ACCEPT_ENCODING
 	std::cout << "Accept Encoding is : " << str << std::endl;
 }
 
 void	Request::parseCookies(std::string str)
 {
+	//contains stored HTTP cookies associated with the server 
+	//(previously sent by the server with the Set-Cookie header
+	//or set in JavaSript using Document.cookie)
+	//format: name=value; name2=value2; name3=value3
 	std::cout << "Cookies is : " << str << std::endl;
 }
 
 void	Request::parseLanguage(std::string str)
 {
+	//format xxx, xxx;q=nb.nb
 	std::cout << "Language is : " << str << std::endl;
 }
 
 void	Request::parseAuthorization(std::string str)
 {
+	//header d'authentification
+	//inutile en static
+	//a passer a la CGI HTTP_AUTHORIZATION
+	//trop le bordel cgi se debrouille
 	std::cout << "Authorization is : " << str << std::endl;
 }
 
 void	Request::parseConnection(std::string str)
 {
+	//keep-alive ou close
+	//DEL ou pas le client apres le traitement de la requete
 	std::cout << "Connection is : " << str << std::endl;
 }
 
 void	Request::parseIfModifiedSince(std::string str)
 {
+	//indique que le client ne veut que les fichiers modifies apres une certaine date
+	//stat()
+	//parser la date en time_t
+	//si time <= if-modified-since -> 304 Not Modified
+	//CGI HTTP_IF_MODIFIED_SINCE
+	//format jour, jj, moi AAAA HH:MM:SS TIME_ZONE (ex gmt)
 	std::cout << "If Modified Since is : " << str << std::endl;
 }
 
@@ -78,5 +102,76 @@ void	Request::parseContentLength(std::string str)
 
 void	Request::parseTransferEncoding(std::string str)
 {
+	//format xxx, xxx
+	//encodage dans lequel le body va etre envoyer
+	//dans notre cas chunked est le seul a gerer
+	//pour les autres types 501 Not Implemented
+	//
+	//lire ligne: "50\r\n" => taille hex
+	//lire 80 bytes de body
+	//lire CRLF
+	//lire next chunk
+	//fin si chunk size = 0
+	//lire final CRLF + trailers eventuels
+	//reconstruire le body
+	//
+	//pour cgi pas de VE HTTP_TRANSFER_ENCODING
+	//=> trouver la taille du body reconstitue et creer CONTNENT_LENGTH
 	std::cout << "Transfer Encoding is : " << str << std::endl;
 }
+
+//Trailer
+//
+//indique quels headers apparaitront apres un message chunked
+//viennent apres le chunk final (chunk size = 0)
+//a stocker qqpart pour pouvoir les supprimer de la fin du body
+//ne surtout pas les envoyer a la cgi
+
+//Liste des fields possible a verifier pour la CGI
+//pragma
+//cache-control
+//date
+//upgrade (ne pas envoyer a la cgi mais valide)
+//accept-charset
+//from
+//if-mach
+//if-none-match
+//if-range
+//if-unmodified-since
+//max-forward (ne pas envoyer mais a valider)
+//proxy-authorization (ne pas envoyer mais a valider)
+//range
+//referer
+//TE
+//user-agent
+//
+//lie au body
+//content-encoding
+//content-location
+//content-language
+//content-range
+
+//methode -> REQUEST_METHOD
+//request-target -> PATH_INFO ou QUERY_STRING
+
+
+//Variable CGI obligatoire
+//REQUEST_METHOD
+//REQUEST_URI
+//SCRIPT_NAME
+//PATH_INFO
+//QUERY_STRING
+//SERVER_PROTOCOL
+//SERVER_NAME ->host
+//SERVER_PORT
+//REMOTE_ADDR
+//
+//field du header deviennent
+//HTTP_<FIELD_NAME>
+//
+//exception
+//CONTENT_LENGTH
+//CONTENT_TYPE
+//
+//SERVER_NAME ->hostname extrait du Host
+//HTTP_HOST ->valeur brut du header Host
