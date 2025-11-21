@@ -13,7 +13,10 @@
 
 #include <string>
 
-static const std::string DIRECTIVE[] =
+static const std::string	WHITESPACES = "\f\r\n\t\v ";
+static const std::string	OPERAND = "{};";
+
+static const std::string	DIRECTIVE[] =
 	{
 		"server",				// {}
 		"location",				// expr{}
@@ -26,10 +29,7 @@ static const std::string DIRECTIVE[] =
 		"alias",				// expr (remplace location)
 		"autoindex",			// on |off
 		"cgi_suffix",			// .expr
-		"post_location",		// path
-		"{",
-		"}",
-		";"
+		"post_location"			// path
 	};
 
 static const int SERVER					= 0;
@@ -44,11 +44,10 @@ static const int ALIAS					= 8;
 static const int AUTOINDEX				= 9;
 static const int CGI_SUFFIX				= 10;
 static const int POST_LOCATION			= 11;
-static const int OPENING_BRACKET		= 12;
-static const int CLOSING_BRACKET		= 13;
-static const int SEMICOLOM				= 14;
+// static const int OPENING_BRACKET		= 12;
+// static const int CLOSING_BRACKET		= 13;
+// static const int SEMICOLOM				= 14;
 
-static const std::string *OPERAND = &DIRECTIVE[OPENING_BRACKET];
 /*
 * int	gettoken(t_parser *parser, char **q, char **eq)
 {

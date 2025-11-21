@@ -1,29 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ConfigParser.hpp                                   :+:      :+:    :+:   */
+/*   Logger.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aykrifa <aykrifa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/19 12:28:02 by aykrifa           #+#    #+#             */
+/*   Created: 2025/11/21 12:33:49 by aykrifa           #+#    #+#             */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include <vector>
-#include <iostream>
-#include <fstream>
-#include <sstream>
+#include <map>
 #include <string>
-#include "tokens.hpp"
+#include <fstream>
+#include "logfiles.hpp"
 
-class	ConfigParser
+class	Logger
 {
 	public:
-		static void	run(char *);
-
+		static void					add(const std::string&);
+		static std::ofstream		&print(const std::string&);
+		static void					delete_streams(void);
 	private:
-		ConfigParser(){}
-		~ConfigParser(){}
+		Logger();
+		~Logger();
+		static std::map<std::string, std::ofstream*>	_outfile;
 };

@@ -10,6 +10,8 @@
 /* ************************************************************************** */
 
 #include "ConfigParser.hpp"
+#include "Logger.hpp"
+#include <ostream>
 
 // Si find renvoie la meme chose alors c'est qu'il ya plus de commentaires.
 // si le debut de commentaire le plus proche
@@ -70,53 +72,55 @@ static std::string	extractStr(const char *file)
 	return (ostrs.str());
 }
 
-void	tokenize(std::vector<std::string> &token, std::string str, std::string sep, std::string solotok)
+void	tokenize(std::vector<std::string> &token, std::string &str)
 {
 	size_t	cursor = 0;
-	while (true)
+
+	while (cursor < str.length())
 	{
-		/*Look for beginning of a token
-			*/
-		size_t	tok_start = str.find_first_not_of(sep, cursor);
-		/*Break if only whitespaces left
-		 */
-		if (tok_start == std::string::npos)
-			break ;
-		/*Look for end of a token
-			*/
-		size_t	tok_end = str.find_first_of(sep, tok_start);
-		/*push back a substring fromn tok_start to tok_end
-			*/
-		token.push_back(str.substr(tok_start, tok_end == std::string::npos ? std::string::npos : tok_end - tok_start));
-		cursor = tok_end;
+		// std::cout << "iterate ..." << std::endl;
+		size_t	end;
+
+		if (WHITESPACES.find(str[cursor]) != std::string::npos)
+		{
+			end = str.find_first_not_of(WHITESPACES, cursor);
+		}
+		else if (OPERAND.find(str[cursor]) != std::string::npos)
+		{
+			end = cursor + 1;
+			token.push_back(str.substr(cursor, end - cursor));
+		}
+		else
+		{
+			end = str.find_first_of(WHITESPACES + OPERAND, cursor);
+			token.push_back(str.substr(cursor, end - cursor));
+		}
+		cursor = end;
 	}
 }
 
-#define WS "\f\r\n\t\v "
 void	ConfigParser::run(char *file)
 {
 	std::string	str = extractStr(file);
 	std::vector<std::string>	token;
 
-	std::cout << "|| Extracted str \nVV" << std::endl;
-	std::cout << str;
+	// std::cout << "|| Extracted str \nVV" << std::endl;
+	// std::cout << str;
 	commentFilter(str);
-	std::cout << "|| with no comment\nVV" << std::endl;
-	std::cout << str;
-	tokenize(token, str, WS);
-	std::cout << "|| Token list\nVV" << std::endl;
-	std::cout << str;
+	// std::cout << "|| with no comment\nVV" << std::endl;
+	// std::cout << str;
+	tokenize(token, str);
+	// std::cout << "|| Token list\nVV" << std::endl;
+	// std::cout << str;
 	for (std::vector<std::string>::iterator it = token.begin(); it != token.end(); ++it)
 	{
-		std::cout << *it << std::endl;
-		/* verifier quelle directive j'ai
-	  * cree un serveur parent pour les directives trouvee.
-	  * Si serveur trouver saute a la next brace
-	  * Si brace pas fermee: erreur
-	  * Si directive non autorisee erreur
-	  *
-	  */
-	  /*
-	  */
+	  Logger::print(LOG_CONFIGPARSER) << *it << std::endl;
+	/* TODO
+		* verifier quelle directive j'ai
+		* cree un serveur parent pour les directives trouvee.
+		* Si serveur trouver saute a la next brace
+		* Si brace pas fermee: erreur
+		* Si directive non autorisee erreur
+	*/
 	}
 }

@@ -14,3 +14,4 @@
 #include <iostream>
 #include "ArgChecker.hpp"
 #include "ConfigParser.hpp"
+#include "Logger.hpp"
