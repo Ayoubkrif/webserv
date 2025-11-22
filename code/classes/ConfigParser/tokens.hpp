@@ -29,7 +29,7 @@ static const std::string	DIRECTIVE[] =
 		"alias",				// expr (remplace location)
 		"autoindex",			// on |off
 		"cgi_suffix",			// .expr
-		"post_location"			// path
+		"post_directory"		// path
 	};
 
 static const int SERVER					= 0;

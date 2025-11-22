@@ -122,13 +122,16 @@ void	ConfigParser::run(char *file)
 
 	std::vector<std::string>	token;
 	tokenize(token, str);
-	// /**/Logger::print(LOG_CONFIGPARSER) << "|| Token list \nVV" << std::endl << str;
+	/**/Logger::print(LOG_CONFIGPARSER) << "|| Token list \nVV";
+	/**/for (std::vector<std::string>::iterator it = token.begin(); it != token.end(); ++it)
+	/**/{Logger::print(LOG_CONFIGPARSER) << "<"<< *it << "> ";}
+	/**/Logger::print(LOG_CONFIGPARSER) << std::endl;
+
 	for (std::vector<std::string>::iterator it = token.begin(); it != token.end(); ++it)
 	{
-	  /**/Logger::print(LOG_CONFIGPARSER) << *it << std::endl;
 		switch (checkDirective(*it))
 		{
-			// check if the is a brace open
+			// check if there is a brace open
 			// skip until next brace
 			case SERVER:
 				it++;
