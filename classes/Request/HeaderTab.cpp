@@ -6,7 +6,6 @@
 /*   By: cbordeau <bordeau@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 10:45:29 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/11/21 12:56:25 by cbordeau         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +22,7 @@ void Request::initFields()
 	Request::fields[66][0] = "origin";
 	Request::fields[67][0] = "expect";
 	Request::fields[70][0] = "cookies";
+	Request::fields[76][0] = "trailer";
 	Request::fields[102][0] = "connection";
 	Request::fields[147][0] = "accept-language";
 	Request::fields[150][0] = "accept-encoding";
@@ -40,6 +40,7 @@ void Request::initFields()
 	// Request::fctField[66] = &Request::parseOrigin;
 	Request::fctField[67] = &Request::parseExpect;
 	Request::fctField[70] = &Request::parseCookies;
+	Request::fctField[76] = &Request::parseTrailer;
 	Request::fctField[102] = &Request::parseConnection;
 	Request::fctField[147] = &Request::parseLanguage;
 	Request::fctField[150] = &Request::parseAcceptEncoding;

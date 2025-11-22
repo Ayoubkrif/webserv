@@ -6,7 +6,7 @@
 /*   By: cbordeau <cbordeau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 13:43:32 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/11/21 14:17:02 by cbordeau         ###   LAUSANNE.ch       */
+/*   Updated: 2025/11/22 14:37:14 by cbordeau         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ void	parse_buffer(Request *request)
 		request->fillHeader(cursor);
 		parse_header(request);
 	}
-	if (request->getState() == BODY)
+	// if (request->getState() & (BODY | CHUNK_SIZE | TRAILERS))
+	if (request->getState() == BODY || request->getState() == CHUNK_SIZE || request->getState() == TRAILERS)
 	{
 		//fill body according to content-length and transfer-encoding (chunked)
 		if (request->getTransferEncoding() == CHUNKED)
@@ -32,9 +33,10 @@ void	parse_buffer(Request *request)
 			request->fillBody();
 	}
 	std::cout << "++++++++++++++++" << std::endl;
-	std::cout << "header is : " << request->getHeader() << std::endl;
-	std::cout << "body is : " << request->getBody() << std::endl;
-	std::cout << "buffer is : " << request->getBuffer() << std::endl;
+	std::cout << "header is :" << request->getHeader() << std::endl;
+	std::cout << "body is :" << request->getBody() << std::endl;
+	std::cout << "buffer is :" << request->getBuffer() << std::endl;
+	std::cout << "++++++++++++++++" << std::endl;
 }
 
 void	parse_header(Request *request)
@@ -81,4 +83,8 @@ void	parse_header(Request *request)
 		
 	}
 	//check_complete_header(event);
+	if (request->getTransferEncoding() == CHUNKED)
+		request->setState(CHUNK_SIZE);
+	else
+		request->setState(BODY);
 }

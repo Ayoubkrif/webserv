@@ -6,7 +6,6 @@
 /*   By: cbordeau <bordeau@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 14:38:54 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/11/21 14:18:10 by cbordeau         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +30,8 @@ typedef enum parsing_state
 {
 	HEADER = 0,
 	BODY,
+	CHUNK_SIZE,
+	TRAILERS,
 	SEND,
 } parsing_state;
 
@@ -81,13 +82,15 @@ private:
 	std::string			_contentType;
 	int					_expect;
 	unsigned long		_contentLength;
-	bool				_transfer_encoding;
+	bool				_transferEncoding;
 	bool				_connection;
 	bool				_ifModif;
+	bool				_trailer;
 
 public:
 
 	bool				getTransferEncoding();
+	bool				getTrailer();
 
 	void				parseHost(std::string);
 	void				parseAccept(std::string);
@@ -101,4 +104,5 @@ public:
 	void				parseContentType(std::string);
 	void				parseContentLength(std::string);
 	void				parseTransferEncoding(std::string);
+	void				parseTrailer(std::string);
 };

@@ -6,7 +6,6 @@
 /*   By: cbordeau <bordeau@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 13:00:07 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/11/21 13:10:21 by cbordeau         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +33,5 @@ parsing_state	Request::getState()
 
 bool	Request::getTransferEncoding()
 {
-	return this->_transfer_encoding;
+	return this->_transferEncoding;
 }

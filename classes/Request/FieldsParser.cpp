@@ -6,7 +6,6 @@
 /*   By: cbordeau <bordeau@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 14:24:44 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/11/20 17:23:21 by cbordeau         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +117,13 @@ void	Request::parseTransferEncoding(std::string str)
 	//pour cgi pas de VE HTTP_TRANSFER_ENCODING
 	//=> trouver la taille du body reconstitue et creer CONTNENT_LENGTH
 	std::cout << "Transfer Encoding is : " << str << std::endl;
+	this->_transferEncoding = CHUNKED;
+}
+
+void	Request::parseTrailer(std::string str)
+{
+	std::cout << "Transfer Encoding is : " << str << std::endl;
+	this->_trailer = 1;
 }
 
 //Trailer

@@ -6,7 +6,7 @@
 /*   By: cbordeau <bordeau@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 13:39:53 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/11/18 15:29:12 by cbordeau         ###   LAUSANNE.ch       */
+/*   Updated: 2025/11/22 15:51:52 by cbordeau         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,9 @@
 #include <iostream>
 #include "../classes/Request/Request.hpp"
 
+#include "colors.hpp"
 // const std::string DCRLF = "\r\n\r\n";
 // const std::string CRLF = "\r\n";
-
-#define HEADER 0
-#define BODY 1
 
 int	move_cursor(std::string::size_type *cursor, std::string str, std::string toFind);
 void	tokenize(std::string *buffer, Request *request, std::string::size_type cursor, int mode);

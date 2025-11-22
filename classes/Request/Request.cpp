@@ -6,11 +6,11 @@
 /*   By: cbordeau <cbordeau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 13:30:23 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/11/21 14:46:22 by cbordeau         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Request.hpp"
+#include "../../includes/parsing_header.hpp"
 #include <cstdlib>
 #include <cstring>
 #include <string>
@@ -32,9 +32,9 @@ void	Request::setState(parsing_state value)
 
 void	Request::fillHeader(std::string::size_type cursor)
 {
-	this->_state = BODY;
+	// this->_state = BODY;
 	this->_header.append(this->_buffer, 0, cursor + 2);
-	this->_buffer.erase(0, cursor + 3);
+	this->_buffer.erase(0, cursor + 4);
 }
 
 void	Request::fillBody()
@@ -86,7 +86,7 @@ int	find_type(std::string str)
 	}
 	if (!str.empty())
 		str.resize(str.size() - 1);
-	// std::cout << "index is " << index << " str is " << str << std::endl;
+	std::cout << "index is " << index << " str is " << str << std::endl;
 	if (index <= 0 || index > 207)
 		return -1;
 	for (int i = 0; i < 3; i++)
@@ -119,31 +119,49 @@ unsigned long hexToLong(std::string line)
 
 	chunk_size = std::strtoul(line.data(), semicolon ? (char**)&semicolon : NULL, 16);
 
+	std::cout << "Chunk-size is :" << chunk_size << std::endl;
 	return chunk_size;
 }
 void	Request::fillChunkedBody()
 {
-	std::string line;
-	unsigned long chunk_size;
-	std::string::size_type cursor = 0;
+	std::string				line;
+	static unsigned long			chunk_size = 0;
+	std::string::size_type	cursor = 0;
 
 	while(1)
 	{
-		cursor = this->_buffer.find(CRLF);
-		if (cursor != std::string::npos)
+		if (this->_state == CHUNK_SIZE && move_cursor(&cursor, this->_buffer, CRLF))
 		{
 			line.assign(this->_buffer.substr(0, cursor));
-			this->_buffer.erase(0, line.size() + 1);
+			// std::cout << "Chunk line is :" << line << std::endl;
+			// std::cout << "Chunk line is erased :" << this->_buffer.substr(0, line.size() + 2) << std::endl;
+			this->_buffer.erase(0, line.size() + 2);
+			chunk_size = hexToLong(line);
+			if (chunk_size == 0 && this->_trailer)
+				this->_state = TRAILERS;
+			else if (chunk_size == 0)
+				this->_state = SEND;
+			else
+				this->_state = BODY;
+			continue;
 		}
-		else
-			break;
-		chunk_size = hexToLong(line);
-		if (this->_buffer.size() >= chunk_size + 2)
+		if (this->_state == BODY && this->_buffer.size() >= chunk_size + 2)
 		{
 			//put chunk_size octets in body
+			this->_body.append(this->_buffer, 0, chunk_size);
+			// std::cout << "Append to body is :" << this->_buffer.substr(0, chunk_size) << std::endl;
 			//erase chunk_size octet + 2 from buffer
+			// std::cout << "Octet is erased :" << this->_buffer.substr(0, chunk_size + 2) << std::endl;
+			this->_buffer.erase(0, chunk_size + 2);
+			this->_state = CHUNK_SIZE;
+			continue;
 		}
-		else
-			break;
+		if (this->_state == TRAILERS && move_cursor(&cursor, this->_buffer, DCRLF))
+		{
+			this->_buffer.erase(0, cursor + 3);
+			this->_state = SEND;
+			continue;
+		}
+		break;
 	}
 }
