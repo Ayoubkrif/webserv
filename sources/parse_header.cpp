@@ -6,7 +6,7 @@
 /*   By: cbordeau <cbordeau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 13:43:32 by cbordeau          #+#    #+#             */
-/*   Updated: 2025/11/22 14:37:14 by cbordeau         ###   LAUSANNE.ch       */
+/*   Updated: 2025/11/22 17:07:18 by cbordeau         ###   LAUSANNE.ch       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,9 @@ void	parse_header(Request *request)
 			std::cout << "header emptied" << std::endl;
 			break;
 		}
-		cursor = request->getHeader().find(":");
-		if (cursor != std::string::npos)
+		// cursor = request->getHeader().find(":");
+		// if (cursor != std::string::npos)
+		if (move_cursor(&cursor, request->getHeader(), ":"))
 		{
 			type = request->getField(&cursor);
 		}

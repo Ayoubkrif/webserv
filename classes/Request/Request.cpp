@@ -16,7 +16,7 @@
 #include <string>
 #include <iostream>
 
-Request::Request() : _state(HEADER), _method(OTHER), _connection(1)
+Request::Request() : _state(HEADER), _method(OTHER), _connection(1), _trailer(0)
 {
 }
 

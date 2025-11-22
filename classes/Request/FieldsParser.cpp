@@ -122,7 +122,7 @@ void	Request::parseTransferEncoding(std::string str)
 
 void	Request::parseTrailer(std::string str)
 {
-	std::cout << "Transfer Encoding is : " << str << std::endl;
+	std::cout << "Trailer is : " << str << std::endl;
 	this->_trailer = 1;
 }
 
