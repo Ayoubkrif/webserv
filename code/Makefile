@@ -47,6 +47,7 @@ OBJS = $(CLASSES:%.cpp=$(OBJ_DIR)/%.o) \
 		$(SOURCES:%.cpp=$(OBJ_DIR)/%.o)
 
 
+
 DEPS = $(OBJS:.o=.d)
 
 all: $(NAME)
@@ -54,14 +55,12 @@ all: $(NAME)
 
 # LINK
 $(NAME): $(OBJS)
-	@echo "[DEBUG] Linking into $@ ..."
 	$(CC) $(OBJS) \
 		-o $@
 
 #compilation
 $(OBJ_DIR)/%.o: %.cpp
 	mkdir -p $(dir $@)
-	@echo "[DEBUG] Compiling $< ..."
 	$(CC) -c $(CFLAGS) $(INCLUDES) \
 		$< -o $@
 

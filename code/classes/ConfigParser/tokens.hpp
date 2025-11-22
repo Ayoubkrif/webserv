@@ -44,6 +44,7 @@ static const int ALIAS					= 8;
 static const int AUTOINDEX				= 9;
 static const int CGI_SUFFIX				= 10;
 static const int POST_LOCATION			= 11;
+static const int NONE					= 12;
 // static const int OPENING_BRACKET		= 12;
 // static const int CLOSING_BRACKET		= 13;
 // static const int SEMICOLOM				= 14;

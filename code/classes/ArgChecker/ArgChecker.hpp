@@ -36,5 +36,4 @@ class	ArgChecker
 				return (ARG_TOO_FEW);
 			}
 	};
-
 };

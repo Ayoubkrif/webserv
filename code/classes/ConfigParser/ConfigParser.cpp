@@ -11,6 +11,9 @@
 
 #include "ConfigParser.hpp"
 #include "Logger.hpp"
+#include "logfiles.hpp"
+#include "tokens.hpp"
+#include <exception>
 #include <ostream>
 
 // Si find renvoie la meme chose alors c'est qu'il ya plus de commentaires.
@@ -99,22 +102,65 @@ void	tokenize(std::vector<std::string> &token, std::string &str)
 	}
 }
 
+int	checkDirective(std::string &token)
+{
+	for (int i = 0; i != NONE; ++i)
+	{
+		if (token == DIRECTIVE[i])
+			return (i);
+	}
+	throw (std::runtime_error("Unrecognized token " + token));
+}
+
 void	ConfigParser::run(char *file)
 {
 	std::string	str = extractStr(file);
-	std::vector<std::string>	token;
+	/**/Logger::print(LOG_CONFIGPARSER) << "|| Extracted str \nVV" << std::endl << str;
 
-	// std::cout << "|| Extracted str \nVV" << std::endl;
-	// std::cout << str;
 	commentFilter(str);
-	// std::cout << "|| with no comment\nVV" << std::endl;
-	// std::cout << str;
+	/**/Logger::print(LOG_CONFIGPARSER) << "|| Comment trimmed \nVV" << std::endl << str;
+
+	std::vector<std::string>	token;
 	tokenize(token, str);
-	// std::cout << "|| Token list\nVV" << std::endl;
-	// std::cout << str;
+	// /**/Logger::print(LOG_CONFIGPARSER) << "|| Token list \nVV" << std::endl << str;
 	for (std::vector<std::string>::iterator it = token.begin(); it != token.end(); ++it)
 	{
-	  Logger::print(LOG_CONFIGPARSER) << *it << std::endl;
+	  /**/Logger::print(LOG_CONFIGPARSER) << *it << std::endl;
+		switch (checkDirective(*it))
+		{
+			// check if the is a brace open
+			// skip until next brace
+			case SERVER:
+				it++;
+				if (*it != "{")
+					throw (std::runtime_error("Missing opening bracket after server directive"));
+				// skip until corresponding }
+				// if no corresponding throw
+				break ;
+			// fill global template
+			case LISTEN:
+				break ;
+			case ERROR_PAGE:
+				break ;
+			case CLIENT_MAX_BODY_SIZE:
+				break ;
+			case METHODS:
+				break ;
+			case RETURN:
+				break ;
+			case ROOT:
+				break ;
+			case ALIAS:
+				break ;
+			case AUTOINDEX:
+				break ;
+			case CGI_SUFFIX:
+				break ;
+			case POST_LOCATION:
+				break ;
+			default :
+				throw (std::runtime_error("Unauthorized directive in server scope :" + *it));
+		}
 	/* TODO
 		* verifier quelle directive j'ai
 		* cree un serveur parent pour les directives trouvee.

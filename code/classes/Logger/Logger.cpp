@@ -10,9 +10,7 @@
 /* ************************************************************************** */
 
 #include "Logger.hpp"
-#include <fstream>
-#include <iostream>
-#include <utility>
+
 std::map<std::string, std::ofstream*> Logger::_outfile;
 
 std::ofstream	&Logger::print(const std::string &file)

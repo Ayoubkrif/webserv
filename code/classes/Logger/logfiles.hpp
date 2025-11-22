@@ -13,4 +13,5 @@
 
 #include <string>
 
+
 static const std::string	LOG_CONFIGPARSER = "ConfigParser.log";

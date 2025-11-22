@@ -16,14 +16,12 @@ int	main(int argc, char **argv)
 	try
 	{
 		Logger::add(LOG_CONFIGPARSER);
-		Logger::print(LOG_CONFIGPARSER) << "DELIVRANCE" << std::endl;
 		ArgChecker::checkargs(argc);
 		ConfigParser::run(argv[1]);
-		Logger::delete_streams();
 	}
 	catch (std::exception	&e)
 	{
-		Logger::delete_streams();
 		std::cerr << "Exception caught :"<< e.what() << std::endl;
 	}
+	Logger::delete_streams();
 }
