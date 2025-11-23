@@ -11,6 +11,7 @@
 
 #include "ConfigParser.hpp"
 #include "Logger.hpp"
+#include "Location.hpp"
 #include <exception>
 #include <vector>
 #include <fstream>
@@ -127,6 +128,8 @@ void	ConfigParser::run(char *file)
 	/**/{Logger::print(LOG_CONFIGPARSER) << "<"<< *it << "> ";}
 	/**/Logger::print(LOG_CONFIGPARSER) << std::endl;
 
+	Location	globalLocationTemplate;
+	;
 	for (std::vector<std::string>::iterator it = token.begin(); it != token.end(); ++it)
 	{
 		switch (checkDirective(*it))
@@ -141,25 +144,43 @@ void	ConfigParser::run(char *file)
 				// if no corresponding throw
 				break ;
 			// fill global template
-			case LISTEN:
-				break ;
+			// case LISTEN:
+			// 	break ;
 			case ERROR_PAGE:
+				// fill(globalLocationTemplate)
+				// until ; if no throw
 				break ;
 			case CLIENT_MAX_BODY_SIZE:
+				// fill(globalLocationTemplate)
+				// until ; if no throw
 				break ;
 			case METHODS:
+				// fill(globalLocationTemplate)
+				// until ; if no throw
 				break ;
 			case RETURN:
+				// fill(globalLocationTemplate)
+				// until ; if no throw
 				break ;
 			case ROOT:
+				// fill(globalLocationTemplate)
+				// until ; if no throw
 				break ;
 			case ALIAS:
+				// fill(globalLocationTemplate)
+				// until ; if no throw
 				break ;
 			case AUTOINDEX:
+				// fill(globalLocationTemplate)
+				// until ; if no throw
 				break ;
 			case CGI_SUFFIX:
+				// fill(globalLocationTemplate)
+				// until ; if no throw
 				break ;
 			case POST_LOCATION:
+				// fill(globalLocationTemplate)
+				// until ; if no throw
 				break ;
 			default :
 				throw (std::runtime_error("Unauthorized directive in server scope :" + *it));
