@@ -11,10 +11,10 @@
 
 #include "ConfigParser.hpp"
 #include "Logger.hpp"
-#include "logfiles.hpp"
-#include "tokens.hpp"
 #include <exception>
-#include <ostream>
+#include <vector>
+#include <fstream>
+#include <sstream>
 
 // Si find renvoie la meme chose alors c'est qu'il ya plus de commentaires.
 // si le debut de commentaire le plus proche
