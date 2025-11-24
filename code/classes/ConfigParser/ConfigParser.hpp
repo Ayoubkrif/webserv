@@ -12,12 +12,19 @@
 #pragma once
 
 #include <string>
+#include <vector>
 #include "tokens.hpp"
+
+class	Server;
+class	Location;
 
 class	ConfigParser
 {
 	public:
 		static void	run(char *);
+		static void	tokenize(std::vector<std::string>&, char*);
+		static void	parseServer(std::vector<Server>&, std::vector<std::string>::iterator&);
+		static void	parseLocation(std::vector<Location>&, std::vector<std::string>::iterator&);
 		static int	checkDirective(std::string &token);
 
 	private:

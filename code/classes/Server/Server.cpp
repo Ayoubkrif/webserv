@@ -10,6 +10,7 @@
 /* ************************************************************************** */
 
 #include "Server.hpp"
+#include "Location.hpp"
 
 const std::vector<Location>	&Server::getLocations(void) const
 {

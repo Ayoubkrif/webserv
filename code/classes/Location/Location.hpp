@@ -21,7 +21,7 @@ static const int	DELETE = 2;
 class	Location
 {
 	public:Location(void);
-	public:Location(Location&);
+	public:Location(const Location&);
 	public:~Location(void);
 	public:Location							&operator=(const Location&);
 

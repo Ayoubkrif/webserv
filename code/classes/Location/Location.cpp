@@ -32,7 +32,7 @@ Location::Location(void):
 	this->_methods[DELETE] = DEFAULT_LOCATION_DELETE;
 }
 
-Location::Location(Location &copy):
+Location::Location(const Location &copy):
 	_name(copy._name),
 	_root(copy._root),
 	_alias(copy._alias),
@@ -42,7 +42,7 @@ Location::Location(Location &copy):
 	_autoindex(copy._autoindex),
 	_error_page(copy._error_page),
 	_post_directory(copy._post_directory)
-	
+
 {
 	this->_methods[GET] = copy._methods[GET];
 	this->_methods[POST] = copy._methods[POST];

@@ -23,13 +23,16 @@ static const std::string	DIRECTIVE[] =
 		"listen",				// short (port)
 		"error_page",			// int
 		"client_max_body_size",	// int
-		"methods",				
+		"methods",				//
 		"return",				// URL (redirection)
 		"root",					// path (debut du path)
 		"alias",				// expr (remplace location)
 		"autoindex",			// on |off
 		"cgi_suffix",			// .expr
-		"post_directory"		// path
+		"post_directory",		// path
+		"{",					//
+		"}",					//
+		";"						//
 	};
 
 static const int SERVER					= 0;
@@ -44,10 +47,10 @@ static const int ALIAS					= 8;
 static const int AUTOINDEX				= 9;
 static const int CGI_SUFFIX				= 10;
 static const int POST_LOCATION			= 11;
-static const int NONE					= 12;
-// static const int OPENING_BRACKET		= 12;
-// static const int CLOSING_BRACKET		= 13;
-// static const int SEMICOLOM				= 14;
+static const int OPENING_BRACKET		= 12;
+static const int CLOSING_BRACKET		= 13;
+static const int SEMICOLOM				= 14;
+static const int NONE					= 15;
 
 /*
 * int	gettoken(t_parser *parser, char **q, char **eq)
