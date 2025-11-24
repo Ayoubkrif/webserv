@@ -32,39 +32,46 @@ int	ConfigParser::checkDirective(std::string &token)
 void	ConfigParser::parseLocation(std::vector<Location> &locations, std::vector<std::string>::iterator &it)
 {
 	Location	current;
-	switch (checkDirective(*it))
+	while (true)
 	{
-		case ROOT:
-			;
+		switch (checkDirective(*it))
+		{
+			case ROOT:
+				;
+			break ;
 
-		break ;
-		case ALIAS:
-			;
+			case ALIAS:
+				;
+			break ;
 
-		break ;
-		case CLIENT_MAX_BODY_SIZE:
-			;
+			case CLIENT_MAX_BODY_SIZE:
+				;
+			break ;
 
-		break ;
-		case CGI_SUFFIX:
-			;
+			case CGI_SUFFIX:
+				;
+			break ;
 
-		break ;
-		case METHODS:
-			;
+			case METHODS:
+				;
+			break ;
 
-		break ;
-		case RETURN:
-			;
+			case RETURN:
+				;
+			break ;
 
-		break ;
-		case AUTOINDEX:
-			;
+			case AUTOINDEX:
+				;
+			break ;
 
-		break ;
-		default :
-			throw (std::runtime_error("Unauthorized directive in location scope :" + *it));
+			case CLOSING_BRACKET:
+			goto BREAK;
+			
+			default :
+				throw (std::runtime_error("Unauthorized directive in location scope :" + *it));
+		}
 	}
+	BREAK:
 	locations.push_back(current);
 }
 
