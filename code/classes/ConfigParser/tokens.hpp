@@ -23,7 +23,7 @@ static const std::string	DIRECTIVE[] =
 		"listen",				// short (port)
 		"error_page",			// int
 		"client_max_body_size",	// int
-		"methods",				//
+		"allowed_methods",		//
 		"return",				// URL (redirection)
 		"root",					// path (debut du path)
 		"alias",				// expr (remplace location)
@@ -40,7 +40,7 @@ static const int LOCATION				= 1;
 static const int LISTEN					= 2;
 static const int ERROR_PAGE				= 3;
 static const int CLIENT_MAX_BODY_SIZE	= 4;
-static const int METHODS				= 5;
+static const int ALLOWED_METHODS		= 5;
 static const int RETURN			    	= 6;
 static const int ROOT					= 7;
 static const int ALIAS					= 8;

@@ -14,10 +14,6 @@
 #include "Server.hpp"
 #include "Location.hpp"
 #include "tokens.hpp"
-#include <exception>
-#include <vector>
-#include <fstream>
-#include <sstream>
 
 int	ConfigParser::checkDirective(std::string &token)
 {
@@ -29,53 +25,79 @@ int	ConfigParser::checkDirective(std::string &token)
 	throw (std::runtime_error("Unrecognized token " + token));
 }
 
-void	ConfigParser::parseLocation(std::vector<Location> &locations, std::vector<std::string>::iterator &it)
+void	ConfigParser::parseLocation(std::map<std::string, Location> &locations,
+							   std::vector<std::string>::iterator &it,
+							   std::vector<std::string>::iterator &it_end)
 {
 	Location	current;
+	parseAlias(current, it, it_end);
+	// attribue le nom de la cle au nom 
+	std::string	name = *it;
+	it++;
+	if (*it != "{")
+		throw (std::runtime_error("Missing bracket after location '" + name + "': '" + *it + "' (expected '{')"));
 	while (true)
 	{
-		switch (checkDirective(*it))
+		if (++it == it_end)
+			throw (std::runtime_error("Location scope note closed by '}'"));
+		int	directive = checkDirective(*it);
+		if (++it == it_end)
+			throw (std::runtime_error("Empty directive " + DIRECTIVE[directive]));
+		switch (directive)
 		{
 			case ROOT:
-				;
+			parseRoot(current, it, it_end);
 			break ;
 
 			case ALIAS:
-				;
+			parseAlias(current, it, it_end);
 			break ;
 
 			case CLIENT_MAX_BODY_SIZE:
-				;
+			parseClientMaxBodySize(current, it, it_end);
 			break ;
 
 			case CGI_SUFFIX:
-				;
+			parseCgi(current, it, it_end);
 			break ;
 
-			case METHODS:
-				;
+			case ALLOWED_METHODS:
+			parseAllowedMethods(current, it, it_end);
 			break ;
 
 			case RETURN:
-				;
+			parseReturn(current, it, it_end);
 			break ;
 
 			case AUTOINDEX:
-				;
+			parseAutoIndex(current, it, it_end);
+			break ;
+
+			case ERROR_PAGE:
+			parseErrorPages(current, it, it_end);
+			break ;
+
+			case POST_LOCATION:
+			parsePostLocation(current, it, it_end);
 			break ;
 
 			case CLOSING_BRACKET:
 			goto BREAK;
 			
 			default :
-				throw (std::runtime_error("Unauthorized directive in location scope :" + *it));
+			throw (std::runtime_error("Unauthorized directive in location scope :" + *it));
 		}
+		it++;
+		if (*it != ";")
+			throw (std::runtime_error("too much argument in directive " + DIRECTIVE[directive] + "\n-->" + *it));
 	}
 	BREAK:
-	locations.push_back(current);
+	locations.insert(std::make_pair(name, current));
 }
 
-void	ConfigParser::parseServer(std::vector<Server> &servers, std::vector<std::string>::iterator &it)
+void	ConfigParser::parseServer(std::vector<Server> &servers,
+							   std::vector<std::string>::iterator &it,
+							   std::vector<std::string>::iterator &it_end)
 {
 	Server	current;
 	// check if there is an opening bracket
@@ -84,25 +106,31 @@ void	ConfigParser::parseServer(std::vector<Server> &servers, std::vector<std::st
 		throw (std::runtime_error("Unrecognized token " + *it));
 	}
 	it++;
-	std::vector<Location>	locations;
-	switch (checkDirective(*it))
+	std::map<std::string, Location> locations;
+	while (true)
 	{
-		case LISTEN:
-			// parseListen(server, it);
-			break ;
-		case LOCATION:
-			parseLocation(locations, it);
-			break ;
-		default :
-			throw (std::runtime_error("Unauthorized directive in server scope :" + *it));
+		switch (checkDirective(*it))
+		{
+			case LISTEN:
+				// parseListen(server, it);
+				break ;
+			case LOCATION:
+				it++;
+				parseLocation(locations, it, it_end);
+				break ;
+			case CLOSING_BRACKET:
+			goto BREAK;
+			default :
+				throw (std::runtime_error("Unauthorized directive in server scope :" + *it));
+		}
 	}
+	BREAK:
 	// check interface:port are unique
 	for (std::vector<Server>::iterator it1 = servers.begin(); it1 != servers.end(); it++)
 	{
 		// if (current *it1)
 			// throw (std::runtime_error("Server may not have same port" + *it));
 	}
-	current.setLocations(locations);
 	servers.push_back(current);
 }
 
@@ -112,14 +140,17 @@ void	ConfigParser::run(char *file)
 	std::vector<Server>	servers;
 
 	tokenize(token, file);
-	for (std::vector<std::string>::iterator it = token.begin(); it != token.end(); ++it)
+	std::vector<std::string>::iterator it;
+	std::vector<std::string>::iterator it_end = token.end();
+	for (it = token.begin(); it != it_end; ++it)
 	{
 		switch (checkDirective(*it))
 		{
 			case SERVER:
-				it++;
-				parseServer(servers, it);
-				break ;
+			it++;
+			parseServer(servers, it, it_end);
+			break ;
+
 			default :
 				throw (std::runtime_error("Unauthorized directive in server scope :" + *it));
 		}

@@ -13,7 +13,7 @@
 #include "default.hpp"
 
 Location::Location(void):
-	_name(DEFAULT_LOCATION_NAME),
+	// _name(DEFAULT_LOCATION_NAME),
 	_root(DEFAULT_LOCATION_ROOT),
 	_alias(DEFAULT_LOCATION_ALIAS),
 	_client_max_body_size(DEFAULT_LOCATION_MAX_BODY_SIZE),
@@ -21,11 +21,24 @@ Location::Location(void):
 	_autoindex(DEFAULT_LOCATION_AUTOINDEX),
 	_post_directory(DEFAULT_LOCATION_POST_DIRECTORY)
 {
-	std::vector<std::string>	cgi;
+	this->addCgiSuffix(DEFAULT_LOCATION_CGI_PYTHON);
+	this->addCgiSuffix(DEFAULT_LOCATION_CGI_PHP);
 
-	cgi.push_back(DEFAULT_LOCATION_CGI_PYTHON);
-	cgi.push_back(DEFAULT_LOCATION_CGI_PHP);
-	setCgiSuffix(cgi);
+	this->_methods[GET] = DEFAULT_LOCATION_GET;
+	this->_methods[POST] = DEFAULT_LOCATION_POST;
+	this->_methods[DELETE] = DEFAULT_LOCATION_DELETE;
+}
+
+Location::Location(const std::string &name):
+	_root(DEFAULT_LOCATION_ROOT),
+	_alias(name),
+	_client_max_body_size(DEFAULT_LOCATION_MAX_BODY_SIZE),
+	_redirect(DEFAULT_LOCATION_REDIRECTION),
+	_autoindex(DEFAULT_LOCATION_AUTOINDEX),
+	_post_directory(DEFAULT_LOCATION_POST_DIRECTORY)
+{
+	this->addCgiSuffix(DEFAULT_LOCATION_CGI_PYTHON);
+	this->addCgiSuffix(DEFAULT_LOCATION_CGI_PHP);
 
 	this->_methods[GET] = DEFAULT_LOCATION_GET;
 	this->_methods[POST] = DEFAULT_LOCATION_POST;
@@ -33,7 +46,7 @@ Location::Location(void):
 }
 
 Location::Location(const Location &copy):
-	_name(copy._name),
+	// _name(copy._name),
 	_root(copy._root),
 	_alias(copy._alias),
 	_client_max_body_size(copy._client_max_body_size),
@@ -42,7 +55,6 @@ Location::Location(const Location &copy):
 	_autoindex(copy._autoindex),
 	_error_page(copy._error_page),
 	_post_directory(copy._post_directory)
-
 {
 	this->_methods[GET] = copy._methods[GET];
 	this->_methods[POST] = copy._methods[POST];
@@ -56,7 +68,7 @@ Location::~Location(void)
 
 Location	&Location::operator=(const Location &copy)
 {
-	this->_name = copy._name;
+	// this->_name = copy._name;
 	this->_root = copy._root;
 	this->_alias = copy._alias;
 	this->_client_max_body_size = copy._client_max_body_size;
@@ -72,15 +84,15 @@ Location	&Location::operator=(const Location &copy)
 }
 
 //location
-void	Location::setName(std::string  name)
-{
-	this->_name = name;
-}
-
-const std::string	&Location::getName(void) const
-{
-	return (this->_name);
-}
+// void	Location::setName(std::string  name)
+// {
+// 	this->_name = name;
+// }
+//
+// const std::string	&Location::getName(void) const
+// {
+// 	return (this->_name);
+// }
 
 //root
 void	Location::setRoot(std::string  root)
@@ -116,12 +128,17 @@ unsigned int	Location::getClientMaxBodySize(void) const
 }
 
 // cgi_suffix
-void	Location::setCgiSuffix(std::vector<std::string>  cgi_suffix)
+void	Location::setCgiSuffixSet(std::set<std::string>  cgi_suffix)
 {
 	this->_cgi_suffix = cgi_suffix;
 }
 
-const std::vector<std::string>	&Location::getCgiSuffix(void) const
+void	Location::addCgiSuffix(std::string cgi_suffix)
+{
+	this->_cgi_suffix.insert(cgi_suffix);
+}
+
+const std::set<std::string>	&Location::getCgiSuffix(void) const
 {
 	return (this->_cgi_suffix);
 }
@@ -151,7 +168,7 @@ void	Location::setRedirect(std::string redirect)
 }
 
 // autoindex
-bool	Location::isAutoindexEnabled(void) const
+bool	Location::getAutoindex(void) const
 {
 	return (this->_autoindex);
 }
@@ -167,9 +184,14 @@ const std::map<int, std::string>	&Location::getErrorPages(void) const
 	return (this->_error_page);
 }
 
-void	Location::setErrorPages(std::map<int, std::string> error_page)
+void	Location::setErrorPagesVector(std::map<int, std::string> error_page)
 {
 	this->_error_page = error_page;
+}
+
+void	Location::setErrorPage(int key, std::string value)
+{
+	this->_error_page[key] = value;
 }
 
 // post_directory
@@ -186,10 +208,10 @@ void	Location::setPostDirectory(std::string post_directory)
 
 std::ostream	&operator<<(std::ostream &lhs, const Location &rhs)
 {
-	lhs << "location: "
-		<< rhs.getName()
-		<< std::endl;
-
+	// lhs << "location: "
+	// 	<< rhs.getName()
+	// 	<< std::endl;
+	//
 	lhs << "root: "
 		<< rhs.getRoot()
 		<< std::endl;
@@ -203,8 +225,8 @@ std::ostream	&operator<<(std::ostream &lhs, const Location &rhs)
 		<< std::endl;
 
 	lhs << "CGI suffixes: ";
-	std::vector<std::string>	CGI = rhs.getCgiSuffix();
-	for (std::vector<std::string>::iterator it = CGI.begin(); it != CGI.end(); ++it)
+	std::set<std::string>	CGI = rhs.getCgiSuffix();
+	for (std::set<std::string>::iterator it = CGI.begin(); it != CGI.end(); ++it)
 	{
 		lhs << "'"<< *it << "' ";
 	}
@@ -223,7 +245,7 @@ std::ostream	&operator<<(std::ostream &lhs, const Location &rhs)
 		<< std::endl;
 
 	lhs << "autoindex: "
-		<< (rhs.isAutoindexEnabled() ? "on" : "off")
+		<< (rhs.getAutoindex() ? "on" : "off")
 		<< std::endl;
 
 	lhs << "post_directory: "

@@ -22,6 +22,7 @@ SRC_FILES = \
 CLASS_FILES = \
 	ArgChecker/ArgChecker.cpp \
 	ConfigParser/ConfigParser.cpp \
+	ConfigParser/utils.cpp \
 	ConfigParser/tokenize.cpp \
 	Logger/Logger.cpp \
 	Location/Location.cpp \

@@ -9,15 +9,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <vector>
+#include <map>
+#include <string>
 class	Location;
 
 class	Server
 {
 	public:
-		const std::vector<Location>	&getLocations(void) const;
-		void						setLocations(std::vector<Location>&);
+		const std::map<std::string, Location>	&getLocations(void) const;
+		void						setLocationsMap(std::map<std::string, Location>&);
+		void						addLocations(std::string&, Location&);
+	
 	private:
-		std::vector<Location>	_locations;
+		std::map<std::string, Location>	_locations;
 		// std::string			_
 };
