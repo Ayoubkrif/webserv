@@ -31,15 +31,15 @@ void	ConfigParser::parseLocation(std::map<std::string, Location> &locations,
 {
 	Location	current;
 	parseAlias(current, it, it_end);
-	// attribue le nom de la cle au nom 
+	// save location name
 	std::string	name = *it;
 	it++;
-	if (*it != "{")
-		throw (std::runtime_error("Missing bracket after location '" + name + "': '" + *it + "' (expected '{')"));
+	if (it == it_end || *it != "{")
+		throw (std::runtime_error("Missing bracket after location '" + name + "'\n-->" + *it ));
 	while (true)
 	{
 		if (++it == it_end)
-			throw (std::runtime_error("Location scope note closed by '}'"));
+			throw (std::runtime_error("Location scope not closed by '}'"));
 		int	directive = checkDirective(*it);
 		if (++it == it_end)
 			throw (std::runtime_error("Empty directive " + DIRECTIVE[directive]));
@@ -85,7 +85,7 @@ void	ConfigParser::parseLocation(std::map<std::string, Location> &locations,
 			goto BREAK;
 			
 			default :
-			throw (std::runtime_error("Unauthorized directive in location scope :" + *it));
+			throw (std::runtime_error("Unauthorized directive in location scope \n-->" + *it));
 		}
 		it++;
 		if (*it != ";")

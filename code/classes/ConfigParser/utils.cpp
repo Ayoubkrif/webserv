@@ -29,7 +29,7 @@ void	ConfigParser::parseAlias(Location &current,
 {
 	(void)it_end;
 	if (it->at(0) != '/')
-		throw (std::runtime_error("Alias must be a valid path syntax\n-->" + *it));
+		throw (std::runtime_error("alias must be a valid path syntax\n-->" + *it));
 	current.setAlias(*it);
 }
 
@@ -87,11 +87,13 @@ void	ConfigParser::parseAllowedMethods(Location &current,
 		for (i = 0; i < 3; i++)
 		{
 			if (*it == METHODS[i])
+			{
+				methods[i] = true;
 				break ;
+			}
 		}
 		if (i == 3)
 			throw (std::runtime_error("Unrecognized http method\n-->" + *it));
-		methods[i] = true;
 	}
 	if (it == it_end)
 		throw (std::runtime_error("Unclosed directive methods \n-->" + *(--it)));
@@ -172,8 +174,8 @@ void	ConfigParser::parseErrorPages(Location &current,
 }
 
 void	ConfigParser::parsePostLocation(Location &current,
-							   std::vector<std::string>::iterator &it,
-							   std::vector<std::string>::iterator &it_end)
+							std::vector<std::string>::iterator &it,
+							std::vector<std::string>::iterator &it_end)
 {
 	(void)it_end;
 	if (it->at(0) != '/')
