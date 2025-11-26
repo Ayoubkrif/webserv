@@ -35,6 +35,10 @@ class	ConfigParser
 		static void	parseLocation(std::map<std::string, Location>&,
 							std::vector<std::string>::iterator&,
 							std::vector<std::string>::iterator&);
+		static Location	parseLocationLoop(std::map<std::string, Location>&,
+							std::vector<std::string>::iterator&,
+							std::vector<std::string>::iterator&,
+							std::vector<std::string>::iterator&);
 
 		static void	parseRoot(Location&,
 						std::vector<std::string>::iterator&,

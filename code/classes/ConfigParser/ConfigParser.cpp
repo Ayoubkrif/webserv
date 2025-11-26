@@ -25,81 +25,14 @@ int	ConfigParser::checkDirective(std::string &token)
 	throw (std::runtime_error("Unrecognized token " + token));
 }
 
-// void	ConfigParser::parseLocationLoop(std::map<std::string, Location> &locations,
-// 							std::vector<std::string>::iterator &it,
-// 							std::vector<std::string>::iterator &it_end,
-// 							Location &current)
-// {
-// 	while (true)
-// 	{
-// 		if (++it == it_end)
-// 			throw (std::runtime_error("Location scope not closed by '}'"));
-// 		int	directive = checkDirective(*it);
-// 		if (++it == it_end)
-// 			throw (std::runtime_error("Empty directive " + DIRECTIVE[directive]));
-// 		switch (directive)
-// 		{
-// 			case ROOT:
-// 			parseRoot(current, it, it_end);
-// 			break ;
-//
-// 			case ALIAS:
-// 			parseAlias(current, it, it_end);
-// 			break ;
-//
-// 			case CLIENT_MAX_BODY_SIZE:
-// 			parseClientMaxBodySize(current, it, it_end);
-// 			break ;
-//
-// 			case CGI_SUFFIX:
-// 			parseCgi(current, it, it_end);
-// 			break ;
-//
-// 			case ALLOWED_METHODS:
-// 			parseAllowedMethods(current, it, it_end);
-// 			break ;
-//
-// 			case RETURN:
-// 			parseReturn(current, it, it_end);
-// 			break ;
-//
-// 			case AUTOINDEX:
-// 			parseAutoIndex(current, it, it_end);
-// 			break ;
-//
-// 			case ERROR_PAGE:
-// 			parseErrorPages(current, it, it_end);
-// 			break ;
-//
-// 			case POST_LOCATION:
-// 			parsePostLocation(current, it, it_end);
-// 			break ;
-//
-// 			case CLOSING_BRACKET:
-// 			return ;
-//
-// 			default :
-// 			throw (std::runtime_error("Unauthorized directive in location scope \n-->" + *it));
-// 		}
-// 		it++;
-// 		if (*it != ";")
-// 			throw (std::runtime_error("too much argument in directive " + DIRECTIVE[directive] + "\n-->" + *it));
-// 	}
-// }
-
-void	ConfigParser::parseLocation(std::map<std::string, Location> &locations,
-							   std::vector<std::string>::iterator &it,
-							   std::vector<std::string>::iterator &it_end)
+Location	ConfigParser::parseLocationLoop(std::map<std::string, Location> &locations,
+							std::vector<std::string>::iterator &it,
+							std::vector<std::string>::iterator &it_end,
+							std::vector<std::string>::iterator &name)
 {
+	(void)locations;
 	Location	current;
-	parseAlias(current, it, it_end);
-	// save location name
-	std::string	name = *it;
-	if (locations.find(name) != locations.end())
-		Logger::print(LOG_CONFIGPARSER) << "WARNING, location " << name << " already exists" << std::endl;
-	it++;
-	if (it == it_end || *it != "{")
-		throw (std::runtime_error("Missing bracket after location '" + name + "'\n-->" + *it ));
+	parseAlias(current, name, it_end);
 	while (true)
 	{
 		if (++it == it_end)
@@ -146,8 +79,8 @@ void	ConfigParser::parseLocation(std::map<std::string, Location> &locations,
 			break ;
 
 			case CLOSING_BRACKET:
-			goto BREAK;
-			
+			return (current);
+
 			default :
 			throw (std::runtime_error("Unauthorized directive in location scope \n-->" + *it));
 		}
@@ -155,8 +88,21 @@ void	ConfigParser::parseLocation(std::map<std::string, Location> &locations,
 		if (*it != ";")
 			throw (std::runtime_error("too much argument in directive " + DIRECTIVE[directive] + "\n-->" + *it));
 	}
-	BREAK:
-	locations.insert(std::make_pair(name, current));
+}
+
+void	ConfigParser::parseLocation(std::map<std::string, Location> &locations,
+							   std::vector<std::string>::iterator &it,
+							   std::vector<std::string>::iterator &it_end)
+{
+	// save location name
+	std::vector<std::string>::iterator	name = it;
+	if (locations.find(*name) != locations.end())
+		Logger::print(LOG_CONFIGPARSER) << "WARNING, location " << *name << " already exists" << std::endl;
+	it++;
+	if (it == it_end || *it != "{")
+		throw (std::runtime_error("Missing bracket after location '" + *name + "'\n-->" + *it ));
+	Location current = parseLocationLoop(locations, it, it_end, name);
+	locations.insert(std::make_pair(*name, current));
 }
 
 std::map<std::string, Location>	ConfigParser::parseServerLoop(std::vector<Server> &servers,
