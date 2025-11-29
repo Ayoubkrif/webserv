@@ -69,6 +69,30 @@ void	Request::getToken(std::string *token, std::string::size_type *cursor)
 		//throw error;
 }
 
+int	find_type(std::string str);
+
+int	Request::getField(std::string::size_type *cursor)
+{
+	int	type;
+	std::string field;
+	*cursor += 1;
+	field.assign(this->_header.substr(0, *cursor));
+	type = find_type(field);
+	// *cursor += 1;
+	this->_header.erase(0, *cursor);
+	// *cursor = this->_header.find(CRLF);
+	return type;
+}
+
+void	Request::getField(std::string *field, std::string::size_type *cursor)
+{
+	*cursor += 1;
+	field->assign(this->_header.substr(0, *cursor));
+	// *cursor += 1;
+	this->_header.erase(0, *cursor);
+	// *cursor = this->_header.find(CRLF);
+}
+
 int	find_type(std::string str)
 {
 	int index = 0;
@@ -97,19 +121,6 @@ int	find_type(std::string str)
 	}
 	std::cout << RED << "Wrong index is " << index << WHITE << std::endl;
 	return -1;
-}
-
-int	Request::getField(std::string::size_type *cursor)
-{
-	int	type;
-	std::string field;
-	*cursor += 1;
-	field.assign(this->_header.substr(0, *cursor));
-	type = find_type(field);
-	// *cursor += 1;
-	this->_header.erase(0, *cursor);
-	// *cursor = this->_header.find(CRLF);
-	return type;
 }
 
 unsigned long hexToLong(std::string line)

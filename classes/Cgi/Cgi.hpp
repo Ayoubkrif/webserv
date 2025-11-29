@@ -11,25 +11,27 @@
 
 #pragma once
 
-#include "../Request/Request.hpp"
+// #include "../Request/Request.hpp"
+#include <string>
 #include <vector>
 class Cgi
 {
 private:
 	int							_pipe[2];
 	std::vector<std::string>	_env;
-	Request&					_client;
+	// Request&					_client;
 	std::string					_buffer;
-	static void					(Request::*fctField[210])(std::string);
+	// static void					(Request::*fctField[210])(std::string);
 
 public:
 	Cgi();
-	Cgi(Request&); //copie de CGI_HEADER + prendre adresse de request
+	// Cgi(Request&); //copie de CGI_HEADER + prendre adresse de request
 
 	void						createBasicEnv();
 
-	void						addFields(std::string);
-	void						getFieldFromUri();
+	void						addFields(std::string field, std::string token);//check for host, type, length and or add
+	void						getFieldFromUri();//to call in constructor
+	//do function in request createCgi() to add uri, methode, query without getters
 
 	void				parseCgiHost(std::string field, std::string token);
 	void				parseCgiContentType(std::string);

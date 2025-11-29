@@ -13,6 +13,8 @@
 
 #include <execution>
 #include <string>
+#include "../Cgi/Cgi.hpp"
+
 const std::string	DCRLF = "\r\n\r\n";
 const std::string	CRLF = "\r\n";
 const std::string	OWS = " \t";
@@ -51,6 +53,8 @@ private:
 	std::string			_uri;
 	std::string			_queryString;
 
+	Cgi*					_cgi;
+
 public:
 	Request();
 
@@ -75,6 +79,7 @@ public:
 
 	void				getToken(std::string *header, std::string::size_type *cursor);
 	int					getField(std::string::size_type *cursor);
+	void				getField(std::string *field, std::string::size_type *cursor);
 
 private:
 	std::string			_host;
