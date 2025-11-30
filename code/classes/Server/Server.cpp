@@ -27,9 +27,6 @@ void	Server::setLocationsMap(std::map<std::string, Location>	&locations)
 void	Server::addLocations(std::string &key, Location &value)
 {
 	if (this->_locations.find(key) != this->_locations.end())
-		throw (std::runtime_error(""));
-	// this->_locations[key] = value;
+		throw (std::runtime_error("URL already exist"));
 	this->_locations[key] = Location(value);
-	// std::pair<std::string, Location> pair = std::make_pair(key, value);
-	// this->_locations.insert(pair);
 }
