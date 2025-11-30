@@ -48,18 +48,12 @@ void	parse_header(Request *request)
 			std::cout << "header emptied" << std::endl;
 			break;
 		}
-		if (!move_cursor(&cursor, request->getHeader(), ":"))
+		if (!request->getField(&cursor, &type) || !request->getToken(&token, &cursor))
 		{
-			std::cout << RED << ": not found" << WHITE << std::endl;
-			break; //throw error?
+			std::cout << RED << "Error in field or token" << WHITE << std::endl;
+			return; //throw error?
+			//edit status ici ou dans les fonction du if??
 		}
-		type = request->getField(&cursor);
-		if (type < 0)
-		{
-			std::cout << RED << "Type = -1" << WHITE << std::endl;
-			break; //throw error?
-		}
-		request->getToken(&token, &cursor);
 		if (Request::fctField[type] != NULL)
 			(request->*Request::fctField[type])(token);
 		else
@@ -90,16 +84,14 @@ void	parse_cgi_header(Request *request)
 			std::cout << "header emptied" << std::endl;
 			break;
 		}
-		if (!move_cursor(&cursor, request->getHeader(), ":"))
+		if (!request->getField(&field, &cursor) | !request->getToken(&token, &cursor))
 		{
-			std::cout << RED << ": not found" << WHITE << std::endl;
-			break; //throw error?
-			//OR Edit status and return? How to deal with expect? Put in a string and check at response construction?
+			std::cout << "invalid field or token" << std::endl;
+			return;
+			//edit status and return
 		}
-		//if (!request->getField() | !request->getToken())
-		//edit status and return
-		request->getField(&field, &cursor);//why don't getField() do the search?
-		request->getToken(&token, &cursor);// should skip the ows qnd not parsers
+		// request->getField(&field, &cursor);//why don't getField() do the search?
+		// request->getToken(&token, &cursor);// should skip the ows qnd not parsers
 		cgi.addFields(field, token);
 	}
 	//check_complete_header(event); //if content_length absent -> add it

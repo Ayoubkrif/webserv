@@ -53,44 +53,58 @@ void	Request::fillBody()
 		this->_state = SEND;
 }
 
-void	Request::getToken(std::string *token, std::string::size_type *cursor)
+int	Request::getToken(std::string *token, std::string::size_type *cursor)
 {
+	//skip OWS here
 	// std::cout << "Token  before assign is " << *token << std::endl;
 	*cursor = this->_header.find(CRLF);
-	if (*cursor != std::string::npos)
+	if (*cursor == std::string::npos)
 	{
-		token->assign(this->_header, 0, *cursor);
-		// std::cout << "Token after assign is " << *token << std::endl;
-		*cursor += 2;
-		this->_header.erase(0, *cursor);
-	}
-	else if (*cursor == std::string::npos)
 		std::cout << RED << "Cursor is at NULL" << WHITE << std::endl;
+		return 0;
 		//throw error;
+	}
+	token->assign(this->_header, 0, *cursor);
+	// std::cout << "Token after assign is " << *token << std::endl;
+	*cursor += 2;
+	this->_header.erase(0, *cursor);
+	return 1;
 }
 
 int	find_type(std::string str);
 
-int	Request::getField(std::string::size_type *cursor)
+int	Request::getField(std::string::size_type *cursor, int *type)
 {
-	int	type;
 	std::string field;
+	if (!move_cursor(cursor, this->_header, ":"))
+	{
+		std::cout << RED << ": not found" << WHITE << std::endl;
+		return 0;
+		//OR Edit status and return? How to deal with expect? Put in a string and check at response construction?
+	}
 	*cursor += 1;
 	field.assign(this->_header.substr(0, *cursor));
-	type = find_type(field);
+	*type = find_type(field);
 	// *cursor += 1;
 	this->_header.erase(0, *cursor);
 	// *cursor = this->_header.find(CRLF);
-	return type;
+	return *type;
 }
 
-void	Request::getField(std::string *field, std::string::size_type *cursor)
+int	Request::getField(std::string *field, std::string::size_type *cursor)
 {
+	if (!move_cursor(cursor, this->_header, ":"))
+	{
+		std::cout << RED << ": not found" << WHITE << std::endl;
+		return 0;
+		//OR Edit status and return? How to deal with expect? Put in a string and check at response construction?
+	}
 	*cursor += 1;
 	field->assign(this->_header.substr(0, *cursor));
 	// *cursor += 1;
 	this->_header.erase(0, *cursor);
 	// *cursor = this->_header.find(CRLF);
+	return 1;
 }
 
 int	find_type(std::string str)
@@ -112,7 +126,7 @@ int	find_type(std::string str)
 		str.resize(str.size() - 1);
 	std::cout << "index is " << index << " str is " << str << std::endl;
 	if (index <= 0 || index > 207)
-		return -1;
+		return 0;
 	for (int i = 0; i < 3; i++)
 	{
 	  // std::cout << "Field at index is "<< HeaderParsing::fields[index][i] << std::endl;
@@ -120,7 +134,8 @@ int	find_type(std::string str)
 			return index + i;
 	}
 	std::cout << RED << "Wrong index is " << index << WHITE << std::endl;
-	return -1;
+	return 0;
+	// should not return 0 if not in fct tab but in field tab so it doesnt invalidate valid headers that should not be parsed
 }
 
 unsigned long hexToLong(std::string line)

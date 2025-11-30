@@ -33,9 +33,9 @@ public:
 	void						getFieldFromUri();//to call in constructor
 	//do function in request createCgi() to add uri, methode, query without getters
 
-	void				parseCgiHost(std::string field, std::string token);
-	void				parseCgiContentType(std::string);
-	void				parseCgiContentLength(std::string); //do after body parsing? if chunked do after?
+	// void				parseCgiHost(std::string field, std::string token);
+	// void				parseCgiContentType(std::string);
+	// void				parseCgiContentLength(std::string); //do after body parsing? if chunked do after?
 };
 
 	//variable static:
