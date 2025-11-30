@@ -11,11 +11,43 @@
 
 #include "ConfigParser.hpp"
 #include "Location.hpp"
+#include "Server.hpp"
 #include "tokens.hpp"
+
+static unsigned int	parse_ipv4(std::string str)
+{
+	(void)str;
+	return (0);
+}
+
+static unsigned short	parse_port(std::string str)
+{
+	(void)str;
+	return (8080);
+}
 
 void	ConfigParser::parseListen(Server &current)
 {
-	(void)current;
+	std::string	port, interface;
+	
+	std::string::size_type two_dots = get().find(':');
+	if (two_dots == std::string::npos)
+	{
+		interface = "";
+		port = get();
+	}
+	else
+	{
+		interface = get().substr(0, two_dots);
+		if (interface.empty())
+			throw (std::runtime_error("listen must specify an ipv4 interface before ':'\n-->" + get()));
+		port = get().substr(two_dots + 1);
+	}
+	if (port.empty())
+		throw (std::runtime_error("listen must specify a port\n-->" + get()));
+
+	current.setPort(parse_port(port));
+	current.setInterface(parse_ipv4(interface));
 }
 
 void	ConfigParser::parseRoot(Location &current)
