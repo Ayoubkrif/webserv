@@ -12,12 +12,31 @@
 #include "Server.hpp"
 #include "Location.hpp"
 
+Server::Server(void): _port(8080), _interface(0)
+{}
+
+Server::Server(const Server &copy): _locations(copy._locations), _port(copy.getPort()), _interface(copy._interface)
+{}
+
+Server::~Server(void)
+{}
+
+Server	Server::operator=(const Server &rhs)
+{
+	if (&rhs == this)
+		return (*this);
+	this->setLocationsMap(rhs.getLocations());
+	this->setPort(rhs.getPort());
+	this->setInterface(rhs.getInterface());
+	return (*this);
+}
+
 const std::map<std::string, Location>	&Server::getLocations(void) const
 {
 	return (this->_locations);
 }
 
-void	Server::setLocationsMap(std::map<std::string, Location>	&locations)
+void	Server::setLocationsMap(const std::map<std::string, Location>	&locations)
 {
 	this->_locations = locations;
 }

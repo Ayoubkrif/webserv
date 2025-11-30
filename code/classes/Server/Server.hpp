@@ -18,19 +18,29 @@ class	Location;
 class	Server
 {
 	public:
+		Server(void);
+		Server(const Server&);
+		~Server(void);
+		Server	operator=(const Server&);
+
+	public:
 		const std::map<std::string, Location>	&getLocations(void) const;
-		void									setLocationsMap(std::map<std::string, Location>&);
+		void									setLocationsMap(const std::map<std::string, Location>&);
 		void									addLocations(std::string&, Location&);
-
-		unsigned short int						getPort(void) const;
-		void									setPort(unsigned short int);
-
-		unsigned int							getInterface(void) const;
-		void									setInterface(unsigned int);
-	
-		static const int				socket_in_family = AF_INET;
 	private:
 		std::map<std::string, Location>	_locations;
+
+	public:
+		unsigned short int						getPort(void) const;
+		void									setPort(unsigned short int);
+	private:
 		unsigned short int				_port;
+
+	public:
+		unsigned int							getInterface(void) const;
+		void									setInterface(unsigned int);
+	private:
 		unsigned int					_interface;
+	
+		static const int				socket_in_family = AF_INET;
 };
