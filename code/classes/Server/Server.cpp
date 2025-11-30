@@ -11,8 +11,6 @@
 
 #include "Server.hpp"
 #include "Location.hpp"
-#include <stdexcept>
-#include <utility>
 
 const std::map<std::string, Location>	&Server::getLocations(void) const
 {
@@ -29,4 +27,24 @@ void	Server::addLocations(std::string &key, Location &value)
 	if (this->_locations.find(key) != this->_locations.end())
 		throw (std::runtime_error("URL already exist"));
 	this->_locations[key] = Location(value);
+}
+
+unsigned short int	Server::getPort(void) const
+{
+	return (this->_port);
+}
+
+void	Server::setPort(unsigned short int port)
+{
+	this->_port = port;
+}
+
+unsigned int	Server::getInterface(void) const
+{
+	return (this->_interface);
+}
+
+void	Server::setInterface(unsigned int interface)
+{
+	this->_interface = interface;
 }
