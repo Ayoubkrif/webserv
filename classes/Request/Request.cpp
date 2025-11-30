@@ -11,12 +11,8 @@
 
 #include "Request.hpp"
 #include "../../includes/parsing_header.hpp"
-#include <cstdlib>
-#include <cstring>
-#include <string>
-#include <iostream>
 
-Request::Request() : _state(HEADER), _method(OTHER), _connection(1), _trailer(0)
+Request::Request() : _status(0), _state(HEADER), _method(OTHER), _connection(1), _trailer(0)
 {
 }
 
@@ -55,17 +51,12 @@ void	Request::fillBody()
 
 int	Request::getToken(std::string *token, std::string::size_type *cursor)
 {
-	//skip OWS here
 	// std::cout << "Token  before assign is " << *token << std::endl;
-	
 	int	Ows = 0;
 
 	while (this->_header[Ows] && OWS.find(this->_header[Ows]) != std::string::npos)
-	{
-		// std::cout << BLUE << "Ows char is:" << this->_header[Ows] << WHITE << std::endl;
 		Ows++;
-	}
-	std::cout << BLUE << "Ows is:" << Ows << WHITE << std::endl;
+
 	*cursor = this->_header.find(CRLF);
 	if (*cursor == std::string::npos)
 	{
@@ -114,47 +105,6 @@ int	Request::getField(std::string *field, std::string::size_type *cursor)
 	return 1;
 }
 
-int	find_type(std::string str)
-{
-	int index = 0;
-	// std::cout << str << std::endl;
-	for (int i = 0; str[i] !=':'; i++)
-	{
-		if (str[i] >= 'A' && str[i] <= 'Z')
-			str[i] += 32;
-		if (str[i] >= 'a' && str[i] <= 'z')
-		{
-			index += str[i] - 97;
-		}
-		else
-			index += str[i];
-	}
-	if (!str.empty())
-		str.resize(str.size() - 1);
-	std::cout << "index is " << index << " str is " << str << std::endl;
-	if (index <= 0 || index > 207)
-		return 0;
-	for (int i = 0; i < 3; i++)
-	{
-	  // std::cout << "Field at index is "<< HeaderParsing::fields[index][i] << std::endl;
-		if (!Request::fields[index][i].empty() && !Request::fields[index][i].compare(str))
-			return index + i;
-	}
-	std::cout << RED << "Wrong index is " << index << WHITE << std::endl;
-	return 0;
-	// should not return 0 if not in fct tab but in field tab so it doesnt invalidate valid headers that should not be parsed
-}
-
-unsigned long hexToLong(std::string line)
-{
-	unsigned long chunk_size;
-	const char* semicolon = std::strchr(line.data(), ';');
-
-	chunk_size = std::strtoul(line.data(), semicolon ? (char**)&semicolon : NULL, 16);
-
-	std::cout << "Chunk-size is :" << chunk_size << std::endl;
-	return chunk_size;
-}
 void	Request::fillChunkedBody()
 {
 	std::string				line;
@@ -212,6 +162,7 @@ void	Request::parseMethod(std::string str)
 	{
 		std::cout << "BAD METHOD" << std::endl;
 		;//throw 400
+		//ou edit status
 	}
 }
 

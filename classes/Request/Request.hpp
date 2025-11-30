@@ -13,6 +13,9 @@
 
 #include <execution>
 #include <string>
+#include <cstdlib>
+#include <cstring>
+#include <iostream>
 #include "../Cgi/Cgi.hpp"
 
 const std::string	DCRLF = "\r\n\r\n";
@@ -21,6 +24,7 @@ const std::string	OWS = " \t";
 const bool			CHUNKED = 1;
 
 int	find_type(std::string str);
+unsigned long hexToLong(std::string line);
 
 typedef enum method
 {

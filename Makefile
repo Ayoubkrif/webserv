@@ -6,7 +6,7 @@
 #    By: cbordeau <cbordeau@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/19 13:28:35 by cbordeau          #+#    #+#              #
-#    Updated: 2025/11/30 12:56:03 by cbordeau         ###   LAUSANNE.ch        #
+#    Updated: 2025/11/30 17:32:21 by cbordeau         ###   LAUSANNE.ch        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +32,7 @@ SOURCES = \
 	$(CLASS_PATH)/Request/Getter.cpp \
 	$(CLASS_PATH)/Request/HeaderTab.cpp \
 	$(CLASS_PATH)/Request/FieldsParser.cpp \
+	$(CLASS_PATH)/Request/RequestUtils.cpp \
 	$(CLASS_PATH)/Cgi/Cgi.cpp 
 	# $(CLASS_PATH)/Request/Get.cpp \
 	# $(CLASS_PATH)/Request/Post.cpp \
