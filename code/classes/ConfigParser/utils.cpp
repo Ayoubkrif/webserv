@@ -20,10 +20,29 @@ static unsigned int	parse_ipv4(std::string str)
 	return (0);
 }
 
+#include <cstdlib>
+#include <limits>
+
 static unsigned short	parse_port(std::string str)
 {
-	(void)str;
-	return (8080);
+	if (str.find_first_not_of("0123456789") != std::string::npos)
+		throw (std::runtime_error("listen port must be only digits\n-->" + str));
+	unsigned long int nb;
+	try// extract nb from str
+	{
+		nb = std::strtol(str.c_str(), NULL, 10);
+	}
+	catch (std::invalid_argument const& ex)
+	{
+		throw (std::runtime_error("listen port must be a number argument\n-->" + str));
+	}
+	catch (std::out_of_range const& ex)
+	{
+		throw (std::runtime_error("listen port must not exceed short int value\n-->" + str));
+	}
+	if (nb > std::numeric_limits<unsigned short>::max())
+		throw (std::runtime_error("listen port must not exceed short int value\n-->" + str));
+	return (static_cast<unsigned short>(nb));
 }
 
 void	ConfigParser::parseListen(Server &current)
@@ -144,6 +163,7 @@ void	ConfigParser::parseAutoIndex(Location &current)
 	current.setAutoindex(autoindex);
 }
 
+#include <cstdlib>
 void	ConfigParser::parseErrorPages(Location &current)
 {
 	static const int	codes[] = {404};
@@ -173,11 +193,11 @@ void	ConfigParser::parseErrorPages(Location &current)
 		}
 		catch (std::invalid_argument const& ex)
 		{
-			throw (std::runtime_error("max_client_body_size must be a number argument\n-->" + *it_start));
+			throw (std::runtime_error("error page code must be a number argument\n-->" + *it_start));
 		}
 		catch (std::out_of_range const& ex)
 		{
-			throw (std::runtime_error("max_client_body_size must not exceed int value\n-->" + *it_start));
+			throw (std::runtime_error("error page code must not exceed int value\n-->" + *it_start));
 		}
 		for (int i = 0; i < max + 1; i++)
 		{
