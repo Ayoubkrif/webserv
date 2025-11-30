@@ -14,10 +14,50 @@
 #include "Server.hpp"
 #include "tokens.hpp"
 
+static const int LOCALHOST = 0x7F000001;
+static const char *DIGITS = "0123456789";
+
+#include <cstdlib>
+#include <limits>
+#include <stdexcept>
 static unsigned int	parse_ipv4(std::string str)
 {
-	(void)str;
-	return (0);
+	if (str == "localhost")
+		return (LOCALHOST);
+	unsigned int ipv4;
+	try// extract nb from str
+	{
+		unsigned long int	nb[4];
+		char				*end;
+		const char			*p = str.c_str();
+		
+		for (int i = 0; i < 4; i++)
+		{
+			nb[i] = std::strtol(p, &end, 10);
+			if (p == end)// does not go forward
+				throw (std::invalid_argument("missing number"));
+			if (nb[i] > std::numeric_limits<unsigned char>::max()) // exceed 255
+				throw (std::out_of_range("each number cannot exceed 255"));
+			if (i != 3 && *end != '.') // is not ended by .
+				throw (std::invalid_argument("each number should be separated by dot"));
+			else if (*end)// trail garbage
+				throw (std::invalid_argument("garbage found at the end of interface"));
+			p =+ end + 1; // go after .
+		}
+		ipv4 = nb[0] << 24
+		| nb[1] << 16
+		| nb[2] << 8
+		| nb[3];
+	}
+	catch (std::invalid_argument const& ex)
+	{
+		throw (std::runtime_error("listen interface format invalid:" + std::string(ex.what()) + "\n-->" + str));
+	}
+	catch (std::out_of_range const& ex)
+	{
+		throw (std::runtime_error("listen interface too large:" + std::string(ex.what()) + "\n-->" + str));
+	}
+	return (ipv4);
 }
 
 #include <cstdlib>
@@ -25,7 +65,7 @@ static unsigned int	parse_ipv4(std::string str)
 
 static unsigned short	parse_port(std::string str)
 {
-	if (str.find_first_not_of("0123456789") != std::string::npos)
+	if (str.find_first_not_of(DIGITS) != std::string::npos)
 		throw (std::runtime_error("listen port must be only digits\n-->" + str));
 	unsigned long int nb;
 	try// extract nb from str
