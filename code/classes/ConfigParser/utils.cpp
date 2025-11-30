@@ -38,13 +38,13 @@ void	ConfigParser::parseListen(Server &current)
 	}
 	else
 	{
+		port = get().substr(two_dots + 1);
+		if (port.empty())
+			throw (std::runtime_error("listen must specify a port\n-->" + get()));
 		interface = get().substr(0, two_dots);
 		if (interface.empty())
 			throw (std::runtime_error("listen must specify an ipv4 interface before ':'\n-->" + get()));
-		port = get().substr(two_dots + 1);
 	}
-	if (port.empty())
-		throw (std::runtime_error("listen must specify a port\n-->" + get()));
 
 	current.setPort(parse_port(port));
 	current.setInterface(parse_ipv4(interface));
