@@ -24,12 +24,22 @@ int	ConfigParser::checkDirective(void)
 			return (i);
 		}
 	}
-	throw (std::runtime_error("Checkdirective(): unrecognized token " + get()));
+	throw (std::runtime_error("checkDirective(): unrecognized token '" + get() + '\''));
 }
 
 void	ConfigParser::next(void)
 {
 	++_token_it;
+}
+
+void	ConfigParser::nextAsserted(void)
+{
+	++_token_it;
+	if (end())
+	{
+		--_token_it;
+		throw (std::runtime_error("next() :'" + get() + "' shoudl not be the last tok"));
+	}
 }
 
 bool	ConfigParser::end(void) const

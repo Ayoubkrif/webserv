@@ -16,6 +16,7 @@
 #include "ConfigParser.hpp"
 #include "Location.hpp"
 #include "Server.hpp"
+#include "logfiles.hpp"
 #include "tokens.hpp"
 
 static const int LOCALHOST = 0x7F000001;
@@ -25,6 +26,8 @@ static unsigned int	parse_ipv4(std::string str)
 {
 	if (str == "localhost")
 		return (LOCALHOST);
+	if (str.empty())
+		return (0);
 	unsigned int ipv4;
 	try// extract nb from str
 	{
@@ -85,6 +88,10 @@ static unsigned short	parse_port(std::string str)
 
 void	ConfigParser::parseListen(Server &current)
 {
+	next();
+	if (end())
+		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
+
 	std::string	port, interface;
 	
 	std::string::size_type two_dots = get().find(':');
@@ -105,13 +112,25 @@ void	ConfigParser::parseListen(Server &current)
 
 	current.setPort(parse_port(port));
 	current.setInterface(parse_ipv4(interface));
+	next();
+	if (get() != ";")
+		throw (std::runtime_error("too much argument in directive " + DIRECTIVE[getDirective()] + "\n-->" + get()));
+	streams.print(LOG_DIRECTIVE) << "directive " + DIRECTIVE[getDirective()] + " succeed" << std::endl;
 }
 
 void	ConfigParser::parseRoot(Location &current)
 {
+	next();
+	if (end())
+		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
+
 	if (get().at(0) != '/')
 		throw (std::runtime_error("root must be a valid path syntax\n-->" + get()));
 	current.setRoot(get());
+	next();
+	if (get() != ";")
+		throw (std::runtime_error("too much argument in directive " + DIRECTIVE[getDirective()] + "\n-->" + get()));
+	streams.print(LOG_DIRECTIVE) << "directive " + DIRECTIVE[getDirective()] + " succeed" << std::endl;
 }
 
 void	ConfigParser::parseAlias(Location &current)
@@ -119,10 +138,18 @@ void	ConfigParser::parseAlias(Location &current)
 	if (get().at(0) != '/')
 		throw (std::runtime_error("alias must be a valid path syntax\n-->" + get()));
 	current.setAlias(get());
+	next();
+	if (get() != ";")
+		throw (std::runtime_error("too much argument in directive " + DIRECTIVE[getDirective()] + "\n-->" + get()));
+	streams.print(LOG_DIRECTIVE) << "directive " + DIRECTIVE[getDirective()] + " succeed" << std::endl;
 }
 
 void	ConfigParser::parseClientMaxBodySize(Location &current)
 {
+	next();
+	if (end())
+		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
+
 	int i;
 	try
 	{
@@ -137,10 +164,18 @@ void	ConfigParser::parseClientMaxBodySize(Location &current)
 		throw (std::runtime_error("max_client_body_size must not exceed int value\n-->" + get()));
 	}
 	current.setClientMaxBodySize(i);
+	next();
+	if (get() != ";")
+		throw (std::runtime_error("too much argument in directive " + DIRECTIVE[getDirective()] + "\n-->" + get()));
+	streams.print(LOG_DIRECTIVE) << "directive " + DIRECTIVE[getDirective()] + " succeed" << std::endl;
 }
 
 void	ConfigParser::parseCgi(Location &current)
 {
+	next();
+	if (end())
+		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
+
 	std::set<std::string> suffixes = current.getCgiSuffix();
 	for (;get() != ";" && !end(); next())
 	{
@@ -150,12 +185,16 @@ void	ConfigParser::parseCgi(Location &current)
 	}
 	if (end())
 		throw (std::runtime_error("Unclosed directive CGI \n-->edit"));
-	_token_it--;
 	current.setCgiSuffixSet(suffixes);
+	streams.print(LOG_DIRECTIVE) << "directive " + DIRECTIVE[getDirective()] + " succeed" << std::endl;
 }
 
 void	ConfigParser::parseAllowedMethods(Location &current)
 {
+	next();
+	if (end())
+		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
+
 	bool	methods[3]= {
 					current.getMethods()[GET],
 					current.getMethods()[POST],
@@ -177,19 +216,31 @@ void	ConfigParser::parseAllowedMethods(Location &current)
 	}
 	if (end())
 		throw (std::runtime_error("Unclosed directive methods \n-->" + *(--_token_it)));
-	_token_it--;
 	current.setMethods(methods);
+	streams.print(LOG_DIRECTIVE) << "directive " + DIRECTIVE[getDirective()] + " succeed" << std::endl;
 }
 
 void	ConfigParser::parseReturn(Location &current)
 {
+	next();
+	if (end())
+		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
+
 	if (0)
 		throw (std::runtime_error(DIRECTIVE[RETURN] + " must be a valid url\n-->" + get()));
 	current.setRedirect(get());
+	next();
+	if (get() != ";")
+		throw (std::runtime_error("too much argument in directive " + DIRECTIVE[getDirective()] + "\n-->" + get()));
+	streams.print(LOG_DIRECTIVE) << "directive " + DIRECTIVE[getDirective()] + " succeed" << std::endl;
 }
 
 void	ConfigParser::parseAutoIndex(Location &current)
 {
+	next();
+	if (end())
+		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
+
 	bool	autoindex;
 	if (get() == "on" || get() == "ON")
 		autoindex = true;
@@ -198,28 +249,40 @@ void	ConfigParser::parseAutoIndex(Location &current)
 	else
 		throw (std::runtime_error("In directive " + DIRECTIVE[AUTOINDEX] + " :unrecognized token\n-->" + get()));
 	current.setAutoindex(autoindex);
+	next();
+	if (get() != ";")
+		throw (std::runtime_error("too much argument in directive " + DIRECTIVE[getDirective()] + "\n-->" + get()));
+	streams.print(LOG_DIRECTIVE) << "directive " + DIRECTIVE[getDirective()] + " succeed" << std::endl;
 }
 
 void	ConfigParser::parseErrorPages(Location &current)
 {
+	next();
+	if (end())
+		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
+
 	static const int	codes[] = {404};
 	static const int	max = sizeof(codes) / sizeof(int);
 
 	std::vector<std::string>::iterator it_start = _token_it;
+	std::vector<std::string>::iterator page;
+	{
+		int	size = 0;
+		for (;get() != ";" && !end(); next())
+		{
+			size++;
+			page = _token_it;// get last argument (the page)
+						// should be the location of each error_pages
+		}
+		if (end())
+			throw (std::runtime_error("Unclosed directive " + DIRECTIVE[ERROR_PAGE] + " \n-->" + *(--_token_it)));
+		if (size < 2)
+			throw (std::runtime_error("Directive" + DIRECTIVE[ERROR_PAGE] + "need at least 2 arguments\n-->" + *(--_token_it)));
+	}
 
-	int	size = 0;
-	for (;get() != ";" && !end(); next())
-		size++;
-	if (end())
-		throw (std::runtime_error("Unclosed directive " + DIRECTIVE[ERROR_PAGE] + " \n-->" + *(--_token_it)));
-	if (size < 2)
-		throw (std::runtime_error("Directive" + DIRECTIVE[ERROR_PAGE] + "need at least 2 arguments\n-->" + *(--_token_it)));
-
-	// it at last argument
-	--_token_it;
-	// should be the location of each error_pages
-	if (get().at(0) != '/')
-		throw (std::runtime_error(DIRECTIVE[ERROR_PAGE] + " must be a valid path syntax\n-->" + get()));
+	if ((page->at(0) != '/'))
+		throw (std::runtime_error(DIRECTIVE[ERROR_PAGE] + " must be a valid path syntax\n-->" + *page));
+	// for each token until 
 	for (; it_start < _token_it; it_start++)
 	{
 		int	nb;
@@ -240,14 +303,26 @@ void	ConfigParser::parseErrorPages(Location &current)
 			if (i == max)
 				throw ("Unrecognized error page code \n-->" + *it_start);
 			if (codes[i] == nb)
-				current.setErrorPage(nb, get());
+			{
+				current.setErrorPage(nb, *page);
+				streams.print(LOG_DIRECTIVE) << "Error page " << nb << " " + get() + " added" << std::endl;
+			}
 		}
 	}
+	streams.print(LOG_DIRECTIVE) << "directive " + DIRECTIVE[getDirective()] + " succeed" << std::endl;
 }
 
 void	ConfigParser::parsePostLocation(Location &current)
 {
+	next();
+	if (end())
+		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
+
 	if (get().at(0) != '/')
 		throw (std::runtime_error("post_location must be a valid path syntax\n-->" + get()));
 	current.setRoot(get());
+	next();
+	if (get() != ";")
+		throw (std::runtime_error("too much argument in directive " + DIRECTIVE[getDirective()] + "\n-->" + get()));
+	streams.print(LOG_DIRECTIVE) << "directive " + DIRECTIVE[getDirective()] + " succeed" << std::endl;
 }

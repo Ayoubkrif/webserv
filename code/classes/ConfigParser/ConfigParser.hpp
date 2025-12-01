@@ -37,6 +37,7 @@ class	ConfigParser
 		int									_last_directive;
 
 		void				next(void);
+		void				nextAsserted(void);
 		bool				end(void) const;
 		const std::string	get(void) const;
 		int					getDirective(void) const;

@@ -15,4 +15,5 @@
 
 
 static const std::string	LOG_CONFIGPARSER = "ConfigParser.log";
+static const std::string	LOG_DIRECTIVE = "Directive.log";
 static const std::string	LOG_SERVER = "Server.log";

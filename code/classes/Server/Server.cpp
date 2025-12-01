@@ -118,7 +118,6 @@ void	Server::startListen(void)
     }
 
 	streams.print(LOG_SERVER) << "htons: " << server_addr.sin_port << std::endl;
-
     // Écouter les connexions entrantes
     if (listen(this->getFd(), this->socket_max_connection) == -1)
 	{

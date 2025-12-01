@@ -20,12 +20,8 @@ Location	ConfigParser::parseLocationLoop(Location &current)
 	{
 		next();
 		if (end())
-			throw (std::runtime_error("Location scope not closed by '}'"));
-		int	directive = checkDirective();
-		next();
-		if (end())
-			throw (std::runtime_error("Empty directive " + DIRECTIVE[directive]));
-		switch (directive)
+			throw (std::runtime_error("Unexpected end context location not closed by '}'"));
+		switch (checkDirective())
 		{
 			case ROOT:
 			parseRoot(current);
@@ -69,27 +65,25 @@ Location	ConfigParser::parseLocationLoop(Location &current)
 			default :
 			throw (std::runtime_error("Unauthorized directive in location scope \n-->" + get()));
 		}
-		next();
-		if (get() != ";")
-			throw (std::runtime_error("too much argument in directive " + DIRECTIVE[directive] + "\n-->" + get()));
 	}
 }
 
 void	ConfigParser::parseLocation(std::map<std::string, Location> &locations)
 {
 	// save current location name
-	std::vector<std::string>::iterator	name = _token_it;
-	if (locations.find(*name) != locations.end())
-		throw (std::runtime_error("location " + *name + " already exists"));
-	if (*name == DIRECTIVE[CLOSING_BRACKET])
+	std::string	name = get();
+	if (locations.find(name) != locations.end())
+		throw (std::runtime_error("location " + name + " already exists"));
+	if (name == DIRECTIVE[CLOSING_BRACKET])
 		throw (std::runtime_error("location need an path identifier"));
+
 	Location	current;
-	parseAlias(current);
+	current.setAlias(name);
 	next();
 	if (end() || get() != "{")
-		throw (std::runtime_error("Missing bracket after location '" + *name + "'\n-->" + get()));
+		throw (std::runtime_error("Missing bracket after location '" + name + "'\n-->" + get()));
 	parseLocationLoop(current);
-	locations.insert(std::make_pair(*name, current));
+	locations.insert(std::make_pair(name, current));
 }
 
 std::map<std::string, Location>	ConfigParser::parseServerLoop(Server &current)
@@ -97,45 +91,36 @@ std::map<std::string, Location>	ConfigParser::parseServerLoop(Server &current)
 	std::map<std::string, Location> locations;
 	while (true)
 	{
-		int	directive = checkDirective();
-		next();
-		switch (directive)
+		checkDirective();
+		switch (getDirective())
 		{
 			case LISTEN:
 				parseListen(current);
 				break ;
 			case LOCATION:
-				next();
 				parseLocation(locations);
 				break ;
 			case CLOSING_BRACKET:
 			return (locations);
 			default :
-				throw (std::runtime_error("Unauthorized directive in server scope :" + this->get()));
+				throw (std::runtime_error("Unauthorized directive in server scope :" + DIRECTIVE[this->getDirective()]));
 		}
 	}
 }
-
 
 void	ConfigParser::parseServer(std::vector<Server> &servers)
 {
 	Server	current;
 	// check if there is an opening bracket
-	if (this->get() != "{")
+	if (checkDirective() != OPENING_BRACKET)
 	{
-		throw (std::runtime_error("Unrecognized token " + this->get()));
+		throw (std::runtime_error("Missing opening bracket instead of " + this->get()));
 	}
 	this->next();
 
 	// build location for current
 	std::map<std::string, Location> locations = parseServerLoop(current);
-
-	// check interface:port are unique
-	// for (std::vector<Server>::iterator it1 = servers.begin(); it1 != servers.end(); this->next())
-	// {
-	// 	// if (current *it1)
-	// 		// throw (std::runtime_error("Server may not have same port" + *it));
-	// }
+	// should check interface:port are unique
 	servers.push_back(current);
 }
 
@@ -153,7 +138,7 @@ std::vector<Server>	ConfigParser::run(void)
 			break ;
 
 			default :
-				throw (std::runtime_error("Unauthorized directive in server scope :" + this->get()));
+				throw (std::runtime_error("Unauthorized directive in global scope :" + this->get()));
 		}
 	}
 	return (servers);
