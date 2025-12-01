@@ -11,22 +11,8 @@
 
 
 #include "ConfigParser.hpp"
+#include "tokens.hpp"
 
-#include "FileStream.hpp"
-extern FileStream	streams;
-
-// Si find renvoie la meme chose alors c'est qu'il ya plus de commentaires.
-// si le debut de commentaire le plus proche
-		// on cherche l'expression fermante a partir de la fin de l'expression ouvrante
-		// meme si ca trouve rien on efface de found a eraseUntil
-		// on efface de found a erase until pour pas effacer le \n
-		// un bonne evolution serait de replace par un \n
-		// fin du fichier on break;
-// sinon
-		// on cherche l'expression fermante a partir de la fin de l'expression ouvrante
-		// meme si ca trouve rien on efface de found a eraseUntil
-		// copy pasta du premier
-		// fin du fichier on break;
 static void	commentFilter(std::string &str)
 {
 	size_t	found = 0;

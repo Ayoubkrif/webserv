@@ -15,9 +15,6 @@
 #include "tokens.hpp"
 #include <sstream>
 
-#include "FileStream.hpp"
-extern FileStream	streams;
-
 static std::string	extractStr(const char *file)
 {
 	//https://stackoverflow.com/questions/29310166/check-if-a-fstream-is-either-a-file-or-directory

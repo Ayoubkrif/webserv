@@ -51,28 +51,3 @@ static const int OPENING_BRACKET		= 12;
 static const int CLOSING_BRACKET		= 13;
 static const int SEMICOLOM				= 14;
 static const int NONE					= 15;
-
-/*
-* int	gettoken(t_parser *parser, char **q, char **eq)
-{
-	char	*s;
-	int		ret;
-
-	s = skip_str_until(*parser->ps, parser->es, SPACES);
-	if (q)
-		*q = s;
-	ret = *s;
-	if (s && !ft_strchr(OPERANDS, *s))
-	{
-		ret = 'a';
-		s = skip_word(s, parser);
-	}
-	else if (!is_redir(&ret, &s))
-		s = is_operand(&ret, s);
-	if (eq)
-		*eq = s;
-	s = skip_str_until(s, parser->es, SPACES);
-	*parser->ps = s;
-	return (ret);
-}
-*/

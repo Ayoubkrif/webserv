@@ -14,9 +14,6 @@
 #include "Location.hpp"
 #include "tokens.hpp"
 
-#include "FileStream.hpp"
-extern FileStream	streams;
-
 int	ConfigParser::checkDirective(void)
 {
 	for (int i = 0; i != NONE; ++i)

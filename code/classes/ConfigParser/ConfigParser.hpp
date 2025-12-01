@@ -14,7 +14,9 @@
 #include <string>
 #include <vector>
 #include <map>
-#include "tokens.hpp"
+
+#include "FileStream.hpp"
+extern FileStream	streams;
 
 class	Server;
 class	Location;

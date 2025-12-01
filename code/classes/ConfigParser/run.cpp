@@ -14,9 +14,6 @@
 #include "Location.hpp"
 #include "tokens.hpp"
 
-#include "FileStream.hpp"
-extern FileStream	streams;
-
 Location	ConfigParser::parseLocationLoop(Location &current)
 {
 	while (true)
