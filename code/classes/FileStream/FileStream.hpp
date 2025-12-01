@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Logger.hpp                                         :+:      :+:    :+:   */
+/*   File.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aykrifa <aykrifa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -19,14 +19,13 @@
 
 static const std::string	SEPARATOR = "##############################################################################################################\n";
 
-class	Logger
+class	FileStream
 {
 	public:
-		static void					add(const std::string&);
-		static std::ofstream		&print(const std::string&);
-		static void					delete_streams(void);
+		FileStream(){};
+		~FileStream();
+		void					add(const std::string&);
+		std::ofstream		&print(const std::string&);
 	private:
-		Logger();
-		~Logger();
-		static std::map<std::string, std::ofstream*>	_outfile;
+		std::map<std::string, std::ofstream*>	_outfile;
 };

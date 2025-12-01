@@ -11,8 +11,10 @@
 
 #include "Server.hpp"
 #include "Location.hpp"
-#include "Logger.hpp"
 #include <stdexcept>
+
+#include "FileStream.hpp"
+extern FileStream	streams;
 
 Server::Server(void):
 	_port(8080),
@@ -115,7 +117,7 @@ void	Server::startListen(void)
 		throw (std::runtime_error("bind"));
     }
 
-	Logger::print(LOG_SERVER) << "htons: " << server_addr.sin_port << std::endl;
+	streams.print(LOG_SERVER) << "htons: " << server_addr.sin_port << std::endl;
 
     // Écouter les connexions entrantes
     if (listen(this->getFd(), this->socket_max_connection) == -1)

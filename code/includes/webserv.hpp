@@ -14,6 +14,6 @@
 #include <iostream>
 #include "ArgChecker.hpp"
 #include "ConfigParser.hpp"
-#include "Logger.hpp"
+#include "FileStream.hpp"
 #include "Location.hpp"
 #include "Server.hpp"

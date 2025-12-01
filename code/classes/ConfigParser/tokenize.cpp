@@ -11,8 +11,9 @@
 
 
 #include "ConfigParser.hpp"
-#include "Logger.hpp"
-#include <vector>
+
+#include "FileStream.hpp"
+extern FileStream	streams;
 
 // Si find renvoie la meme chose alors c'est qu'il ya plus de commentaires.
 // si le debut de commentaire le plus proche
@@ -59,7 +60,7 @@ static void	commentFilter(std::string &str)
 				break ;
 		}
 	}
-	/**/Logger::print(LOG_CONFIGPARSER) << SEPARATOR + "|| Comment trimmed \nVV" << std::endl << str;
+	/**/streams.print(LOG_CONFIGPARSER) << SEPARATOR + "|| Comment trimmed \nVV" << std::endl << str;
 }
 
 void	ConfigParser::tokenInit(void)
@@ -95,8 +96,8 @@ void	ConfigParser::tokenize(void)
 		}
 		cursor = end;
 	}
-	/**/Logger::print(LOG_CONFIGPARSER) << SEPARATOR + "|| Token list \nVV";
+	/**/streams.print(LOG_CONFIGPARSER) << SEPARATOR + "|| Token list \nVV";
 	/**/for (std::vector<std::string>::iterator it = _token_vec.begin(); it != _token_vec.end(); ++it)
-	/**/{Logger::print(LOG_CONFIGPARSER) << "<"<< *it << "> ";}
-	/**/Logger::print(LOG_CONFIGPARSER) << std::endl;
+	/**/{streams.print(LOG_CONFIGPARSER) << "<"<< *it << "> ";}
+	/**/streams.print(LOG_CONFIGPARSER) << std::endl;
 }

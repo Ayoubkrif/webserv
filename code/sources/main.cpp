@@ -11,11 +11,13 @@
 
 #include "webserv.hpp"
 
+FileStream	streams;
+
 int	main(int argc, char **argv)
 {
 	try
 	{
-		Logger::add(LOG_CONFIGPARSER);
+		streams.add(LOG_CONFIGPARSER);
 		ArgChecker::checkargs(argc);
 		ConfigParser	parser(argv[1]);
 		parser.run();
@@ -24,5 +26,4 @@ int	main(int argc, char **argv)
 	{
 		std::cerr << "Exception caught :"<< e.what() << std::endl;
 	}
-	Logger::delete_streams();
 }

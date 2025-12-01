@@ -13,8 +13,10 @@
 #include "Server.hpp"
 #include "Location.hpp"
 #include "tokens.hpp"
-#include "Logger.hpp"
 #include <sstream>
+
+#include "FileStream.hpp"
+extern FileStream	streams;
 
 static std::string	extractStr(const char *file)
 {
@@ -25,7 +27,7 @@ static std::string	extractStr(const char *file)
 
 	std::ostringstream	ostrs;
 	ostrs	<< fs.rdbuf();
-	/**/Logger::print(LOG_CONFIGPARSER) << SEPARATOR + "|| Extracted str \nVV" << std::endl << ostrs;
+	/**/streams.print(LOG_CONFIGPARSER) << SEPARATOR + "|| Extracted str \nVV" << std::endl << ostrs;
 	return (ostrs.str());
 }
 

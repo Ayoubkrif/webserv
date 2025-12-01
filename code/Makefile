@@ -24,7 +24,7 @@ CLASS_FILES = \
 	ConfigParser/ConfigParser.cpp \
 	ConfigParser/utils.cpp \
 	ConfigParser/tokenize.cpp \
-	Logger/Logger.cpp \
+	FileStream/FileStream.cpp \
 	Location/Location.cpp \
 	Server/Server.cpp \
 
@@ -36,7 +36,7 @@ INC_DIR = \
 		  includes \
 		  $(CLASS_DIR)/ArgChecker \
 		  $(CLASS_DIR)/ConfigParser \
-		  $(CLASS_DIR)/Logger \
+		  $(CLASS_DIR)/FileStream \
 		  $(CLASS_DIR)/Location \
 		  $(CLASS_DIR)/Server \
 	
