@@ -27,10 +27,6 @@ class	Location
 	public:Location							&operator=(const Location&);
 	public:Location(void);
 
-	// public:void								setName(std::string);
-	// public:const std::string				&getName(void) const;
-	// private:std::string					_name;
-
 	public:const std::string				&getRoot(void) const;
 	public:void								setRoot(std::string);
 	private:std::string					_root;
