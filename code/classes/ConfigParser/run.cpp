@@ -94,6 +94,7 @@ std::map<std::string, Location>	ConfigParser::parseServerLoop(Server &current)
 	while (true)
 	{
 		checkDirective();
+		next();
 		switch (getDirective())
 		{
 			case LISTEN:
@@ -107,6 +108,7 @@ std::map<std::string, Location>	ConfigParser::parseServerLoop(Server &current)
 			default :
 				throw (std::runtime_error("Unauthorized directive in server scope :" + DIRECTIVE[this->getDirective()]));
 		}
+		next();
 	}
 }
 
@@ -118,7 +120,7 @@ void	ConfigParser::parseServer(std::vector<Server> &servers)
 	{
 		throw (std::runtime_error("Missing opening bracket instead of " + this->get()));
 	}
-	this->next();
+	nextAsserted();
 
 	// build location for current
 	std::map<std::string, Location> locations = parseServerLoop(current);
@@ -135,8 +137,10 @@ std::vector<Server>	ConfigParser::run(void)
 		switch (checkDirective())
 		{
 			case SERVER:
-			this->next();
+			next();
 			parseServer(servers);
+			if (end())
+				return (servers);
 			break ;
 
 			default :
