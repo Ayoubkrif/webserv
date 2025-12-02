@@ -16,48 +16,54 @@
 
 Location	ConfigParser::parseLocationLoop(Location &current)
 {
+	streams.print(LOG_DIRECTIVE) << "SCOPE LOCATION" << std::endl;
 	while (true)
 	{
-		next();
-		if (end())
-			throw (std::runtime_error("Unexpected end context location not closed by '}'"));
 		checkDirective();
-		next();
 		switch (getDirective())
 		{
 			case ROOT:
+			next();
 			parseRoot(current);
 			break ;
 
 			case ALIAS:
+			next();
 			parseAlias(current);
 			break ;
 
 			case CLIENT_MAX_BODY_SIZE:
+			next();
 			parseClientMaxBodySize(current);
 			break ;
 
 			case CGI_SUFFIX:
+			next();
 			parseCgi(current);
 			break ;
 
 			case ALLOWED_METHODS:
+			next();
 			parseAllowedMethods(current);
 			break ;
 
 			case RETURN:
+			next();
 			parseReturn(current);
 			break ;
 
 			case AUTOINDEX:
+			next();
 			parseAutoIndex(current);
 			break ;
 
 			case ERROR_PAGE:
+			next();
 			parseErrorPages(current);
 			break ;
 
 			case POST_LOCATION:
+			next();
 			parsePostLocation(current);
 			break ;
 
@@ -67,6 +73,9 @@ Location	ConfigParser::parseLocationLoop(Location &current)
 			default :
 			throw (std::runtime_error("Unauthorized directive in location scope \n-->" + get()));
 		}
+		next();
+		if (end())
+			throw (std::runtime_error("Unexpected end context location not closed by '}'"));
 	}
 }
 
@@ -84,6 +93,9 @@ void	ConfigParser::parseLocation(std::map<std::string, Location> &locations)
 	next();
 	if (end() || get() != "{")
 		throw (std::runtime_error("Missing bracket after location '" + name + "'\n-->" + get()));
+	next();
+	if (end())
+		throw (std::runtime_error("Unexpected end context location not closed by '}'"));
 	parseLocationLoop(current);
 	locations.insert(std::make_pair(name, current));
 }
@@ -93,14 +105,16 @@ std::map<std::string, Location>	ConfigParser::parseServerLoop(Server &current)
 	std::map<std::string, Location> locations;
 	while (true)
 	{
+		streams.print(LOG_DIRECTIVE) << "SCOPE SERVER" << std::endl;
 		checkDirective();
-		next();
 		switch (getDirective())
 		{
 			case LISTEN:
+				next();
 				parseListen(current);
 				break ;
 			case LOCATION:
+				next();
 				parseLocation(locations);
 				break ;
 			case CLOSING_BRACKET:
@@ -120,7 +134,9 @@ void	ConfigParser::parseServer(std::vector<Server> &servers)
 	{
 		throw (std::runtime_error("Missing opening bracket instead of " + this->get()));
 	}
-	nextAsserted();
+	next();
+	if (end())
+		throw (std::runtime_error("Unexpected end context server not closed by '}'"));
 
 	// build location for current
 	std::map<std::string, Location> locations = parseServerLoop(current);
@@ -134,6 +150,7 @@ std::vector<Server>	ConfigParser::run(void)
 
 	for (this->tokenInit(); !this->end(); this->next())
 	{
+		streams.print(LOG_DIRECTIVE) << "SCOPE GLOBAL" << std::endl;
 		switch (checkDirective())
 		{
 			case SERVER:

@@ -46,7 +46,7 @@ static void	commentFilter(std::string &str)
 				break ;
 		}
 	}
-	/**/streams.print(LOG_CONFIGPARSER) << SEPARATOR + "|| Comment trimmed \nVV" << std::endl << str;
+	// /**/streams.print(LOG_CONFIGPARSER) << SEPARATOR + "|| Comment trimmed \nVV" << std::endl << str;
 }
 
 void	ConfigParser::tokenInit(void)
@@ -82,7 +82,7 @@ void	ConfigParser::tokenize(void)
 		}
 		cursor = end;
 	}
-	/**/streams.print(LOG_CONFIGPARSER) << SEPARATOR + "|| Token list \nVV";
+	/**/streams.print(LOG_CONFIGPARSER) << SEPARATOR + "VV Token list VV" << std::endl;
 	/**/for (std::vector<std::string>::iterator it = _token_vec.begin(); it != _token_vec.end(); ++it)
 	/**/{streams.print(LOG_CONFIGPARSER) << "<"<< *it << "> ";}
 	/**/streams.print(LOG_CONFIGPARSER) << std::endl;
