@@ -61,3 +61,5 @@ class	Server
 		unsigned int					_interface;
 		int								_fd;
 };
+
+std::ostream	&operator<<(std::ostream &lhs, const Server &rhs);

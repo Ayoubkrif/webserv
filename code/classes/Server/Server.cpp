@@ -124,3 +124,27 @@ void	Server::startListen(void)
 		throw (std::runtime_error("listen"));
     }
 }
+
+std::ostream	&operator<<(std::ostream &lhs, const Server &rhs)
+{
+	lhs << "listen="
+		<< rhs.getPort()
+		<< ":"
+		<< rhs.getInterface()
+		<< std:: endl;
+	lhs << "fd="
+		<< rhs.getFd()
+		<< std::endl;
+	{
+		const std::map<std::string, Location> &locations = rhs.getLocations();
+		for (std::map<std::string,Location>::const_iterator it = locations.begin(); it != locations.end(); it++)
+		{
+			lhs << "location "
+				<< it->first
+				<< std::endl;
+			lhs << it->second
+				<< std::endl;
+		}
+	}
+	return (lhs);
+}
