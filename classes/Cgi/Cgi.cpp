@@ -25,6 +25,8 @@ std::string	httpToCgiHeader(std::string field)
 		if (field[i] >= 'a' && field[i] <= 'z')
 			field[i] += 32;
 	}
+	if (!field.compare("CONTENT_TYPE") || !field.compare("CONTENT_LENGTH"))
+		return (field + "=");
 	return (HTTP + field + "=");
 }
 

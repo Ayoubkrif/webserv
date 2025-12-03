@@ -42,7 +42,8 @@ typedef enum parsing_state
 	CHUNK_SIZE,
 	TRAILERS,
 	SEND,
-	// SEND_CGI,
+	// SEND_CGI, -> so that resonse builder knows what to parse and how
+	// or put variable in cgi or request or if *cgi==NULL?
 } parsing_state;
 
 class Request
@@ -59,9 +60,10 @@ private:
 
 	method 				_method;
 	std::string			_uri;
+	std::string			_path;//need to keep the URI for the CGI so put the full file path here
 	std::string			_queryString;
 
-	Cgi*					_cgi;
+	Cgi*				_cgi;
 
 public:
 	Request();

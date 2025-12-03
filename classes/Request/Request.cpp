@@ -168,6 +168,7 @@ void	Request::parseMethod(std::string str)
 
 std::string resolveURI(std::string str)
 {
+	//DO NOT modify request->_uri put it in _path
 	return str;
 }
 
@@ -183,5 +184,6 @@ void	Request::parseURI(std::string str)
 	// std::cout << "query is is:" + this->_queryString << std::endl;
 	
 	//resolve uri
-	this->_uri = resolveURI(str);
+	this->_uri.assign(str);
+	this->_path = resolveURI(str);
 }

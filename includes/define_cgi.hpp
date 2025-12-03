@@ -54,9 +54,10 @@ static const char* CGI_HEADER_ARRAY[] = {
     "SERVER_PROTOCOL=HTTP/1.1",
     "SERVER_SOFTWARE=",
     "AUTH_TYPE=",
-    "HOST_NAME=",
+    //"HOST_NAME=", ->what is this??
     "SERVER_PORT=",
     "REMOTE_IDENT=",
+    "REMOTE_HOST=",
     "REMOTE_USER="
 };
 
@@ -72,11 +73,11 @@ const std::string PATH_TRANSLATED = "PATH_TRANSLATED=";
 const std::string QUERY_STRING = "QUERY_STRING=";
 const std::string METHOD = "METHOD=";
 
-const std::string REMOTE_HOST = "REMOTE_HOST=";
+//const std::string REMOTE_HOST = "REMOTE_HOST="; ->why here??
 const std::string CONTENT_LENGTH = "CONTENT_LENGTH=";
 const std::string CONTENT_TYPE = "CONTENT_TYPE=";
 
-const std::string HTTP = "HTTP_=";
+const std::string HTTP = "HTTP_";
 
 const std::string REMOTE_ADDR = "REMOTE_ADDR=";
 
