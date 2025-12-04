@@ -13,6 +13,7 @@
 #include "../classes/Request/Request.hpp"
 #include "../classes/Cgi/Cgi.hpp"
 
+// string = expr + final CRLF
 void	parse_header_type(Request *request)
 {
 	std::string::size_type	cursor = 0;
@@ -20,6 +21,9 @@ void	parse_header_type(Request *request)
 
 	if (request->getHeader().empty())
 		return;
+	//cant be empty
+	//error if empty???
+
 	request->getToken(&token, &cursor);//can't use this cause it skip ows
 	// std::cout << GREEN << "Request line is:" + token << WHITE << std::endl;
 	parse_request_line(request, token);
@@ -28,6 +32,8 @@ void	parse_header_type(Request *request)
 	else
 		parse_header(request);
 		
+	//what if error in request line
+
 	//if CGI parse_header in cgi mode
 	//state CGI but same parsing function?
 }
@@ -39,6 +45,7 @@ void	parse_header(Request *request)
 
 	if (request->getHeader().empty())
 		return;
+	//error if empty???
 	
 	int type;
 	while (1)
@@ -59,9 +66,12 @@ void	parse_header(Request *request)
 			(request->*Request::fctField[type])(token);
 		else
 			std::cout << "Invalid index is " << type << std::endl;//not necessarly, field can be valid but no function
+		//inverser condition if else pour supprimer else pour la clarter
 		
 	}
+
 	//check_complete_header(event);
+	
 	if (request->getTransferEncoding() == CHUNKED)
 		request->setState(CHUNK_SIZE);
 	else

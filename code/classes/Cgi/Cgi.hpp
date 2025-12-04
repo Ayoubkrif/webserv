@@ -21,9 +21,10 @@ class Cgi
 private:
 	int							_responsePipe[2];
 	std::vector<std::string>	_env;
-	// Request&					_client;
+	bool						_contentLength;
+	std::vector<std::string>	_arg;
+
 	std::string					_buffer;
-	// static void					(Request::*fctField[210])(std::string);
 
 public:
 	Cgi();

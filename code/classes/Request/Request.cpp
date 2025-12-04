@@ -175,6 +175,7 @@ std::string resolveURI(std::string str)
 void	Request::parseURI(std::string str)
 {
 	std::string::size_type cursor = 0;
+	//or # anchor???
 	if (move_cursor(&cursor, str, "?"))
 	{
 		this->_queryString.assign(str.substr(cursor + 1));
