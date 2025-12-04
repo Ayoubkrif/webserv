@@ -22,6 +22,7 @@ int	main(int argc, char **argv)
 		streams.add(LOG_SERVER);
 		streams.add(LOG_DIRECTIVE);
 		streams.add(LOG_LOCATION);
+
 		ArgChecker::checkargs(argc);
 		ConfigParser	parser(argv[1]);
 		servers = parser.run();
@@ -29,11 +30,13 @@ int	main(int argc, char **argv)
 	catch (std::exception	&e)
 	{
 		std::cerr << "Exception caught :"<< e.what() << std::endl;
+		return (1);
 	}
 	try {servers.at(0).startListen();}
 	catch (std::exception	&e)
 	{
 		std::cerr << "Exception caught :"<< e.what() << std::endl;
+		return (1);
 	}
 	printServerInfo(servers);
 }
