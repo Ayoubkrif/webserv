@@ -23,6 +23,11 @@ void	parse_buffer(Request *request)
 	{
 		request->fillHeader(cursor);
 		parse_header_type(request);
+		//if state has been edited there is an error and should return
+		if (request->getTransferEncoding() == CHUNKED)
+			request->setState(CHUNK_SIZE);
+		else
+			request->setState(BODY);
 	}
 	// if (request->getState() & (BODY | CHUNK_SIZE | TRAILERS))
 	if (request->getState() == BODY || request->getState() == CHUNK_SIZE || request->getState() == TRAILERS)

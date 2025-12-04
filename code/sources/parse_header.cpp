@@ -65,15 +65,8 @@ void	parse_header(Request *request)
 		else
 			std::cout << "Invalid index is " << type << std::endl;//not necessarly, field can be valid but no function
 		//inverser condition if else pour supprimer else pour la clarter
-		
 	}
-
 	//check_complete_header(event);
-	
-	if (request->getTransferEncoding() == CHUNKED)
-		request->setState(CHUNK_SIZE);
-	else
-		request->setState(BODY);
 }
 
 void	parse_cgi_header(Request *request)
@@ -103,10 +96,6 @@ void	parse_cgi_header(Request *request)
 		cgi.addFields(field, token);
 	}
 	//check_complete_header(event); //if content_length absent -> add it
-	if (request->getTransferEncoding() == CHUNKED)
-		request->setState(CHUNK_SIZE);
-	else
-		request->setState(BODY);
 }
 //class request devient client et request est le constructeur de client (clien herite de request)
 //les fonctions de parsing vont dans request pour la lisibilite
