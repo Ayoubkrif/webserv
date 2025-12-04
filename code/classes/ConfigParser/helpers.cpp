@@ -44,7 +44,7 @@ void	ConfigParser::nextAsserted(void)
 
 bool	ConfigParser::end(void) const
 {
-	return(_token_it == _token_it_end);
+	return(_token_it == _token_vec.end());
 }
 
 const std::string	ConfigParser::get(void) const

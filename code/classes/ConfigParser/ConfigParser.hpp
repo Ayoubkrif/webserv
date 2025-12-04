@@ -33,7 +33,6 @@ class	ConfigParser
 		std::string							_str;
 		std::vector<std::string>			_token_vec;
 		std::vector<std::string>::iterator	_token_it;
-		std::vector<std::string>::iterator	_token_it_end;
 		int									_last_directive;
 
 		void				next(void);
