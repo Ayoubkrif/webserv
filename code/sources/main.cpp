@@ -14,9 +14,36 @@
 #include "../includes/parsing_header.hpp"
 #include <iostream>
 #include <string>
+#include "webserv.hpp"
 
-int	main()
+FileStream	streams;
+
+int	main(int argc, char **argv)
 {
+	std::vector<Server>	servers;
+	try
+	{
+		streams.add(LOG_CONFIGPARSER);
+		streams.add(LOG_SERVER);
+		streams.add(LOG_DIRECTIVE);
+		streams.add(LOG_LOCATION);
+
+		ArgChecker::checkargs(argc);
+		ConfigParser	parser(argv[1]);
+		servers = parser.run();
+	}
+	catch (std::exception	&e)
+	{
+		std::cerr << "Exception caught :"<< e.what() << std::endl;
+		return (1);
+	}
+	try {servers.at(0).startListen();}
+	catch (std::exception	&e)
+	{
+		std::cerr << "Exception caught :"<< e.what() << std::endl;
+		return (1);
+	}
+	printServerInfo(servers);
 	Request::initFields();
 
 	//buffer avec header entier + body entier + bout de next buffer

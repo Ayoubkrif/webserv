@@ -3,70 +3,104 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cbordeau <cbordeau@student.42.fr>          +#+  +:+       +#+         #
+#    By: aykrifa <aykrifa@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/08/19 13:28:35 by cbordeau          #+#    #+#              #
-#    Updated: 2025/11/30 17:32:21 by cbordeau         ###   LAUSANNE.ch        #
+#    Created: 2025/11/17 12:32:52 by aykrifa           #+#    #+#              #
 #                                                                              #
 # **************************************************************************** #
 
+# directories
+SRC_DIR   = sources
+CLASS_DIR = classes
+OBJ_DIR   = build
 
-NAME       = WebServ
-CPP        = c++
-CPPFLAGS   = -Wall -Wextra -Werror -std=c++98 -g3
-INCLUDES   = -Iincludes -Iclasses/Request -Iclasses/HeaderParsing -Iclasses/Cgi
+# Sources listing
+SRC_FILES = \
+	main.cpp \
+	\
+	parse_buffer.cpp \
+	parse_header.cpp \
+	parse_request_line.cpp \
+	parse_header_utils.cpp \
 
-# Dossiers
-SRC_PATH   = sources
-CLASS_PATH = classes
-OBJ_PATH   = objs
+# Classes listing
+CLASS_FILES = \
+	ArgChecker/ArgChecker.cpp \
+	ConfigParser/ConfigParser.cpp \
+	ConfigParser/tokenize.cpp \
+	ConfigParser/run.cpp \
+	ConfigParser/directive.cpp \
+	ConfigParser/helpers.cpp \
+	FileStream/FileStream.cpp \
+	Location/Location.cpp \
+	Server/Server.cpp \
+	\
+	Request/Request.cpp \
+	Request/Getter.cpp \
+	Request/HeaderTab.cpp \
+	Request/FieldsParser.cpp \
+	Request/RequestUtils.cpp \
+	Cgi/Cgi.cpp \
 
-# Sources
-SOURCES = \
-	$(SRC_PATH)/main.cpp \
-	$(SRC_PATH)/parse_buffer.cpp \
-	$(SRC_PATH)/parse_header.cpp \
-	$(SRC_PATH)/parse_request_line.cpp \
-	$(SRC_PATH)/parse_header_utils.cpp \
-	$(CLASS_PATH)/Request/Request.cpp \
-	$(CLASS_PATH)/Request/Getter.cpp \
-	$(CLASS_PATH)/Request/HeaderTab.cpp \
-	$(CLASS_PATH)/Request/FieldsParser.cpp \
-	$(CLASS_PATH)/Request/RequestUtils.cpp \
-	$(CLASS_PATH)/Cgi/Cgi.cpp 
-	# $(CLASS_PATH)/Request/Get.cpp \
-	# $(CLASS_PATH)/Request/Post.cpp \
-	# $(CLASS_PATH)/Request/Delete.cpp 
+CLASSES = $(addprefix $(CLASS_DIR)/, $(CLASS_FILES))
+SOURCES = $(addprefix $(SRC_DIR)/,$(SRC_FILES))
 
-# Objets (même structure que SOURCES mais dans objs/)
-OBJS = $(addprefix $(OBJ_PATH)/,$(SOURCES:.cpp=.o))
+# include directories
+INC_DIR = \
+		  includes \
+		  $(CLASS_DIR)/ArgChecker \
+		  $(CLASS_DIR)/ConfigParser \
+		  $(CLASS_DIR)/FileStream \
+		  $(CLASS_DIR)/Location \
+		  $(CLASS_DIR)/Server \
+		  $(CLASS_DIR)/Request \
+		  $(CLASS_DIR)/Cgi \
+
+##################################################################################
+#compilation
+NAME		= WebServ
+CC			= c++
+CFLAGS 		= -Wall -Wextra -Werror -std=c++98 -MMD -MP -g3
+PREPROC		=
+INCLUDES	= $(addprefix -I, $(INC_DIR))
+
+# Objets (même structure que SOURCES ou CLASSES mais dans objs/)
+OBJS = $(CLASSES:%.cpp=$(OBJ_DIR)/%.o) \
+		$(SOURCES:%.cpp=$(OBJ_DIR)/%.o)
+
+
+
 DEPS = $(OBJS:.o=.d)
 
-# Règle principale
 all: $(NAME)
+.PHONY: all
 
-# Édition de lien
+# LINK
 $(NAME): $(OBJS)
-	$(CPP) $(CPPFLAGS) -o $@ $(OBJS)
+	$(CC) $(OBJS) \
+		-o $@
 
-# Compilation des .o (recréation des dossiers automatiquement)
-$(OBJ_PATH)/%.o: %.cpp
-	@mkdir -p $(dir $@)
-	$(CPP) $(CPPFLAGS) $(INCLUDES) -MMD -MP -c $< -o $@
+#compilation
+$(OBJ_DIR)/%.o: %.cpp
+	mkdir -p $(dir $@)
+	$(CC) -c $(CFLAGS) $(INCLUDES) \
+		$< -o $@
 
-# Inclusion des dépendances
+# COMMENT
 -include $(DEPS)
 
 clean:
-	rm -rf $(OBJ_PATH)
+	rm -rf $(OBJ_DIR)
+.PHONY: clean
 
 fclean: clean
 	rm -f $(NAME)
+.PHONY: fclean
 
 re: fclean
 	make all
+.PHONY: re
 
 bear:
 	bear -- make re
-
-.PHONY: all clean fclean re
+.PHONY: bear
