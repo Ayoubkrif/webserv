@@ -21,30 +21,8 @@
 
 #include "webserv.hpp"
 
-#define MAX_EVENTS 10
-
-int event_loop(std::vector<Server> servers) {
-    // 2. Créer une instance epoll
-    int epoll_fd = epoll_create1(0);
-    if (epoll_fd == -1) {
-        perror("epoll_create1");
-        exit(EXIT_FAILURE);
-    }
-
-	for(std::vector<Server>::iterator it = servers.begin(); it != servers.end(); it++)
-	{
-		// Structure pour les événements
-		struct epoll_event event;
-		event.events = EPOLLIN;
-		event.data.fd = it->getFd();
-		event.data.ptr = &(*it);
-
-		// 3. Ajouter le socket serveur à epoll
-		if (epoll_ctl(epoll_fd, EPOLL_CTL_ADD, event.data.fd, &event) == -1) {
-			perror("epoll_ctl: server_fd");
-			exit(EXIT_FAILURE);
-		}
-	}
+int event(std::vector<Server> &servers)
+{
 
     // Boucle principale
 	struct epoll_event events[MAX_EVENTS];
