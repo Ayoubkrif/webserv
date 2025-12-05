@@ -20,9 +20,9 @@ class	Server
 {
 	public:
 		Server(void);
-		Server(const Server&);
 		~Server(void);
-		Server	operator=(const Server&);
+		// Server(const Server&);
+		// Server	operator=(const Server&);
 
 	// man socket
 		// The domain argument specifies a communication domain; this selects the protocol family which will be used for communication.
@@ -64,4 +64,4 @@ class	Server
 };
 
 std::ostream	&operator<<(std::ostream &lhs, const Server &rhs);
-void		printServerInfo(const std::vector<Server> servers);
+void			printServerInfo(const std::vector<Server> &servers);

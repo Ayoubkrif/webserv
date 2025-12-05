@@ -12,9 +12,9 @@
 #include "Server.hpp"
 #include "Location.hpp"
 #include <stdexcept>
-
 #include "FileStream.hpp"
 #include "logfiles.hpp"
+
 extern FileStream	streams;
 
 static const unsigned int				DEFAULT_SERVER_INTERFACE = 0;
@@ -25,26 +25,30 @@ Server::Server(void):
 	_fd(-1)
 {}
 
-Server::Server(const Server &copy):
-	_locations(copy._locations),
-	_port(copy.getPort()),
-	_interface(copy._interface),
-	_fd(copy.getFd())
-{}
-
+#include <unistd.h>
 Server::~Server(void)
-{}
-
-Server	Server::operator=(const Server &rhs)
 {
-	if (&rhs == this)
-		return (*this);
-	this->setLocationsMap(rhs.getLocations());
-	this->setPort(rhs.getPort());
-	this->setInterface(rhs.getInterface());
-	this->setFd(rhs.getFd());
-	return (*this);
+	if (_fd != -1)
+		close (_fd);
 }
+
+// Server::Server(const Server &copy):
+// 	_locations(copy._locations),
+// 	_port(copy.getPort()),
+// 	_interface(copy._interface),
+// 	_fd(-1)
+// {}
+//
+// Server	Server::operator=(const Server &rhs)
+// {
+// 	if (&rhs == this)
+// 		return (*this);
+// 	this->setLocationsMap(rhs.getLocations());
+// 	this->setPort(rhs.getPort());
+// 	this->setInterface(rhs.getInterface());
+// 	this->setFd(rhs.getFd());
+// 	return (*this);
+// }
 
 const std::map<std::string, Location>	&Server::getLocations(void) const
 {
@@ -152,7 +156,7 @@ std::ostream	&operator<<(std::ostream &lhs, const Server &rhs)
 	return (lhs);
 }
 
-void	printServerInfo(const std::vector<Server> servers)
+void	printServerInfo(const std::vector<Server> &servers)
 {
 	int	i = 0;
 	for (std::vector<Server>::const_iterator it = servers.begin(); it != servers.end(); it++)
