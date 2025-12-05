@@ -16,6 +16,7 @@
       "-Iclasses/Server",
       "-Iclasses/Request",
       "-Iclasses/Cgi",
+      "-Iclasses/EventManager",
       "-o",
       "build/classes/ArgChecker/ArgChecker.o",
       "classes/ArgChecker/ArgChecker.cpp"
@@ -41,6 +42,7 @@
       "-Iclasses/Server",
       "-Iclasses/Request",
       "-Iclasses/Cgi",
+      "-Iclasses/EventManager",
       "-o",
       "build/classes/ConfigParser/ConfigParser.o",
       "classes/ConfigParser/ConfigParser.cpp"
@@ -66,6 +68,7 @@
       "-Iclasses/Server",
       "-Iclasses/Request",
       "-Iclasses/Cgi",
+      "-Iclasses/EventManager",
       "-o",
       "build/classes/ConfigParser/tokenize.o",
       "classes/ConfigParser/tokenize.cpp"
@@ -91,6 +94,7 @@
       "-Iclasses/Server",
       "-Iclasses/Request",
       "-Iclasses/Cgi",
+      "-Iclasses/EventManager",
       "-o",
       "build/classes/ConfigParser/run.o",
       "classes/ConfigParser/run.cpp"
@@ -116,6 +120,7 @@
       "-Iclasses/Server",
       "-Iclasses/Request",
       "-Iclasses/Cgi",
+      "-Iclasses/EventManager",
       "-o",
       "build/classes/ConfigParser/directive.o",
       "classes/ConfigParser/directive.cpp"
@@ -141,6 +146,7 @@
       "-Iclasses/Server",
       "-Iclasses/Request",
       "-Iclasses/Cgi",
+      "-Iclasses/EventManager",
       "-o",
       "build/classes/ConfigParser/helpers.o",
       "classes/ConfigParser/helpers.cpp"
@@ -166,6 +172,7 @@
       "-Iclasses/Server",
       "-Iclasses/Request",
       "-Iclasses/Cgi",
+      "-Iclasses/EventManager",
       "-o",
       "build/classes/FileStream/FileStream.o",
       "classes/FileStream/FileStream.cpp"
@@ -191,6 +198,7 @@
       "-Iclasses/Server",
       "-Iclasses/Request",
       "-Iclasses/Cgi",
+      "-Iclasses/EventManager",
       "-o",
       "build/classes/Location/Location.o",
       "classes/Location/Location.cpp"
@@ -216,6 +224,7 @@
       "-Iclasses/Server",
       "-Iclasses/Request",
       "-Iclasses/Cgi",
+      "-Iclasses/EventManager",
       "-o",
       "build/classes/Server/Server.o",
       "classes/Server/Server.cpp"
@@ -241,6 +250,7 @@
       "-Iclasses/Server",
       "-Iclasses/Request",
       "-Iclasses/Cgi",
+      "-Iclasses/EventManager",
       "-o",
       "build/classes/Request/Request.o",
       "classes/Request/Request.cpp"
@@ -266,6 +276,7 @@
       "-Iclasses/Server",
       "-Iclasses/Request",
       "-Iclasses/Cgi",
+      "-Iclasses/EventManager",
       "-o",
       "build/classes/Request/Getter.o",
       "classes/Request/Getter.cpp"
@@ -291,6 +302,7 @@
       "-Iclasses/Server",
       "-Iclasses/Request",
       "-Iclasses/Cgi",
+      "-Iclasses/EventManager",
       "-o",
       "build/classes/Request/HeaderTab.o",
       "classes/Request/HeaderTab.cpp"
@@ -316,6 +328,7 @@
       "-Iclasses/Server",
       "-Iclasses/Request",
       "-Iclasses/Cgi",
+      "-Iclasses/EventManager",
       "-o",
       "build/classes/Request/FieldsParser.o",
       "classes/Request/FieldsParser.cpp"
@@ -341,6 +354,7 @@
       "-Iclasses/Server",
       "-Iclasses/Request",
       "-Iclasses/Cgi",
+      "-Iclasses/EventManager",
       "-o",
       "build/classes/Request/RequestUtils.o",
       "classes/Request/RequestUtils.cpp"
@@ -366,6 +380,7 @@
       "-Iclasses/Server",
       "-Iclasses/Request",
       "-Iclasses/Cgi",
+      "-Iclasses/EventManager",
       "-o",
       "build/classes/Cgi/Cgi.o",
       "classes/Cgi/Cgi.cpp"
@@ -391,6 +406,33 @@
       "-Iclasses/Server",
       "-Iclasses/Request",
       "-Iclasses/Cgi",
+      "-Iclasses/EventManager",
+      "-o",
+      "build/classes/EventManager/EventManager.o",
+      "classes/EventManager/EventManager.cpp"
+    ],
+    "directory": "/home/ayoub/Desktop/webserv/webserv/code",
+    "file": "/home/ayoub/Desktop/webserv/webserv/code/classes/EventManager/EventManager.cpp",
+    "output": "/home/ayoub/Desktop/webserv/webserv/code/build/classes/EventManager/EventManager.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/c++",
+      "-c",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-std=c++98",
+      "-g3",
+      "-Iincludes",
+      "-Iclasses/ArgChecker",
+      "-Iclasses/ConfigParser",
+      "-Iclasses/FileStream",
+      "-Iclasses/Location",
+      "-Iclasses/Server",
+      "-Iclasses/Request",
+      "-Iclasses/Cgi",
+      "-Iclasses/EventManager",
       "-o",
       "build/sources/main.o",
       "sources/main.cpp"
@@ -416,6 +458,7 @@
       "-Iclasses/Server",
       "-Iclasses/Request",
       "-Iclasses/Cgi",
+      "-Iclasses/EventManager",
       "-o",
       "build/sources/parse_buffer.o",
       "sources/parse_buffer.cpp"
@@ -441,6 +484,7 @@
       "-Iclasses/Server",
       "-Iclasses/Request",
       "-Iclasses/Cgi",
+      "-Iclasses/EventManager",
       "-o",
       "build/sources/parse_header.o",
       "sources/parse_header.cpp"
@@ -466,6 +510,7 @@
       "-Iclasses/Server",
       "-Iclasses/Request",
       "-Iclasses/Cgi",
+      "-Iclasses/EventManager",
       "-o",
       "build/sources/parse_request_line.o",
       "sources/parse_request_line.cpp"
@@ -491,6 +536,7 @@
       "-Iclasses/Server",
       "-Iclasses/Request",
       "-Iclasses/Cgi",
+      "-Iclasses/EventManager",
       "-o",
       "build/sources/parse_header_utils.o",
       "sources/parse_header_utils.cpp"
