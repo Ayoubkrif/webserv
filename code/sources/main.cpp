@@ -9,9 +9,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-//main parsing header test
-
-#include "../includes/parsing_header.hpp"
+#include "parsing_header.hpp"
 #include <iostream>
 #include <string>
 #include "webserv.hpp"
@@ -47,7 +45,7 @@ int	main(int argc, char **argv)
 	Request::initFields();
 
 	//buffer avec header entier + body entier + bout de next buffer
-	{
+	// {
 		// std::string header;
 		// 
 		// Request request = Request();
@@ -67,9 +65,9 @@ int	main(int argc, char **argv)
 		//
 		//
 		// parse_buffer(&request);
-	}
-	std::cout << "==========================" << std::endl;
-	{
+	// }
+	// std::cout << "==========================" << std::endl;
+	// {
 		// std::string header;
 		// Request request = Request();
 		// header = "GET index.html HTTP/1.1\r\n";
@@ -86,9 +84,9 @@ int	main(int argc, char **argv)
 		// request.appendBuffer(header, 0, header.length());
 		//
 		// parse_buffer(&request);
-	}
-	std::cout << "==========================" << std::endl;
-	{
+	// }
+	// std::cout << "==========================" << std::endl;
+	// {
 		// std::string header;
 		// Request request = Request();
 		// header = "GET index.html HTTP/1.1\r\n";
@@ -109,9 +107,9 @@ int	main(int argc, char **argv)
 		// request.appendBuffer(header, 0, header.length());
 		//
 		// parse_buffer(&request);
-	}
-	std::cout << "==========================" << std::endl;
-	{
+	// }
+	// std::cout << "==========================" << std::endl;
+	// {
 		// std::string header;
 		//
 		// Request request = Request();
@@ -133,13 +131,13 @@ int	main(int argc, char **argv)
 		// request.appendBuffer(header, 0, header.length());
 		//
 		// parse_buffer(&request);
-	}
+	// }
 	std::cout << "==========================" << std::endl;
 	{
 		std::cout<< RED + "test 1" + WHITE << std::endl;
 		std::string header;
 
-		Request request = Request();
+		Request request(servers.at(0));
 		header = "GET index.html HTTP/1.1\r\n";
 		header.append("Host:58\r\n");
 		header.append("content-type:185\r\n");
@@ -152,136 +150,136 @@ int	main(int argc, char **argv)
 
 		parse_buffer(&request);
 	}
-	std::cout << "==========================" << std::endl;
-	{
-		std::cout<< RED + "test 2" + WHITE << std::endl;
-		std::string header;
-
-		Request request = Request();
-		header = "GET index.html HTTP/1.1\r\n";
-		header.append("Host:58\r\n");
-		header.append("content-type:185\r\n");
-		header.append("content-length:189\r\n");
-		header.append("transfer-encoding:201\r\n\r\n");
-
-		header.append("7\r\nMozilla\r\n9\r\nDeveloper\r\n");
-		header.append("7\r\nNetwork\r\n0\r\n\r\n");
-		request.appendBuffer(header, 0, header.length());
-
-		parse_buffer(&request);
-	}
-	std::cout << "==========================" << std::endl;
-	{
-		std::cout<< RED + "test 3" + WHITE << std::endl;
-		std::string header;
-
-		Request request = Request();
-		header = "GET index.html HTTP/1.1\r\n";
-		header.append("Host:58\r\n");
-		header.append("content-type:185\r\n");
-		header.append("content-length:189\r\n");
-		header.append("transfer-encoding:201\r\n\r\n");
-
-		header.append("4;ext1=value;ext2\r\nWiki\r\n5;lang=fr\r\n");
-		header.append("pedia\r\n0\r\n\r\n");
-		request.appendBuffer(header, 0, header.length());
-
-		parse_buffer(&request);
-	}
-	std::cout << "==========================" << std::endl;
-	{
-		std::cout<< RED + "test 4" + WHITE << std::endl;
-		std::string header;
-
-		Request request = Request();
-		header = "GET index.html HTTP/1.1\r\n";
-		header.append("Host:58\r\n");
-		header.append("content-type:185\r\n");
-		header.append("content-length:189\r\n");
-		header.append("transfer-encoding:201\r\n\r\n");
-
-		header.append("A;foo=123;bar=xyz\r\nHelloWorld\r\n6;debug=true\r\nSalut!\r\n");
-		header.append("A;foo=123;bar=xyz\r\nHelloWorld\r\n6;debug=true\r\nSalut!\r\n");
-		request.appendBuffer(header, 0, header.length());
-
-		parse_buffer(&request);
-	}
-	std::cout << "==========================" << std::endl;
-	{
-		std::cout<< RED + "test 5" + WHITE << std::endl;
-		std::string header;
-
-		Request request = Request();
-		header = "GET index.html HTTP/1.1\r\n";
-		header.append("Host:58\r\n");
-		header.append("content-type:185\r\n");
-		header.append("content-length:189\r\n");
-		header.append("transfer-encoding:201\r\n");
-		header.append("trailer:76\r\n\r\n");
-
-		header.append("0\r\nContent-MD5: 123abc\r\nX-Foo: test\r\n\r\n");
-		request.appendBuffer(header, 0, header.length());
-
-		parse_buffer(&request);
-	}
-	std::cout << "==========================" << std::endl;
-	{
-		std::cout<< RED + "test 6" + WHITE << std::endl;
-		std::string header;
-
-		Request request = Request();
-		header = "GET index.html HTTP/1.1\r\n";
-		header.append("Host:58\r\n");
-		header.append("content-type:185\r\n");
-		header.append("content-length:189\r\n");
-		header.append("transfer-encoding:201\r\n\r\n");
-
-		header.append("1E\r\nThis is a longer chunk of text\nwith a newline\r\n");
-		header.append("A\r\nShort text\r\n0\r\n\r\n");
-		request.appendBuffer(header, 0, header.length());
-
-		parse_buffer(&request);
-	}
-	std::cout << "==========================" << std::endl;
-	{
-		std::cout<< RED + "test 7" + WHITE << std::endl;
-		std::string header;
-
-		Request request = Request();
-		header = "GET index.html HTTP/1.1\r\n";
-		header.append("Host:58\r\n");
-		header.append("content-type:185\r\n");
-		header.append("content-length:189\r\n");
-		header.append("transfer-encoding:201\r\n\r\n");
-
-		header.append("  4  ;  foo = bar   \r\nTest\r\n0  \r\n\r\n");
-		request.appendBuffer(header, 0, header.length());
-
-		parse_buffer(&request);
-	}
-	std::cout << "==========================" << std::endl;
-	{
-		std::cout<< RED + "test 8" + WHITE << std::endl;
-		std::string header;
-
-		Request request = Request();
-		header = "GET index.html?lan=en HTTP/1.1\r\n";
-		header.append("Host:                  58\r\n");
-		header.append("content-type:185\r\n");
-		header.append("content-length:189\r\n");
-		header.append("transfer-encoding:201\r\n\r\n");
-
-		header.append("1E\r\nThis is a longer");
-		request.appendBuffer(header, 0, header.length());
-
-		parse_buffer(&request);
-
-		header.assign(" chunk of text\nwith a newline\r\n");
-		header.append("A\r\nShort text\r\n0\r\n\r\n");
-		request.appendBuffer(header, 0, header.length());
-
-		parse_buffer(&request);
-	}
+// 	std::cout << "==========================" << std::endl;
+// 	{
+// 		std::cout<< RED + "test 2" + WHITE << std::endl;
+// 		std::string header;
+//
+// 		Request request(servers.at(0));
+// 		header = "GET index.html HTTP/1.1\r\n";
+// 		header.append("Host:58\r\n");
+// 		header.append("content-type:185\r\n");
+// 		header.append("content-length:189\r\n");
+// 		header.append("transfer-encoding:201\r\n\r\n");
+//
+// 		header.append("7\r\nMozilla\r\n9\r\nDeveloper\r\n");
+// 		header.append("7\r\nNetwork\r\n0\r\n\r\n");
+// 		request.appendBuffer(header, 0, header.length());
+//
+// 		parse_buffer(&request);
+// 	}
+// 	std::cout << "==========================" << std::endl;
+// 	{
+// 		std::cout<< RED + "test 3" + WHITE << std::endl;
+// 		std::string header;
+//
+// 		Request request(servers.at(0));
+// 		header = "GET index.html HTTP/1.1\r\n";
+// 		header.append("Host:58\r\n");
+// 		header.append("content-type:185\r\n");
+// 		header.append("content-length:189\r\n");
+// 		header.append("transfer-encoding:201\r\n\r\n");
+//
+// 		header.append("4;ext1=value;ext2\r\nWiki\r\n5;lang=fr\r\n");
+// 		header.append("pedia\r\n0\r\n\r\n");
+// 		request.appendBuffer(header, 0, header.length());
+//
+// 		parse_buffer(&request);
+// 	}
+// 	std::cout << "==========================" << std::endl;
+// 	{
+// 		std::cout<< RED + "test 4" + WHITE << std::endl;
+// 		std::string header;
+//
+// 		Request request(servers.at(0));
+// 		header = "GET index.html HTTP/1.1\r\n";
+// 		header.append("Host:58\r\n");
+// 		header.append("content-type:185\r\n");
+// 		header.append("content-length:189\r\n");
+// 		header.append("transfer-encoding:201\r\n\r\n");
+//
+// 		header.append("A;foo=123;bar=xyz\r\nHelloWorld\r\n6;debug=true\r\nSalut!\r\n");
+// 		header.append("A;foo=123;bar=xyz\r\nHelloWorld\r\n6;debug=true\r\nSalut!\r\n");
+// 		request.appendBuffer(header, 0, header.length());
+//
+// 		parse_buffer(&request);
+// 	}
+// 	std::cout << "==========================" << std::endl;
+// 	{
+// 		std::cout<< RED + "test 5" + WHITE << std::endl;
+// 		std::string header;
+//
+// 		Request request(servers.at(0));
+// 		header = "GET index.html HTTP/1.1\r\n";
+// 		header.append("Host:58\r\n");
+// 		header.append("content-type:185\r\n");
+// 		header.append("content-length:189\r\n");
+// 		header.append("transfer-encoding:201\r\n");
+// 		header.append("trailer:76\r\n\r\n");
+//
+// 		header.append("0\r\nContent-MD5: 123abc\r\nX-Foo: test\r\n\r\n");
+// 		request.appendBuffer(header, 0, header.length());
+//
+// 		parse_buffer(&request);
+// 	}
+// 	std::cout << "==========================" << std::endl;
+// 	{
+// 		std::cout<< RED + "test 6" + WHITE << std::endl;
+// 		std::string header;
+//
+// 		Request request(servers.at(0));
+// 		header = "GET index.html HTTP/1.1\r\n";
+// 		header.append("Host:58\r\n");
+// 		header.append("content-type:185\r\n");
+// 		header.append("content-length:189\r\n");
+// 		header.append("transfer-encoding:201\r\n\r\n");
+//
+// 		header.append("1E\r\nThis is a longer chunk of text\nwith a newline\r\n");
+// 		header.append("A\r\nShort text\r\n0\r\n\r\n");
+// 		request.appendBuffer(header, 0, header.length());
+//
+// 		parse_buffer(&request);
+// 	}
+// 	std::cout << "==========================" << std::endl;
+// 	{
+// 		std::cout<< RED + "test 7" + WHITE << std::endl;
+// 		std::string header;
+//
+// 		Request request(servers.at(0));
+// 		header = "GET index.html HTTP/1.1\r\n";
+// 		header.append("Host:58\r\n");
+// 		header.append("content-type:185\r\n");
+// 		header.append("content-length:189\r\n");
+// 		header.append("transfer-encoding:201\r\n\r\n");
+//
+// 		header.append("  4  ;  foo = bar   \r\nTest\r\n0  \r\n\r\n");
+// 		request.appendBuffer(header, 0, header.length());
+//
+// 		parse_buffer(&request);
+// 	}
+// 	std::cout << "==========================" << std::endl;
+// 	{
+// 		std::cout<< RED + "test 8" + WHITE << std::endl;
+// 		std::string header;
+//
+// 		Request request(servers.at(0));
+// 		header = "GET index.html?lan=en HTTP/1.1\r\n";
+// 		header.append("Host:                  58\r\n");
+// 		header.append("content-type:185\r\n");
+// 		header.append("content-length:189\r\n");
+// 		header.append("transfer-encoding:201\r\n\r\n");
+//
+// 		header.append("1E\r\nThis is a longer");
+// 		request.appendBuffer(header, 0, header.length());
+//
+// 		parse_buffer(&request);
+//
+// 		header.assign(" chunk of text\nwith a newline\r\n");
+// 		header.append("A\r\nShort text\r\n0\r\n\r\n");
+// 		request.appendBuffer(header, 0, header.length());
+//
+// 		parse_buffer(&request);
+// 	}
 }
 
 //find, append, erase reminder

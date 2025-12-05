@@ -20,9 +20,9 @@
       "build/classes/ArgChecker/ArgChecker.o",
       "classes/ArgChecker/ArgChecker.cpp"
     ],
-    "directory": "/home/ayoub/Desktop/webserv/42_Webserv/code",
-    "file": "/home/ayoub/Desktop/webserv/42_Webserv/code/classes/ArgChecker/ArgChecker.cpp",
-    "output": "/home/ayoub/Desktop/webserv/42_Webserv/code/build/classes/ArgChecker/ArgChecker.o"
+    "directory": "/home/ayoub/Desktop/webserv/webserv/code",
+    "file": "/home/ayoub/Desktop/webserv/webserv/code/classes/ArgChecker/ArgChecker.cpp",
+    "output": "/home/ayoub/Desktop/webserv/webserv/code/build/classes/ArgChecker/ArgChecker.o"
   },
   {
     "arguments": [
@@ -45,9 +45,9 @@
       "build/classes/ConfigParser/ConfigParser.o",
       "classes/ConfigParser/ConfigParser.cpp"
     ],
-    "directory": "/home/ayoub/Desktop/webserv/42_Webserv/code",
-    "file": "/home/ayoub/Desktop/webserv/42_Webserv/code/classes/ConfigParser/ConfigParser.cpp",
-    "output": "/home/ayoub/Desktop/webserv/42_Webserv/code/build/classes/ConfigParser/ConfigParser.o"
+    "directory": "/home/ayoub/Desktop/webserv/webserv/code",
+    "file": "/home/ayoub/Desktop/webserv/webserv/code/classes/ConfigParser/ConfigParser.cpp",
+    "output": "/home/ayoub/Desktop/webserv/webserv/code/build/classes/ConfigParser/ConfigParser.o"
   },
   {
     "arguments": [
@@ -70,9 +70,9 @@
       "build/classes/ConfigParser/tokenize.o",
       "classes/ConfigParser/tokenize.cpp"
     ],
-    "directory": "/home/ayoub/Desktop/webserv/42_Webserv/code",
-    "file": "/home/ayoub/Desktop/webserv/42_Webserv/code/classes/ConfigParser/tokenize.cpp",
-    "output": "/home/ayoub/Desktop/webserv/42_Webserv/code/build/classes/ConfigParser/tokenize.o"
+    "directory": "/home/ayoub/Desktop/webserv/webserv/code",
+    "file": "/home/ayoub/Desktop/webserv/webserv/code/classes/ConfigParser/tokenize.cpp",
+    "output": "/home/ayoub/Desktop/webserv/webserv/code/build/classes/ConfigParser/tokenize.o"
   },
   {
     "arguments": [
@@ -95,9 +95,9 @@
       "build/classes/ConfigParser/run.o",
       "classes/ConfigParser/run.cpp"
     ],
-    "directory": "/home/ayoub/Desktop/webserv/42_Webserv/code",
-    "file": "/home/ayoub/Desktop/webserv/42_Webserv/code/classes/ConfigParser/run.cpp",
-    "output": "/home/ayoub/Desktop/webserv/42_Webserv/code/build/classes/ConfigParser/run.o"
+    "directory": "/home/ayoub/Desktop/webserv/webserv/code",
+    "file": "/home/ayoub/Desktop/webserv/webserv/code/classes/ConfigParser/run.cpp",
+    "output": "/home/ayoub/Desktop/webserv/webserv/code/build/classes/ConfigParser/run.o"
   },
   {
     "arguments": [
@@ -120,9 +120,9 @@
       "build/classes/ConfigParser/directive.o",
       "classes/ConfigParser/directive.cpp"
     ],
-    "directory": "/home/ayoub/Desktop/webserv/42_Webserv/code",
-    "file": "/home/ayoub/Desktop/webserv/42_Webserv/code/classes/ConfigParser/directive.cpp",
-    "output": "/home/ayoub/Desktop/webserv/42_Webserv/code/build/classes/ConfigParser/directive.o"
+    "directory": "/home/ayoub/Desktop/webserv/webserv/code",
+    "file": "/home/ayoub/Desktop/webserv/webserv/code/classes/ConfigParser/directive.cpp",
+    "output": "/home/ayoub/Desktop/webserv/webserv/code/build/classes/ConfigParser/directive.o"
   },
   {
     "arguments": [
@@ -145,9 +145,9 @@
       "build/classes/ConfigParser/helpers.o",
       "classes/ConfigParser/helpers.cpp"
     ],
-    "directory": "/home/ayoub/Desktop/webserv/42_Webserv/code",
-    "file": "/home/ayoub/Desktop/webserv/42_Webserv/code/classes/ConfigParser/helpers.cpp",
-    "output": "/home/ayoub/Desktop/webserv/42_Webserv/code/build/classes/ConfigParser/helpers.o"
+    "directory": "/home/ayoub/Desktop/webserv/webserv/code",
+    "file": "/home/ayoub/Desktop/webserv/webserv/code/classes/ConfigParser/helpers.cpp",
+    "output": "/home/ayoub/Desktop/webserv/webserv/code/build/classes/ConfigParser/helpers.o"
   },
   {
     "arguments": [
@@ -170,9 +170,9 @@
       "build/classes/FileStream/FileStream.o",
       "classes/FileStream/FileStream.cpp"
     ],
-    "directory": "/home/ayoub/Desktop/webserv/42_Webserv/code",
-    "file": "/home/ayoub/Desktop/webserv/42_Webserv/code/classes/FileStream/FileStream.cpp",
-    "output": "/home/ayoub/Desktop/webserv/42_Webserv/code/build/classes/FileStream/FileStream.o"
+    "directory": "/home/ayoub/Desktop/webserv/webserv/code",
+    "file": "/home/ayoub/Desktop/webserv/webserv/code/classes/FileStream/FileStream.cpp",
+    "output": "/home/ayoub/Desktop/webserv/webserv/code/build/classes/FileStream/FileStream.o"
   },
   {
     "arguments": [
@@ -195,9 +195,9 @@
       "build/classes/Location/Location.o",
       "classes/Location/Location.cpp"
     ],
-    "directory": "/home/ayoub/Desktop/webserv/42_Webserv/code",
-    "file": "/home/ayoub/Desktop/webserv/42_Webserv/code/classes/Location/Location.cpp",
-    "output": "/home/ayoub/Desktop/webserv/42_Webserv/code/build/classes/Location/Location.o"
+    "directory": "/home/ayoub/Desktop/webserv/webserv/code",
+    "file": "/home/ayoub/Desktop/webserv/webserv/code/classes/Location/Location.cpp",
+    "output": "/home/ayoub/Desktop/webserv/webserv/code/build/classes/Location/Location.o"
   },
   {
     "arguments": [
@@ -220,9 +220,9 @@
       "build/classes/Server/Server.o",
       "classes/Server/Server.cpp"
     ],
-    "directory": "/home/ayoub/Desktop/webserv/42_Webserv/code",
-    "file": "/home/ayoub/Desktop/webserv/42_Webserv/code/classes/Server/Server.cpp",
-    "output": "/home/ayoub/Desktop/webserv/42_Webserv/code/build/classes/Server/Server.o"
+    "directory": "/home/ayoub/Desktop/webserv/webserv/code",
+    "file": "/home/ayoub/Desktop/webserv/webserv/code/classes/Server/Server.cpp",
+    "output": "/home/ayoub/Desktop/webserv/webserv/code/build/classes/Server/Server.o"
   },
   {
     "arguments": [
@@ -245,9 +245,9 @@
       "build/classes/Request/Request.o",
       "classes/Request/Request.cpp"
     ],
-    "directory": "/home/ayoub/Desktop/webserv/42_Webserv/code",
-    "file": "/home/ayoub/Desktop/webserv/42_Webserv/code/classes/Request/Request.cpp",
-    "output": "/home/ayoub/Desktop/webserv/42_Webserv/code/build/classes/Request/Request.o"
+    "directory": "/home/ayoub/Desktop/webserv/webserv/code",
+    "file": "/home/ayoub/Desktop/webserv/webserv/code/classes/Request/Request.cpp",
+    "output": "/home/ayoub/Desktop/webserv/webserv/code/build/classes/Request/Request.o"
   },
   {
     "arguments": [
@@ -270,9 +270,9 @@
       "build/classes/Request/Getter.o",
       "classes/Request/Getter.cpp"
     ],
-    "directory": "/home/ayoub/Desktop/webserv/42_Webserv/code",
-    "file": "/home/ayoub/Desktop/webserv/42_Webserv/code/classes/Request/Getter.cpp",
-    "output": "/home/ayoub/Desktop/webserv/42_Webserv/code/build/classes/Request/Getter.o"
+    "directory": "/home/ayoub/Desktop/webserv/webserv/code",
+    "file": "/home/ayoub/Desktop/webserv/webserv/code/classes/Request/Getter.cpp",
+    "output": "/home/ayoub/Desktop/webserv/webserv/code/build/classes/Request/Getter.o"
   },
   {
     "arguments": [
@@ -295,9 +295,9 @@
       "build/classes/Request/HeaderTab.o",
       "classes/Request/HeaderTab.cpp"
     ],
-    "directory": "/home/ayoub/Desktop/webserv/42_Webserv/code",
-    "file": "/home/ayoub/Desktop/webserv/42_Webserv/code/classes/Request/HeaderTab.cpp",
-    "output": "/home/ayoub/Desktop/webserv/42_Webserv/code/build/classes/Request/HeaderTab.o"
+    "directory": "/home/ayoub/Desktop/webserv/webserv/code",
+    "file": "/home/ayoub/Desktop/webserv/webserv/code/classes/Request/HeaderTab.cpp",
+    "output": "/home/ayoub/Desktop/webserv/webserv/code/build/classes/Request/HeaderTab.o"
   },
   {
     "arguments": [
@@ -320,9 +320,9 @@
       "build/classes/Request/FieldsParser.o",
       "classes/Request/FieldsParser.cpp"
     ],
-    "directory": "/home/ayoub/Desktop/webserv/42_Webserv/code",
-    "file": "/home/ayoub/Desktop/webserv/42_Webserv/code/classes/Request/FieldsParser.cpp",
-    "output": "/home/ayoub/Desktop/webserv/42_Webserv/code/build/classes/Request/FieldsParser.o"
+    "directory": "/home/ayoub/Desktop/webserv/webserv/code",
+    "file": "/home/ayoub/Desktop/webserv/webserv/code/classes/Request/FieldsParser.cpp",
+    "output": "/home/ayoub/Desktop/webserv/webserv/code/build/classes/Request/FieldsParser.o"
   },
   {
     "arguments": [
@@ -345,9 +345,9 @@
       "build/classes/Request/RequestUtils.o",
       "classes/Request/RequestUtils.cpp"
     ],
-    "directory": "/home/ayoub/Desktop/webserv/42_Webserv/code",
-    "file": "/home/ayoub/Desktop/webserv/42_Webserv/code/classes/Request/RequestUtils.cpp",
-    "output": "/home/ayoub/Desktop/webserv/42_Webserv/code/build/classes/Request/RequestUtils.o"
+    "directory": "/home/ayoub/Desktop/webserv/webserv/code",
+    "file": "/home/ayoub/Desktop/webserv/webserv/code/classes/Request/RequestUtils.cpp",
+    "output": "/home/ayoub/Desktop/webserv/webserv/code/build/classes/Request/RequestUtils.o"
   },
   {
     "arguments": [
@@ -370,9 +370,9 @@
       "build/classes/Cgi/Cgi.o",
       "classes/Cgi/Cgi.cpp"
     ],
-    "directory": "/home/ayoub/Desktop/webserv/42_Webserv/code",
-    "file": "/home/ayoub/Desktop/webserv/42_Webserv/code/classes/Cgi/Cgi.cpp",
-    "output": "/home/ayoub/Desktop/webserv/42_Webserv/code/build/classes/Cgi/Cgi.o"
+    "directory": "/home/ayoub/Desktop/webserv/webserv/code",
+    "file": "/home/ayoub/Desktop/webserv/webserv/code/classes/Cgi/Cgi.cpp",
+    "output": "/home/ayoub/Desktop/webserv/webserv/code/build/classes/Cgi/Cgi.o"
   },
   {
     "arguments": [
@@ -395,9 +395,9 @@
       "build/sources/main.o",
       "sources/main.cpp"
     ],
-    "directory": "/home/ayoub/Desktop/webserv/42_Webserv/code",
-    "file": "/home/ayoub/Desktop/webserv/42_Webserv/code/sources/main.cpp",
-    "output": "/home/ayoub/Desktop/webserv/42_Webserv/code/build/sources/main.o"
+    "directory": "/home/ayoub/Desktop/webserv/webserv/code",
+    "file": "/home/ayoub/Desktop/webserv/webserv/code/sources/main.cpp",
+    "output": "/home/ayoub/Desktop/webserv/webserv/code/build/sources/main.o"
   },
   {
     "arguments": [
@@ -420,9 +420,9 @@
       "build/sources/parse_buffer.o",
       "sources/parse_buffer.cpp"
     ],
-    "directory": "/home/ayoub/Desktop/webserv/42_Webserv/code",
-    "file": "/home/ayoub/Desktop/webserv/42_Webserv/code/sources/parse_buffer.cpp",
-    "output": "/home/ayoub/Desktop/webserv/42_Webserv/code/build/sources/parse_buffer.o"
+    "directory": "/home/ayoub/Desktop/webserv/webserv/code",
+    "file": "/home/ayoub/Desktop/webserv/webserv/code/sources/parse_buffer.cpp",
+    "output": "/home/ayoub/Desktop/webserv/webserv/code/build/sources/parse_buffer.o"
   },
   {
     "arguments": [
@@ -445,9 +445,9 @@
       "build/sources/parse_header.o",
       "sources/parse_header.cpp"
     ],
-    "directory": "/home/ayoub/Desktop/webserv/42_Webserv/code",
-    "file": "/home/ayoub/Desktop/webserv/42_Webserv/code/sources/parse_header.cpp",
-    "output": "/home/ayoub/Desktop/webserv/42_Webserv/code/build/sources/parse_header.o"
+    "directory": "/home/ayoub/Desktop/webserv/webserv/code",
+    "file": "/home/ayoub/Desktop/webserv/webserv/code/sources/parse_header.cpp",
+    "output": "/home/ayoub/Desktop/webserv/webserv/code/build/sources/parse_header.o"
   },
   {
     "arguments": [
@@ -470,9 +470,9 @@
       "build/sources/parse_request_line.o",
       "sources/parse_request_line.cpp"
     ],
-    "directory": "/home/ayoub/Desktop/webserv/42_Webserv/code",
-    "file": "/home/ayoub/Desktop/webserv/42_Webserv/code/sources/parse_request_line.cpp",
-    "output": "/home/ayoub/Desktop/webserv/42_Webserv/code/build/sources/parse_request_line.o"
+    "directory": "/home/ayoub/Desktop/webserv/webserv/code",
+    "file": "/home/ayoub/Desktop/webserv/webserv/code/sources/parse_request_line.cpp",
+    "output": "/home/ayoub/Desktop/webserv/webserv/code/build/sources/parse_request_line.o"
   },
   {
     "arguments": [
@@ -495,8 +495,8 @@
       "build/sources/parse_header_utils.o",
       "sources/parse_header_utils.cpp"
     ],
-    "directory": "/home/ayoub/Desktop/webserv/42_Webserv/code",
-    "file": "/home/ayoub/Desktop/webserv/42_Webserv/code/sources/parse_header_utils.cpp",
-    "output": "/home/ayoub/Desktop/webserv/42_Webserv/code/build/sources/parse_header_utils.o"
+    "directory": "/home/ayoub/Desktop/webserv/webserv/code",
+    "file": "/home/ayoub/Desktop/webserv/webserv/code/sources/parse_header_utils.cpp",
+    "output": "/home/ayoub/Desktop/webserv/webserv/code/build/sources/parse_header_utils.o"
   }
 ]
