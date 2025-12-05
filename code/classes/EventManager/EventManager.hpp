@@ -1,0 +1,41 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   EventManager.hpp                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aykrifa <aykrifa@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/05 13:46:47 by aykrifa           #+#    #+#             */
+/*                                                                            */
+/* ************************************************************************** */
+
+#pragma once
+
+#include <string>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <vector>
+
+#define MAX_EVENTS 10
+#include <sys/epoll.h>
+
+class	Location;
+
+class	Server;
+class EventManager
+{
+	public:
+		EventManager(std::vector<Server>&);
+		~EventManager(void){};
+		void			run(void);
+		void			getNewEvent(void);
+		epoll_data_t	getData(void);
+		void			*getPtr(void);
+		void			eventNext(void);
+		void			serverAccept(Server&);
+	private:
+		int					_fd;
+		struct epoll_event	_events[MAX_EVENTS];
+		int					_nEvent;
+		int					_it;
+};
