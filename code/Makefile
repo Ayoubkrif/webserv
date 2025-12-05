@@ -41,6 +41,8 @@ CLASS_FILES = \
 	Request/FieldsParser.cpp \
 	Request/RequestUtils.cpp \
 	Cgi/Cgi.cpp \
+	\
+	EventManager/EventManager.cpp \
 
 CLASSES = $(addprefix $(CLASS_DIR)/, $(CLASS_FILES))
 SOURCES = $(addprefix $(SRC_DIR)/,$(SRC_FILES))
@@ -55,6 +57,7 @@ INC_DIR = \
 		  $(CLASS_DIR)/Server \
 		  $(CLASS_DIR)/Request \
 		  $(CLASS_DIR)/Cgi \
+		  $(CLASS_DIR)/EventManager \
 
 ##################################################################################
 #compilation
