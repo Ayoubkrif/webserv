@@ -10,9 +10,15 @@
 /* ************************************************************************** */
 
 #include "Request.hpp"
-#include "../../includes/parsing_header.hpp"
+#include "parsing_header.hpp"
+#include "Location.hpp"
+#include "Server.hpp"
 
-Request::Request() : _status(), _state(HEADER), _method(OTHER), _connection(1), _trailer(0)
+// Request::Request() : _status(), _state(HEADER), _method(OTHER), _connection(1), _trailer(0)
+// {
+// }
+
+Request::Request(Server &server) : _status(), _state(HEADER), _method(OTHER), _server(server), _connection(1), _trailer(0)
 {
 }
 
@@ -169,10 +175,11 @@ void	Request::parseMethod(std::string str)
 	}
 }
 
-std::string resolveURI(std::string str)
+// 
+void Request::resolveURL(void)
 {
 	//DO NOT modify request->_uri put it in _path
-	return str;
+	;
 }
 
 void	Request::parseURI(std::string str)
@@ -189,5 +196,5 @@ void	Request::parseURI(std::string str)
 	
 	//resolve uri
 	this->_uri.assign(str);
-	this->_path = resolveURI(str);
+	resolveURL();
 }

@@ -10,7 +10,7 @@
 /* ************************************************************************** */
 
 #include "Request.hpp"
-#include "../../includes/colors.hpp"
+#include "colors.hpp"
 
 int	find_type(std::string str)
 {

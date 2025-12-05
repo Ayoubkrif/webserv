@@ -16,24 +16,12 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
-#include "../Cgi/Cgi.hpp"
-
-const std::string	DCRLF = "\r\n\r\n";
-const std::string	CRLF = "\r\n";
-const std::string	OWS = " \t";
-const bool			CHUNKED = 1;
+#include "requestDefines.hpp"
 
 int				find_type(std::string str);
 unsigned long	hexToLong(std::string line);
 
-typedef enum method
-{
-	GET = 0,
-	POST,
-	DELETE,
-	OTHER,
-} method;
-
+const bool			CHUNKED = 1;
 typedef enum parsing_state
 {
 	HEADER = 0,
@@ -45,6 +33,10 @@ typedef enum parsing_state
 	// SEND_CGI, -> so that resonse builder knows what to parse and how
 	// or put variable in cgi or request or if *cgi==NULL?
 } parsing_state;
+
+class Location;
+class Server;
+class Cgi;
 
 class Request
 {
@@ -60,13 +52,18 @@ private:
 
 	method 				_method;
 	std::string			_uri;
-	std::string			_path;//need to keep the URI for the CGI so put the full file path here
+	std::string			_url;//need to keep the URI for the CGI so put the full file path here
 	std::string			_queryString;
 
 	Cgi*				_cgi;
 
-public:
+	Location*			_location;
+	Server&				_server;
+
+	Request(Request&);
 	Request();
+public:
+	Request(Server&);
 
 	static std::string	fields[207][3];
 	static void			(Request::*fctField[210])(std::string);
@@ -90,6 +87,7 @@ public:
 
 	void				parseMethod(std::string);
 	void				parseURI(std::string);
+	void				resolveURL(void);
 
 	int					getToken(std::string *header);
 	int					getField(int *type);
