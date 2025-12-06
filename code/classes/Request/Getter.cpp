@@ -16,7 +16,7 @@ std::string	Request::getHeader()
 	return this->_header;
 }
 
-std::string	Request::getBody()
+std::string	Request::getBody() const
 {
 	return this->_body;
 }
@@ -36,17 +36,17 @@ bool	Request::getTransferEncoding()
 	return this->_transferEncoding;
 }
 
-method	Request::getMethod()
+method	Request::getMethod() const
 {
 	return this->_method;
 }
 
-std::string	Request::getUri()
+std::string	Request::getUri() const
 {
 	return this->_uri;
 }
 
-std::string	Request::getQueryString()
+std::string	Request::getQueryString() const
 {
 	return this->_queryString;
 }

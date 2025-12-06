@@ -79,13 +79,13 @@ public:
 	void				setState(parsing_state value);
 
 	std::string			getHeader();
-	std::string			getBody();
+	std::string			getBody() const;
 	std::string			getBuffer();
 	parsing_state		getState();
 
-	method				getMethod();
-	std::string			getUri();
-	std::string			getQueryString();
+	method				getMethod() const;
+	std::string			getUri() const;
+	std::string			getQueryString() const;
 
 	void				fillHeader(std::string::size_type cursor);
 	void				fillBody();
@@ -135,3 +135,7 @@ public:
 	void				parseTransferEncoding(std::string);
 	void				parseTrailer(std::string);
 };
+
+
+//faire surcharge de << pour imprimer toute la classe
+std::ostream	&operator<<(std::ostream &lhs, const Request &rhs);
