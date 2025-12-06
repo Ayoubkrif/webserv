@@ -58,6 +58,7 @@ INC_DIR = \
 		  $(CLASS_DIR)/Request \
 		  $(CLASS_DIR)/Cgi \
 		  $(CLASS_DIR)/EventManager \
+		  $(CLASS_DIR)/Event \
 
 ##################################################################################
 #compilation

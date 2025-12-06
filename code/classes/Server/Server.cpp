@@ -20,6 +20,7 @@ extern FileStream	streams;
 static const unsigned int				DEFAULT_SERVER_INTERFACE = 0;
 static const unsigned short				DEFAULT_SERVER_PORT = 8080;
 Server::Server(void):
+	Event(SRV),
 	_port(DEFAULT_SERVER_PORT),
 	_interface(DEFAULT_SERVER_INTERFACE),
 	_fd(-1)

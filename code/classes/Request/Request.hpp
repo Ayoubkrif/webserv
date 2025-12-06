@@ -19,6 +19,7 @@
 #include <iostream>
 #include <sys/socket.h>
 #include "requestDefines.hpp"
+#include "Event.hpp"
 
 int				find_type(std::string str);
 unsigned long	hexToLong(std::string line);
@@ -40,7 +41,7 @@ class Location;
 class Server;
 class Cgi;
 
-class Request
+class Request: public Event
 {
 public://epollloop variable for accept
 	struct sockaddr_in client_addr;

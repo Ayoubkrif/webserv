@@ -20,7 +20,7 @@
 // {
 // }
 
-Request::Request(Server &server) :client_len(sizeof(sockaddr_in)), _status(), _state(HEADER), _method(OTHER), _server(server), _connection(1), _trailer(0)
+Request::Request(Server &server) :Event(CLIENT), client_len(sizeof(sockaddr_in)), _status(), _state(HEADER), _method(OTHER), _server(server), _connection(1), _trailer(0)
 {
 }
 

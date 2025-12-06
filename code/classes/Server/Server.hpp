@@ -16,9 +16,11 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <vector>
+#include "Event.hpp"
+
 class	Location;
 
-class	Server
+class	Server: public Event
 {
 	public:
 		Server(void);
