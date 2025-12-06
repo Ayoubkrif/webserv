@@ -90,34 +90,19 @@ void	EventManager::serverAccept(void)
 	}
 }
 
-// Request *client = (Request *)getPtr();
-// if current evnet == epollin
-	// ssize_t count = recv(getData().fd, buffer, sizeof(buffer), 0); // kesako
-	//client .appendBuffer(buffer);
-	//parse_buffer(client);
-	//if client.status = SEND 
-	// mettre en EPOLLOUT
-// if EPOLLOUT
-	// send
-	// if connexion == KEEPALIVE 
-		// event == eppollin
-		// epoll_ctl(MOD EPOLLIN) 
-		//reinitialiser client ?????? C CLARA LA FOLLE
-	//else
-		//epoll ctl delete close fd mais sa va jamais arriver
 #include "parsing_header.hpp"
 void	EventManager::handleClient()
 {
 	static char buffer[BUFFER_SIZE + 1] = {0};
 	Request &client = *(Request *)getPtr();
-	if (getEvent().events == EPOLLIN)
+	if (getEvent().events & EPOLLIN)
 	{
 		{
 			ssize_t count = recv(client.fd, buffer, sizeof(buffer), 0); // kesako
 			if (count == -1)
 				throw (std::runtime_error("RECV KO"));
 			//if count == 0 check time pour client fantome
-			streams.print(LOG_EVENT) << "[RECV]" << std::endl
+			streams.print(LOG_EVENT) << "[RECV de "<< count << std::endl
 				<< std::string(buffer).substr(0, count)
 				<< std::endl;
 			
@@ -131,7 +116,7 @@ void	EventManager::handleClient()
 			epoll_ctl(this->_fd, EPOLL_CTL_MOD, client.fd, &getEvent());
 		}
 	}
-	else
+	else if (getEvent().events & EPOLLOUT)
 	{
 		streams.print(LOG_EVENT) << "[ENVOI]" << std::endl
 			<< std::endl;
@@ -139,13 +124,24 @@ void	EventManager::handleClient()
 			throw (std::runtime_error("SEND"));
 		streams.print(LOG_EVENT) << "[SUCCESS]" << std::endl
 			<< std::endl;
-		// if connexion == KEEPALIVE 
-			// event == eppollin
-			// epoll_ctl(MOD EPOLLIN) 
-			//reinitialiser client ?????? C CLARA LA FOLLE
-		//else
-			// close(events[i].data.fd);
-			// epoll ctl delete
+		// if (client.getConnection() == KEEP_ALIVE)
+		// {
+		// 	std::cout << RED << "connection is KEEP ALIVE" << WHITE << std::endl;
+		// 	getEvent().events = EPOLLIN;
+		// 	client.resetRequest();
+		// 	epoll_ctl(this->_fd, EPOLL_CTL_MOD, client.fd, &getEvent());
+		// }
+		// else
+		// {
+		// 	std::cout << RED << "connection is CLOSE" << WHITE << std::endl;
+		// 	epoll_ctl(this->_fd, EPOLL_CTL_DEL, client.fd, &getEvent());
+		// 	delete (Request *)getPtr(); //vraiment pas sur de la syntaxe
+		// 	close(client.fd); // should be done in destruct
+		// 	//else a verifier
+		//
+		// 	// close(events[i].data.fd);
+		// 	// epoll ctl delete
+		// }
 	}
 }
 
