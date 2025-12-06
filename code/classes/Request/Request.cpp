@@ -200,3 +200,16 @@ void	Request::parseURI(std::string str)
 	this->_uri.assign(str);
 	resolveURL();
 }
+
+std::ostream	&operator<<(std::ostream &lhs, const Request &rhs)
+{
+	lhs << "method="
+		<< rhs.getMethod() << std::endl
+		<< "URI="
+		<< rhs.getUri() << std::endl
+		<< "Query string="
+		<< rhs.getQueryString() << std::endl
+		<< "Body="
+		<< rhs.getBody() << std::endl;
+	return (lhs);
+}
