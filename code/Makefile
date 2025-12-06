@@ -43,6 +43,7 @@ CLASS_FILES = \
 	Cgi/Cgi.cpp \
 	\
 	EventManager/EventManager.cpp \
+	EventManager/utils.cpp \
 
 CLASSES = $(addprefix $(CLASS_DIR)/, $(CLASS_FILES))
 SOURCES = $(addprefix $(SRC_DIR)/,$(SRC_FILES))
