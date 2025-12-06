@@ -31,28 +31,32 @@ class	ConfigParser
 	private:
 
 		std::string							_str;
+
+		void	tokenInit(void);
+		void	tokenize(void);
+
 		std::vector<std::string>			_token_vec;
 		std::vector<std::string>::iterator	_token_it;
-		int									_last_directive;
 
 		void				next(void);
 		void				nextAsserted(void);
 		bool				end(void) const;
 		const std::string	get(void) const;
 		int					getDirective(void) const;
+		int					checkDirective(void);
 
-		void	tokenInit(void);
-		void	tokenize(void);
+		int									_last_directive;
 
-		int		checkDirective(void);
-		void	parseServer(std::vector<Server>&);
+		void							parseServer(std::vector<Server>&);
 		std::map<std::string, Location>	parseServerLoop(Server&);
+		void				parseLocation(std::map<std::string, Location>&);
+		Location			parseLocationLoop(Location&);
 
+	// parseDirective
+		// server directive
 		void	parseListen(Server&);
 
-		void	parseLocation(std::map<std::string, Location>&);
-		Location	parseLocationLoop(Location&);
-
+		// location directive
 		void	parseRoot(Location&);
 		void	parseAlias(Location&);
 		void	parseClientMaxBodySize(Location&);
@@ -60,9 +64,8 @@ class	ConfigParser
 		void	parseAllowedMethods(Location&);
 		void	parseReturn(Location&);
 		void	parseAutoIndex(Location&);
-
 		void	parseErrorPages(Location&);
-
 		void	parsePostLocation(Location&);
+
 		ConfigParser(){}
 };

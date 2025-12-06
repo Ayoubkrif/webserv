@@ -29,7 +29,7 @@ CLASS_FILES = \
 	ConfigParser/ConfigParser.cpp \
 	ConfigParser/tokenize.cpp \
 	ConfigParser/run.cpp \
-	ConfigParser/directive.cpp \
+	ConfigParser/parseDirective.cpp \
 	ConfigParser/helpers.cpp \
 	FileStream/FileStream.cpp \
 	Location/Location.cpp \
