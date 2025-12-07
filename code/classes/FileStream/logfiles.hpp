@@ -19,3 +19,5 @@ static const std::string	LOG_DIRECTIVE = "Directive.log";
 static const std::string	LOG_LOCATION = "Location.log";
 static const std::string	LOG_SERVER = "Server.log";
 static const std::string	LOG_EVENT = "Event.log";
+
+static const std::string	LOG_REQUEST = "Request.log";
