@@ -127,10 +127,10 @@ private:
 
 public:
 
-	bool				getTransferEncoding();
-	bool				getTrailer();
-	int					getContentLength();
-	bool				getConnection();
+	bool				getTransferEncoding() const;
+	bool				getTrailer() const;
+	int					getContentLength() const;
+	bool				getConnection() const;
 
 	void				parseHost(std::string);
 	void				parseAccept(std::string);

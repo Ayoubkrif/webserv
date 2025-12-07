@@ -174,7 +174,19 @@ std::ostream	&operator<<(std::ostream &lhs, const Request &rhs)
 		<< rhs.getUri() << std::endl
 		<< "Query string="
 		<< rhs.getQueryString() << std::endl
-		<< "Body="
+		<< "Content Length="
+		<< rhs.getContentLength() << std::endl
+		<< "Transfer Encoding =";
+	if (rhs.getTransferEncoding() == CHUNKED)
+		lhs << "chunked" << std::endl;
+	else
+		lhs << "normal body" << std::endl;
+	lhs << "Connection =";
+	if (rhs.getConnection() == KEEP_ALIVE)
+		lhs << "keep-alive" << std::endl;
+	else
+		lhs << "close" << std::endl;
+	lhs << "Body="
 		<< rhs.getBody() << std::endl;
 	return (lhs);
 }

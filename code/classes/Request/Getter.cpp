@@ -31,17 +31,17 @@ parsing_state	Request::getState()
 	return this->_state;
 }
 
-bool	Request::getTransferEncoding()
+bool	Request::getTransferEncoding() const
 {
 	return this->_transferEncoding;
 }
 
-bool	Request::getConnection()
+bool	Request::getConnection() const
 {
 	return this->_connection;
 }
 
-int	Request::getContentLength()
+int	Request::getContentLength() const
 {
 	return this->_contentLength;
 }
