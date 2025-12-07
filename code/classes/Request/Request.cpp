@@ -65,7 +65,9 @@ int	Request::getToken(std::string *token)
 
 	if (!move_cursor(&cursor, this->_header, CRLF))
 	{
-		std::cout << RED << "Cursor is at NULL" << WHITE << std::endl;
+		streams.print(LOG_REQUEST) << "[ERROR]" << std::endl
+			<< "CRLF has not been find to complete token"
+			<< std::endl;
 		return 0;
 		//throw error;
 		//OR Edit status and return? How to deal with expect? Put in a string and check at response construction?
@@ -83,7 +85,9 @@ int	Request::getField(int *type)
 	std::string::size_type	cursor = 0;
 	if (!move_cursor(&cursor, this->_header, ":"))
 	{
-		std::cout << RED << ": not found" << WHITE << std::endl;
+		streams.print(LOG_REQUEST) << "[ERROR]" << std::endl
+			<< "':' has not been find to complete field"
+			<< std::endl;
 		return 0;
 		//OR Edit status and return? How to deal with expect? Put in a string and check at response construction?
 	}
@@ -105,7 +109,9 @@ int	Request::getField(std::string *field)
 	std::string::size_type	cursor = 0;
 	if (!move_cursor(&cursor, this->_header, ":"))
 	{
-		std::cout << RED << ": not found" << WHITE << std::endl;
+		streams.print(LOG_REQUEST) << "[ERROR]" << std::endl
+			<< "':' has not been find to complete field"
+			<< std::endl;
 		return 0;
 		//OR Edit status and return? How to deal with expect? Put in a string and check at response construction?
 	}
@@ -128,8 +134,10 @@ void	Request::parseMethod(std::string str)
 		this->_method = DELETE;
 	else
 	{
-		std::cout << "BAD METHOD" << std::endl;
-		;//throw 400
+		streams.print(LOG_REQUEST) << "[ERROR]" << std::endl
+			<< "Bad method identified: " << str
+			<< std::endl;
+		//throw 400
 		//ou edit status
 	}
 }

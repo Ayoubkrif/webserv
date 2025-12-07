@@ -39,7 +39,9 @@ void	parse_request_line(Request *request, std::string token)
 	}
 	if (token.compare("HTTP/1.1"))
 	{
-		std::cout << RED << "Wrong HTTP protocol :" + token << WHITE << std::endl;
+		streams.print(LOG_REQUEST) << "[ERROR]" << std::endl
+			<< "Wrong HTTP protocol:" << token
+			<< std::endl;
 		//error, throw
 	}
 }

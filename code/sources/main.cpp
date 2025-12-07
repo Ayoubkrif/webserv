@@ -27,6 +27,7 @@ int	main(int argc, char **argv)
 		streams.add(LOG_DIRECTIVE);
 		streams.add(LOG_LOCATION);
 		streams.add(LOG_EVENT);
+		streams.add(LOG_REQUEST);
 
 		ArgChecker::checkargs(argc);
 		ConfigParser	parser(argv[1]);

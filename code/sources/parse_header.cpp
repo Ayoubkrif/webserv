@@ -51,14 +51,16 @@ void	parse_header(Request *request)
 		//look at parse_cgi_header for amelioration
 		if (request->getHeader().empty())
 		{
-			std::cout << "header emptied" << std::endl;
+			streams.print(LOG_REQUEST) << "[HEADER EMPTIED IN PARSING]" << std::endl;
 			break;
 		}
 		if (!request->getField(&type) || !request->getToken(&token))
 		{
-			std::cout << RED << "Error in field or token" << WHITE << std::endl;
-			std::cout << RED << token << WHITE << std::endl;
-			std::cout << RED << type << WHITE << std::endl;
+			streams.print(LOG_REQUEST) << "[ERROR]" << std::endl
+				<< "invalid field or token" << std::endl
+				<< "field type is :" << type << std::endl
+				<< "token after field is :" << token
+				<< std::endl;
 			return; //throw error?
 			//edit status ici ou dans les fonction du if??
 		}
@@ -87,12 +89,16 @@ void	parse_cgi_header(Request *request)
 	{
 		if (request->getHeader().empty())
 		{
-			std::cout << "header emptied" << std::endl;
+			streams.print(LOG_REQUEST) << "[HEADER EMPTIED IN PARSING]" << std::endl;
 			break;
 		}
 		if (!request->getField(&field) || !request->getToken(&token))
 		{
-			std::cout << "invalid field or token" << std::endl;
+			streams.print(LOG_REQUEST) << "[ERROR]" << std::endl
+				<< "invalid field or token" << std::endl
+				<< "field is :" << field << std::endl
+				<< "token after field is :" << token
+				<< std::endl;
 			return;
 			//edit status and return
 		}

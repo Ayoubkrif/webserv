@@ -18,6 +18,13 @@ int	find_type(std::string str)
 	// std::cout << str << std::endl;
 	for (int i = 0; str[i] !=':'; i++)
 	{
+		if (str[i] != '-' && !(str[i] >= 'A' && str[i] <= 'Z') && !(str[i] >= 'a' && str[i] <= 'z'))
+		{
+			streams.print(LOG_REQUEST) << "[ERROR]" << std::endl
+				<< "Wrong character in field :" << str[i]
+				<< std::endl;
+			return -1;
+		}
 		if (str[i] >= 'A' && str[i] <= 'Z')
 			str[i] += 32;
 		if (str[i] >= 'a' && str[i] <= 'z')
@@ -29,12 +36,10 @@ int	find_type(std::string str)
 	}
 	if (!str.empty())
 		str.resize(str.size() - 1);
-	std::cout << "index is " << index << " str is " << str << std::endl;
 	if (index <= 0)
 		return -1;
 	if (index > 207)
 	{
-		std::cout << RED << "Wrong index is " << index << WHITE << std::endl;
 		return 0;
 	}
 	for (int i = 0; i < 3; i++)
@@ -54,6 +59,8 @@ unsigned long hexToLong(std::string line)
 
 	chunk_size = std::strtoul(line.data(), semicolon ? (char**)&semicolon : NULL, 16);
 
-	std::cout << "Chunk-size is :" << chunk_size << std::endl;
+		streams.print(LOG_REQUEST) << "[CHUNK SIZE]" << std::endl
+			<< "octet to read: " << chunk_size
+			<< std::endl;
 	return chunk_size;
 }

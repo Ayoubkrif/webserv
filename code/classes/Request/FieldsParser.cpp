@@ -27,7 +27,6 @@ void	Request::parseHost(std::string str)
 {
 	//format: <host>:<port>
 	//<port> optional
-	std::cout << "Host is : " << str << std::endl;
 	str = skipOWS(str);
 	this->_host = str;
 }
@@ -53,7 +52,6 @@ void	Request::parseAcceptEncoding(std::string str)
 	//format xxx, xxx;q=nb.nb
 	//inutile pour static
 	//a passer a la CGI HTTP_ACCEPT_ENCODING
-	std::cout << "Accept Encoding is : " << str << std::endl;
 	str = skipOWS(str);
 }
 
@@ -63,14 +61,12 @@ void	Request::parseCookies(std::string str)
 	//(previously sent by the server with the Set-Cookie header
 	//or set in JavaSript using Document.cookie)
 	//format: name=value; name2=value2; name3=value3
-	std::cout << "Cookies is : " << str << std::endl;
 	str = skipOWS(str);
 }
 
 void	Request::parseLanguage(std::string str)
 {
 	//format xxx, xxx;q=nb.nb
-	std::cout << "Language is : " << str << std::endl;
 	str = skipOWS(str);
 }
 
@@ -80,7 +76,6 @@ void	Request::parseAuthorization(std::string str)
 	//inutile en static
 	//a passer a la CGI HTTP_AUTHORIZATION
 	//trop le bordel cgi se debrouille
-	std::cout << "Authorization is : " << str << std::endl;
 	str = skipOWS(str);
 }
 
@@ -88,7 +83,6 @@ void	Request::parseConnection(std::string str)
 {
 	//keep-alive ou close
 	//DEL ou pas le client apres le traitement de la requete
-	std::cout << "Connection is : " << str << std::endl;
 	str = skipOWS(str);
 }
 
@@ -100,25 +94,21 @@ void	Request::parseIfModifiedSince(std::string str)
 	//si time <= if-modified-since -> 304 Not Modified
 	//CGI HTTP_IF_MODIFIED_SINCE
 	//format jour, jj, moi AAAA HH:MM:SS TIME_ZONE (ex gmt)
-	std::cout << "If Modified Since is : " << str << std::endl;
 	str = skipOWS(str);
 }
 
 void	Request::parseExpect(std::string str)
 {
-	std::cout << "Expect is : " << str << std::endl;
 	str = skipOWS(str);
 }
 
 void	Request::parseContentType(std::string str)
 {
-	std::cout << "Content Type is : " << str << std::endl;
 	str = skipOWS(str);
 }
 
 void	Request::parseContentLength(std::string str)
 {
-	std::cout << "Content Length is : " << str << std::endl;
 	str = skipOWS(str);
 }
 
@@ -139,14 +129,12 @@ void	Request::parseTransferEncoding(std::string str)
 	//
 	//pour cgi pas de VE HTTP_TRANSFER_ENCODING
 	//=> trouver la taille du body reconstitue et creer CONTNENT_LENGTH
-	std::cout << "Transfer Encoding is : " << str << std::endl;
 	str = skipOWS(str);
 	this->_transferEncoding = CHUNKED;
 }
 
 void	Request::parseTrailer(std::string str)
 {
-	std::cout << "Trailer is : " << str << std::endl;
 	str = skipOWS(str);
 	this->_trailer = 1;
 }

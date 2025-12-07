@@ -21,6 +21,11 @@
 #include "requestDefines.hpp"
 #include "Event.hpp"
 
+//C comme ca que ca marche ???
+#include "FileStream.hpp"
+#include "logfiles.hpp"
+
+extern FileStream	streams;
 int				find_type(std::string str);
 unsigned long	hexToLong(std::string line);
 

@@ -27,7 +27,9 @@ void	Request::fillBody()
 	if (this->_body.size() == this->_contentLength)
 	{
 		this->_state = SEND;
-		std::cout << "client state is SEND" << std::endl;
+		streams.print(LOG_REQUEST) << "[STATE]" << std::endl
+			<< "Client state has been put in SEND mode"
+			<< std::endl;
 	}
 	//else 400 Bad request
 }
@@ -60,7 +62,9 @@ void	Request::fillChunkedBody()
 			if (this->_buffer[chunk_size ] != '\r' && this->_buffer[chunk_size + 1] != '\n')
 			{
 				//trow 400 Bad request
-				std::cout << RED << "Number of octet not in adequation whith chunk size" << WHITE << std::endl;
+				streams.print(LOG_REQUEST) << "[ERROR]" << std::endl
+					<< "Number of octet till CRLF is not equal to the number of octet to read"
+					<< std::endl;
 			}
 			//erase chunk_size octet + 2 from buffer
 			this->_buffer.erase(0, chunk_size + 2);
@@ -71,6 +75,9 @@ void	Request::fillChunkedBody()
 		{
 			this->_buffer.erase(0, cursor + 3);
 			this->_state = SEND;
+			streams.print(LOG_REQUEST) << "[STATE]" << std::endl
+				<< "Client state has been put in SEND mode"
+				<< std::endl;
 			continue;
 		}
 		break;

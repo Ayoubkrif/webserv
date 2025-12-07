@@ -14,8 +14,12 @@
 #include "../classes/Cgi/Cgi.hpp"
 #include <iostream>
 
+
 void	parse_buffer(Request *request)
 {
+		streams.print(LOG_REQUEST) << "[BUFFER BEFORE PARSING]" << std::endl
+			<< request->getBuffer()
+			<< std::endl;
 	//can a \r or \n be alone in header???
 	std::string::size_type cursor = 0;//cursor has to be here for fill header
 	//header is full in buffer
@@ -41,9 +45,13 @@ void	parse_buffer(Request *request)
 			request->fillBody();
 	}
 	// check contentLength == bodyLength
-	std::cout << "++++++++++++++++" << std::endl;
-	std::cout << "header is :" << request->getHeader() << std::endl;
-	std::cout << "body is :" << request->getBody() << std::endl;
-	std::cout << "buffer is :" << request->getBuffer() << std::endl;
-	std::cout << "++++++++++++++++" << std::endl;
+		streams.print(LOG_REQUEST) << "[HEADER AFTER PARSING]" << std::endl
+			<< request->getHeader() << std::endl
+			<< "[BODY AFTER PARSING]" << std::endl
+			<< request->getBody() << std::endl
+			<< "[BUFFER AFTER PARSING]" << std::endl
+			<< request->getBuffer()
+			<< "[REQUEST IS]" << std::endl
+			<< *request
+			<< std::endl;
 }
