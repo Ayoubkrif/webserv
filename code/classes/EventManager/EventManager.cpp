@@ -31,7 +31,7 @@ extern FileStream	streams;
 EventManager::EventManager(std::vector<Server> &servers)
 {
     // 2. Créer une instance epoll
-	streams.print(LOG_EVENT) << "epoll_create : "
+	streams.get(LOG_EVENT) << "epoll_create : "
 		<< std::endl;
     _fd = epoll_create1(0);
     if (_fd == -1)
@@ -39,7 +39,7 @@ EventManager::EventManager(std::vector<Server> &servers)
         perror("epoll_create1");
 		throw (std::runtime_error("ERROR"));
     }
-	streams.print(LOG_EVENT) << _fd
+	streams.get(LOG_EVENT) << _fd
 		<< std::endl;
 
 	for(std::vector<Server>::iterator it = servers.begin(); it != servers.end(); it++)
@@ -85,7 +85,7 @@ void	EventManager::serverAccept(void)
 			close(client->fd);
 			continue;
 		}
-		streams.print(LOG_EVENT) << "Nouvelle connexion acceptée: " << client->fd
+		streams.get(LOG_EVENT) << "Nouvelle connexion acceptée: " << client->fd
 			<< std::endl;
 	}
 }
@@ -102,7 +102,7 @@ void	EventManager::handleClient()
 			if (count == -1)
 				throw (std::runtime_error("RECV KO"));
 			//if count == 0 check time pour client fantome
-			streams.print(LOG_EVENT) << "[RECV de "<< count << std::endl
+			streams.get(LOG_EVENT) << "[RECV de "<< count << std::endl
 				<< std::string(buffer).substr(0, count)
 				<< std::endl;
 			
@@ -118,11 +118,11 @@ void	EventManager::handleClient()
 	}
 	else if (getEvent().events & EPOLLOUT)
 	{
-		streams.print(LOG_EVENT) << "[ENVOI]" << std::endl
+		streams.get(LOG_EVENT) << "[ENVOI]" << std::endl
 			<< std::endl;
 		if (send(client.fd, "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\nHello, World!", 48, 0) == -1)
 			throw (std::runtime_error("SEND"));
-		streams.print(LOG_EVENT) << "[SUCCESS]" << std::endl
+		streams.get(LOG_EVENT) << "[SUCCESS]" << std::endl
 			<< std::endl;
 		// if (client.getConnection() == KEEP_ALIVE)
 		// {
