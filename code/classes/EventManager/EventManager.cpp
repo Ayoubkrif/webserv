@@ -119,19 +119,19 @@ void	EventManager::serverAccept(void)
 #include "parsing_header.hpp"
 void	EventManager::handleClient()
 {
-	static char buffer[BUFFER_SIZE + 1] = {0};
+	char buffer[BUFFER_SIZE + 1] = {0};
 	Request &client = *(Request *)getPtr();
-	if (getEvent().events == EPOLLIN)
+	if (getEvent().events & EPOLLIN)
 	{
 		ssize_t count = recv(client.fd, buffer, sizeof(buffer), 0); // kesako
 		if (count == -1)
 			throw (std::runtime_error("RECV KO"));
 		//if count == 0 check time pour client fantome
-		// if (count == 0)
-		// {
-		// 	return ;
-		// 	//check time pour KO
-		// }
+		if (count == 0)
+		{
+			return ;
+			//check time pour KO
+		}
 		streams.print(LOG_EVENT) << "[RECV]" << std::endl
 			<< std::string(buffer).substr(0, count)
 			<< std::endl;
@@ -150,35 +150,36 @@ void	EventManager::handleClient()
 			//streams.print();
 		}
 	}
-	else if (getEvent().events == EPOLLOUT)
+	if (getEvent().events & EPOLLOUT)
 	{
 		streams.print(LOG_EVENT) << "[ENVOI]" << std::endl
 			<< std::endl;
-		if (send(client.fd, "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\nHello, World!", 48, 0) == -1)
+		std::string toSend = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length:12\r\nConnection:keep-alive\r\n\r\nHello, World!";
+		if (send(client.fd, toSend.c_str(), toSend.length(), 0) == -1)
 			throw (std::runtime_error("SEND"));
 		streams.print(LOG_EVENT) << "[SUCCESS]" << std::endl
 			<< std::endl;
-		// if (client.getConnection() == KEEP_ALIVE)
-		// {
-		// 	std::cout << RED << "connection is KEEP ALIVE" << WHITE << std::endl;
-		// 	getEvent().events = EPOLLIN;
-		// 	client.resetRequest();
-		// 	epoll_ctl(this->_fd, EPOLL_CTL_MOD, client.fd, &getEvent());
-		// 	// event == eppollin
-		// 	// epoll_ctl(MOD EPOLLIN) 
-		// 	//reinitialiser client ?????? C CLARA LA FOLLE
-		// }
-		// else
-		// {
-		// 	std::cout << RED << "connection is CLOSE" << WHITE << std::endl;
-		// 	close(client.fd);
-		// 	delete (Request *)getPtr(); //vraiment pas sur de la syntaxe
-		// 	epoll_ctl(this->_fd, EPOLL_CTL_DEL, client.fd, &getEvent());
-		// 	//else a verifier
-		//
-		// 	// close(events[i].data.fd);
-		// 	// epoll ctl delete
-		// }
+		if (client.getConnection() == KEEP_ALIVE)
+		{
+			std::cout << RED << "connection is KEEP ALIVE" << WHITE << std::endl;
+			getEvent().events = EPOLLIN;
+			client.resetRequest();
+			epoll_ctl(this->_fd, EPOLL_CTL_MOD, client.fd, &getEvent());
+			// event == eppollin
+			// epoll_ctl(MOD EPOLLIN) 
+			//reinitialiser client ?????? C CLARA LA FOLLE
+		}
+		else
+		{
+			std::cout << RED << "connection is CLOSE" << WHITE << std::endl;
+			epoll_ctl(this->_fd, EPOLL_CTL_DEL, client.fd, &getEvent());
+			close(client.fd);
+			delete (Request *)getPtr(); //vraiment pas sur de la syntaxe
+			//else a verifier
+
+			// close(events[i].data.fd);
+			// epoll ctl delete
+		}
 	}
 }
 
