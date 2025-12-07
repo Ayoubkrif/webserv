@@ -23,28 +23,25 @@
 
 #include "Server.hpp"
 #include "Request.hpp"
-#include "FileStream.hpp"
 #include "logfiles.hpp"
+#include "string.hpp"
 
-extern FileStream	streams;
-
-EventManager::EventManager(std::vector<Server> &servers)
+static const String	MONITOR_START = "Starting Webserv...";
+EventManager::EventManager(std::vector<Server> &servers): Monitor(MONITOR_START)
 {
     // 2. Créer une instance epoll
-	streams.get(LOG_EVENT) << "epoll_create : "
-		<< std::endl;
+	Monitor.popStatus("Creating an epoll instance");
     _fd = epoll_create1(0);
     if (_fd == -1)
 	{
         perror("epoll_create1");
 		throw (std::runtime_error("ERROR"));
     }
-	streams.get(LOG_EVENT) << _fd
-		<< std::endl;
-
+	Monitor.popStatus("Opening Server fd...");
 	for(std::vector<Server>::iterator it = servers.begin(); it != servers.end(); it++)
 	{
 		it->startListen();
+		Monitor.printNewLine("Listening Succeed !");
 		// Structure pour les événements
 		struct epoll_event event;
 		event.events = EPOLLIN;
@@ -56,6 +53,7 @@ EventManager::EventManager(std::vector<Server> &servers)
 			perror("epoll_ctl: server_fd");
 			throw (std::runtime_error("ERROR"));
 		}
+		Monitor.printNewLine("Adding listening socket to epoll Succeed !");
 	}
 }
 
@@ -102,10 +100,7 @@ void	EventManager::handleClient()
 			if (count == -1)
 				throw (std::runtime_error("RECV KO"));
 			//if count == 0 check time pour client fantome
-			streams.get(LOG_EVENT) << "[RECV de "<< count << std::endl
-				<< std::string(buffer).substr(0, count)
-				<< std::endl;
-			
+			monitorEventRecv(count, String(buffer).substr(0, count));
 			client.appendBuffer(buffer, 0, count);
 		}
 		parse_buffer(&client);
@@ -147,13 +142,12 @@ void	EventManager::handleClient()
 
 void	EventManager::run(void)
 {
+	Monitor.popStatus("STARTING ..");
     while (1)
 	{
 		//b.POUR CHAQUE event dans events [0,n)
-		std::cout << "Polling ..." << std::endl;
 		for (getNewEvent(); getPtr(); eventNext())
 		{
-			std::cout << "Event no " << this->_it << std::endl;
 			// 1. SI(event.fd == server_socket)
 			if (checkEvent() == SRV) // SERVER
 			{
