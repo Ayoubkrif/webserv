@@ -65,6 +65,7 @@ void	Request::fillChunkedBody()
 				this->_state = TRAILERS;
 			else if (chunk_size == 0)
 			{
+				this->_buffer.erase(0, 2);
 				this->_state = SEND;
 				this->_contentLength = this->_body.size();
 				streams.print(LOG_REQUEST) << "[STATE]" << std::endl
