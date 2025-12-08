@@ -22,13 +22,14 @@ void	parse_buffer(Request *request)
 			<< request->getBuffer()
 			<< std::endl;
 	//can a \r or \n be alone in header???
-	std::string::size_type cursor = 0;//cursor has to be here for fill header
+	std::string::size_type cursor = 0;
 	//header is full in buffer
 	if (request->getState() == HEADER && move_cursor(&cursor, request->getBuffer(), DCRLF))
 	{
 		request->fillHeader(cursor);
 		parse_header_type(request);
-		//if state has been edited there is an error and should return
+		if (!request->getStatus().empty())
+			return;
 		if (request->getContentLength() == 0 && request->getTransferEncoding() != CHUNKED)
 			request->setState(SEND);
 		else if (request->getTransferEncoding() == CHUNKED)
@@ -36,8 +37,6 @@ void	parse_buffer(Request *request)
 		else
 			request->setState(BODY);
 	}
-	if (!request->getStatus().empty())
-		return;
 
 	if (request->getState() == BODY || request->getState() == CHUNK_SIZE || request->getState() == TRAILERS)
 	{
@@ -47,21 +46,9 @@ void	parse_buffer(Request *request)
 		else
 			request->fillBody();
 	}
-	// check contentLength == bodyLength && SEND
 	if (request->getState() == SEND && request->getContentLength() != request->getBody().length())
 	{
 		request->setStatus(BAD_REQUEST);
 	}
-		streams.print(LOG_REQUEST) << "[HEADER AFTER PARSING]" << std::endl
-			<< request->getHeader() << std::endl
-			<< std::endl
-			<< "[BODY AFTER PARSING]" << std::endl
-			<< request->getBody() << std::endl
-			<< std::endl
-			<< "[BUFFER AFTER PARSING]" << std::endl
-			<< request->getBuffer() << std::endl
-			<< std::endl
-			<< "[REQUEST IS]" << std::endl
-			<< *request
-			<< std::endl;
+	printRequest(request);
 }

@@ -20,6 +20,21 @@ int	move_cursor(std::string::size_type *cursor, std::string str, std::string toF
 		return 0;
 }
 
+void	printRequest(Request *request)
+{
+	streams.print(LOG_REQUEST) << "[HEADER AFTER PARSING]" << std::endl
+		<< request->getHeader() << std::endl
+		<< std::endl
+		<< "[BODY AFTER PARSING]" << std::endl
+		<< request->getBody() << std::endl
+		<< std::endl
+		<< "[BUFFER AFTER PARSING]" << std::endl
+		<< request->getBuffer() << std::endl
+		<< std::endl
+		<< "[REQUEST IS]" << std::endl
+		<< *request
+		<< std::endl;
+}
 // void	tokenize(std::string *buffer, Request *request, std::string::size_type cursor, int mode)
 // {
 // 	if (mode == 0)
