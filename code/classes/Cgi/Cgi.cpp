@@ -35,6 +35,7 @@ void	Cgi::addFields(std::string field, std::string token)
 	std::string	variable;
 
 	//check for host/type/length to be parse separated cause dont have HTTP_ preposition
+	//field has to be in field tab (not an error if not but do not put in env)
 
 	variable.assign(httpToCgiHeader(field));
 	variable.append(token);
