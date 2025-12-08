@@ -166,9 +166,9 @@ void	Request::parseURI(std::string str)
 std::ostream	&operator<<(std::ostream &lhs, const Request &rhs)
 {
 	lhs	<< "state="
-		<< rhs.getState()
+		<< rhs.getState() << std::endl
 		<< "status="
-		<< rhs.getStatus()
+		<< rhs.getStatus() << std::endl
 		<< "method="
 		<< rhs.getMethod() << std::endl
 		<< "URI="

@@ -55,7 +55,7 @@ void	parse_buffer(Request *request)
 			<< "[BODY AFTER PARSING]" << std::endl
 			<< request->getBody() << std::endl
 			<< "[BUFFER AFTER PARSING]" << std::endl
-			<< request->getBuffer()
+			<< request->getBuffer() << std::endl
 			<< "[REQUEST IS]" << std::endl
 			<< *request
 			<< std::endl;
