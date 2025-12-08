@@ -101,6 +101,10 @@ void	EventManager::handleClient()
 				throw (std::runtime_error("RECV KO"));
 			if (count == 0) // gerer client deconecte
 			{
+				std::cout << RED << "connection is CLOSE" << WHITE << std::endl;
+				epoll_ctl(this->_fd, EPOLL_CTL_DEL, client.fd, &getEvent());
+				close(client.fd);
+				delete (Request *)getPtr(); //vraiment pas sur de la syntaxe
 				return ;
 			}
 			monitorEventRecv(count, String(buffer).substr(0, count));
