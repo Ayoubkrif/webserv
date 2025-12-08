@@ -32,30 +32,6 @@ void	Request::parseHost(std::string str)
 	this->_host = str;
 }
 
-void	Request::parseAccept(std::string str)
-{
-	//content types the sender is able to anderstand
-	//the server uses content negociation to select one of the proposals
-	//inform the client with Content-Type response
-	//usefull only if cgi, accept elements are passed as <CGI spec> argument
-	//
-	//format xxx, xxx;q=nb.nb
-	//format to be checked
-	//q is between 0 and 1, with a max of 3 decimals, by default 1
-	std::cout << "Accept is : " << str << std::endl;
-	str = skipOWS(str);
-}
-
-void	Request::parseAcceptEncoding(std::string str)
-{
-	//liste des encodages de contenu que le client accept
-	//meme format que accept
-	//format xxx, xxx;q=nb.nb
-	//inutile pour static
-	//a passer a la CGI HTTP_ACCEPT_ENCODING
-	str = skipOWS(str);
-}
-
 void	Request::parseCookies(std::string str)
 {
 	//contains stored HTTP cookies associated with the server 
@@ -65,36 +41,10 @@ void	Request::parseCookies(std::string str)
 	str = skipOWS(str);
 }
 
-void	Request::parseLanguage(std::string str)
-{
-	//format xxx, xxx;q=nb.nb
-	str = skipOWS(str);
-}
-
-void	Request::parseAuthorization(std::string str)
-{
-	//header d'authentification
-	//inutile en static
-	//a passer a la CGI HTTP_AUTHORIZATION
-	//trop le bordel cgi se debrouille
-	str = skipOWS(str);
-}
-
 void	Request::parseConnection(std::string str)
 {
 	//keep-alive ou close
 	//DEL ou pas le client apres le traitement de la requete
-	str = skipOWS(str);
-}
-
-void	Request::parseIfModifiedSince(std::string str)
-{
-	//indique que le client ne veut que les fichiers modifies apres une certaine date
-	//stat()
-	//parser la date en time_t
-	//si time <= if-modified-since -> 304 Not Modified
-	//CGI HTTP_IF_MODIFIED_SINCE
-	//format jour, jj, moi AAAA HH:MM:SS TIME_ZONE (ex gmt)
 	str = skipOWS(str);
 }
 
@@ -158,6 +108,56 @@ void	Request::parseTrailer(std::string str)
 	str = skipOWS(str);
 	this->_trailer = 1;
 }
+
+// void	Request::parseAccept(std::string str)
+// {
+// 	//content types the sender is able to anderstand
+// 	//the server uses content negociation to select one of the proposals
+// 	//inform the client with Content-Type response
+// 	//usefull only if cgi, accept elements are passed as <CGI spec> argument
+// 	//
+// 	//format xxx, xxx;q=nb.nb
+// 	//format to be checked
+// 	//q is between 0 and 1, with a max of 3 decimals, by default 1
+// 	std::cout << "Accept is : " << str << std::endl;
+// 	str = skipOWS(str);
+// }
+
+// void	Request::parseAcceptEncoding(std::string str)
+// {
+// 	//liste des encodages de contenu que le client accept
+// 	//meme format que accept
+// 	//format xxx, xxx;q=nb.nb
+// 	//inutile pour static
+// 	//a passer a la CGI HTTP_ACCEPT_ENCODING
+// 	str = skipOWS(str);
+// }
+
+// void	Request::parseLanguage(std::string str)
+// {
+// 	//format xxx, xxx;q=nb.nb
+// 	str = skipOWS(str);
+// }
+
+// void	Request::parseAuthorization(std::string str)
+// {
+// 	//header d'authentification
+// 	//inutile en static
+// 	//a passer a la CGI HTTP_AUTHORIZATION
+// 	//trop le bordel cgi se debrouille
+// 	str = skipOWS(str);
+// }
+
+// void	Request::parseIfModifiedSince(std::string str)
+// {
+// 	//indique que le client ne veut que les fichiers modifies apres une certaine date
+// 	//stat()
+// 	//parser la date en time_t
+// 	//si time <= if-modified-since -> 304 Not Modified
+// 	//CGI HTTP_IF_MODIFIED_SINCE
+// 	//format jour, jj, moi AAAA HH:MM:SS TIME_ZONE (ex gmt)
+// 	str = skipOWS(str);
+// }
 
 //Trailer
 //

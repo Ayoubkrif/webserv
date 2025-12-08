@@ -36,7 +36,9 @@ void	parse_buffer(Request *request)
 		else
 			request->setState(BODY);
 	}
-	// if (request->getState() & (BODY | CHUNK_SIZE | TRAILERS))
+	if (!request->getStatus().empty())
+		return;
+
 	if (request->getState() == BODY || request->getState() == CHUNK_SIZE || request->getState() == TRAILERS)
 	{
 		//fill body according to content-length and transfer-encoding (chunked)

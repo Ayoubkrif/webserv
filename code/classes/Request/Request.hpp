@@ -113,21 +113,19 @@ public:
 	int					getField(std::string *field);
 
 private:
-	std::string			_host;
-	std::string			_accept;
-	std::string			_acceptEncoding;
+	std::string			_host; //inutile mais obligatoire
 	std::string			_cookies;
-	std::string			_language;
-	std::string			_authorization;
-	std::string			_ifModifiedSince;
-	std::string			_contentType;
+	std::string			_contentType; //que utile pour POST
 	int					_expect;
 	unsigned long		_contentLength;
 	bool				_length;
 	bool				_transferEncoding;
 	bool				_connection;
-	bool				_ifModif;
 	bool				_trailer;
+	// std::string			_authorization;
+	// std::string			_accept; //ignorable ou 406
+	// std::string			_ifModifiedSince;
+	// bool				_ifModif;
 
 public:
 
@@ -137,18 +135,15 @@ public:
 	bool				getConnection() const;
 
 	void				parseHost(std::string);
-	void				parseAccept(std::string);
-	void				parseAcceptEncoding(std::string);
 	void				parseCookies(std::string);
-	void				parseLanguage(std::string);
-	void				parseAuthorization(std::string);
 	void				parseConnection(std::string);
-	void				parseIfModifiedSince(std::string);
 	void				parseExpect(std::string);
 	void				parseContentType(std::string);
 	void				parseContentLength(std::string);
 	void				parseTransferEncoding(std::string);
 	void				parseTrailer(std::string);
+	// void				parseAuthorization(std::string);
+	// void				parseIfModifiedSince(std::string);
 };
 
 

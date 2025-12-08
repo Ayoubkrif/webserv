@@ -34,21 +34,12 @@ void Request::initFields()
 	Request::fields[201][0] = "transfer-encoding";
 	Request::fields[205][0] = "if-modified-since";
 
-	// Request::fctField[40] = &Request::parseRange;
-	Request::fctField[42] = &Request::parseAccept;
 	Request::fctField[58] = &Request::parseHost;
-	// Request::fctField[66] = &Request::parseOrigin;
 	Request::fctField[67] = &Request::parseExpect;
 	Request::fctField[70] = &Request::parseCookies;
 	Request::fctField[76] = &Request::parseTrailer;
 	Request::fctField[102] = &Request::parseConnection;
-	Request::fctField[147] = &Request::parseLanguage;
-	Request::fctField[150] = &Request::parseAcceptEncoding;
-	// Request::fctField[151] = &Request::parseCacheControl;
-	Request::fctField[164] = &Request::parseAuthorization;
-	// Request::fctField[187] = &Request::parseIfNoneMatch;
 	Request::fctField[189] = &Request::parseContentLength;
 	Request::fctField[191] = &Request::parseContentType;
 	Request::fctField[201] = &Request::parseTransferEncoding;
-	Request::fctField[205] = &Request::parseIfModifiedSince;
 }
