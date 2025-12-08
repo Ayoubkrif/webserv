@@ -1,0 +1,14 @@
+GET index.html HTTP/1.1
+Host: localhost:8002
+content-type:185
+transfer-encoding:chunked
+
+Connection: close
+
+4
+Wiki
+5
+pedia
+0
+
+nextBuffer
