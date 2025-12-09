@@ -57,35 +57,31 @@ EventManager::EventManager(std::vector<Server> &servers): Monitor(MONITOR_START)
 	}
 }
 
+Request	&EventManager::requestAdd(Server &server)
+{
+	Request *client = new Request(server);
+	// push dans la liste membre
+	return (*client);
+}
+
 void	EventManager::serverAccept(void)
 {
 	Server &server = *(Server*)getPtr();
-	//TANT QUE accept()
-	while (1)
-	{
-		Request *client = new Request(server);
-		client->fd = accept(server.getFd(), (struct sockaddr *)&client->client_addr, &client->client_len);
-		if (client->fd == -1)
-		{
-			perror("accept");
-			break;
-		}
-		// Configurer le socket client en non-bloquant
-		fcntl(client->fd, F_SETFL, O_NONBLOCK);
+	Request	&client = requestAdd(server);
+	// Configurer le socket client en non-bloquant
+	fcntl(client.fd, F_SETFL, O_NONBLOCK);
 
-		// Ajouter le socket client à epoll
-		struct epoll_event event;
-		event.events = EPOLLIN;
-		event.data.ptr = client;
-		if (epoll_ctl(this->_fd, EPOLL_CTL_ADD, client->fd, &event) == -1) 
-		{
-			perror("epoll_ctl: client_fd");
-			close(client->fd);
-			continue;
-		}
-		streams.get(LOG_EVENT) << "Nouvelle connexion acceptée: " << client->fd
-			<< std::endl;
+	// Ajouter le socket client à epoll
+	struct epoll_event event;
+	event.events = EPOLLIN;
+	event.data.ptr = &client;
+	if (epoll_ctl(this->_fd, EPOLL_CTL_ADD, client.fd, &event) == -1) 
+	{
+		perror("epoll_ctl: client_fd");
+		throw(std::runtime_error("Epoll ctl add fail failed !"));
 	}
+	streams.get(LOG_EVENT) << "Nouvelle connexion acceptée: " << client.fd
+		<< std::endl;
 }
 
 #include "parsing_header.hpp"

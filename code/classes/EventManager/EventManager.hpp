@@ -26,6 +26,7 @@ extern FileStream	streams;
 class	Logger;
 
 class	Server;
+class	Request;
 class EventManager
 {
 	public:
@@ -41,6 +42,7 @@ class EventManager
 
 		void			serverAccept(void);
 		void			handleClient(void);
+		Request			&requestAdd(Server&);
 		Logger			Monitor;
 		void			monitorNewEvent(ssize_t);
 		void			monitorEventRecv(ssize_t, String);
