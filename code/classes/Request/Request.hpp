@@ -113,6 +113,12 @@ public:
 	int					getField(int *type);
 	int					getField(std::string *field);
 
+	void	parseBuffer(void);
+	void	parseHeaderType(void);
+	void	parseHeader(void);
+	void	parseCgiHeader(void);
+	void	parseRequestLine(std::string token);
+
 private:
 	std::string			_host; //inutile mais obligatoire
 	std::string			_cookies;
@@ -155,3 +161,5 @@ public:
 std::ostream	&operator<<(std::ostream &lhs, const Request &rhs);
 
 static const int	MAX_BODY_SIZE = 8192; //juste la le temps de le resoudre dans la config du serveur
+int		moveCursor(std::string::size_type *cursor, std::string str, std::string toFind);
+void	printRequest(Request *request);

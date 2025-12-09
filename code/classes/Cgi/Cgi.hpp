@@ -13,7 +13,7 @@
 
 #include <string>
 #include <vector>
-#include "../../includes/define_cgi.hpp"
+#include "define_cgi.hpp"
 
 class Request;
 class Cgi

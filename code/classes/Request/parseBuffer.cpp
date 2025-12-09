@@ -9,46 +9,45 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/parsing_header.hpp"
-#include "../classes/Request/Request.hpp"
-#include "../classes/Cgi/Cgi.hpp"
+#include "Request.hpp"
+#include "Cgi.hpp"
 #include "statusCodes.hpp"
 #include <iostream>
 
 
-void	parse_buffer(Request *request)
+void	Request::parseBuffer(void)
 {
-		streams.get(LOG_REQUEST) << "[BUFFER BEFORE PARSING]" << std::endl
-			<< request->getBuffer()
-			<< std::endl;
+	streams.get(LOG_REQUEST) << "[BUFFER BEFORE PARSING]" << std::endl
+		<< this->getBuffer()
+		<< std::endl;
 	//can a \r or \n be alone in header???
 	std::string::size_type cursor = 0;
 	//header is full in buffer
-	if (request->getState() == HEADER && move_cursor(&cursor, request->getBuffer(), DCRLF))
+	if (this->getState() == HEADER && moveCursor(&cursor, this->getBuffer(), DCRLF))
 	{
-		request->fillHeader(cursor);
-		parse_header_type(request);
-		if (!request->getStatus().empty())
+		this->fillHeader(cursor);
+		parseHeaderType();
+		if (!this->getStatus().empty())
 			return;
-		if (request->getContentLength() == 0 && request->getTransferEncoding() != CHUNKED)
-			request->setState(SEND);
-		else if (request->getTransferEncoding() == CHUNKED)
-			request->setState(CHUNK_SIZE);
+		if (this->getContentLength() == 0 && this->getTransferEncoding() != CHUNKED)
+			this->setState(SEND);
+		else if (this->getTransferEncoding() == CHUNKED)
+			this->setState(CHUNK_SIZE);
 		else
-			request->setState(BODY);
+			this->setState(BODY);
 	}
 
-	if (request->getState() == BODY || request->getState() == CHUNK_SIZE || request->getState() == TRAILERS)
+	if (this->getState() == BODY || this->getState() == CHUNK_SIZE || this->getState() == TRAILERS)
 	{
 		//fill body according to content-length and transfer-encoding (chunked)
-		if (request->getTransferEncoding() == CHUNKED)
-			request->fillChunkedBody();
+		if (this->getTransferEncoding() == CHUNKED)
+			this->fillChunkedBody();
 		else
-			request->fillBody();
+			this->fillBody();
 	}
-	if (request->getState() == SEND && request->getContentLength() != request->getBody().length())
+	if (this->getState() == SEND && this->getContentLength() != this->getBody().length())
 	{
-		request->setStatus(BAD_REQUEST);
+		this->setStatus(BAD_REQUEST);
 	}
-	printRequest(request);
+	printRequest(this);
 }

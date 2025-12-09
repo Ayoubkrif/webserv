@@ -13,6 +13,7 @@
 #include "string.hpp"
 #include <iostream>
 #include <ostream>
+#include "colors.hpp"
 
 // Efface toute la ligne actuelle
 static const String	ANSI_CLEAR_LINE = "\033[2K";

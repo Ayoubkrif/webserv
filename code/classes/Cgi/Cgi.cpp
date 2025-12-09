@@ -10,7 +10,7 @@
 /* ************************************************************************** */
 
 #include "Cgi.hpp"
-#include "../Request/Request.hpp"
+#include "Request.hpp"
 
 Cgi::Cgi(): _env(CGI_HEADER), _contentLength(0)
 {

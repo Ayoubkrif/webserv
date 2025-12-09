@@ -93,7 +93,6 @@ void	EventManager::serverAccept(void)
 		<< std::endl;
 }
 
-#include "parsing_header.hpp"
 void	EventManager::handleClient()
 {
 	char buffer[BUFFER_SIZE + 1] = {0};
@@ -114,7 +113,7 @@ void	EventManager::handleClient()
 			monitorEventRecv(count, String(buffer).substr(0, count));
 			client.appendBuffer(buffer, 0, count);
 		}
-		parse_buffer(&client);
+		client.parseBuffer();
 		if (client.getState() == SEND)
 		{
 			// streams.print(LOG_EVENT) << "[CLIENT switching sending mode]" << std::endl

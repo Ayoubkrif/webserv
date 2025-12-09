@@ -10,7 +10,6 @@
 /* ************************************************************************** */
 
 #include "Request.hpp"
-#include "parsing_header.hpp"
 #include "statusCodes.hpp"
 
 void	Request::fillBody()
@@ -56,7 +55,7 @@ void	Request::fillChunkedBody()
 		}
 		if (this->_state == CHUNK_SIZE)
 		{
-			if (!move_cursor(&cursor, this->_buffer, CRLF))
+			if (!moveCursor(&cursor, this->_buffer, CRLF))
 				break;
 			line.assign(this->_buffer.substr(0, cursor));
 			this->_buffer.erase(0, line.size() + 2);
@@ -94,7 +93,7 @@ void	Request::fillChunkedBody()
 		}
 		if (this->_state == TRAILERS)
 		{
-			if (!move_cursor(&cursor, this->_buffer, DCRLF))
+			if (!moveCursor(&cursor, this->_buffer, DCRLF))
 				break;
 			this->_buffer.erase(0, cursor + 3);
 			this->_state = SEND;

@@ -19,10 +19,6 @@ SRC_FILES = \
 	main.cpp \
 	time.cpp \
 	\
-	parse_buffer.cpp \
-	parse_header.cpp \
-	parse_request_line.cpp \
-	parse_header_utils.cpp \
 
 # Classes listing
 CLASS_FILES = \
@@ -42,6 +38,10 @@ CLASS_FILES = \
 	Request/FieldsParser.cpp \
 	Request/FillBody.cpp \
 	Request/RequestUtils.cpp \
+	Request/parseBuffer.cpp \
+	Request/parseHeader.cpp \
+	Request/parseRequestLine.cpp \
+	Request/parseHeaderUtils.cpp \
 	Cgi/Cgi.cpp \
 	\
 	EventManager/EventManager.cpp \

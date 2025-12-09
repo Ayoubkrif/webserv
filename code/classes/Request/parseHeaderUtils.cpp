@@ -9,9 +9,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/parsing_header.hpp"
+#include <string>
+#include <iostream>
+#include "Request.hpp"
 
-int	move_cursor(std::string::size_type *cursor, std::string str, std::string toFind)
+int	moveCursor(std::string::size_type *cursor, std::string str, std::string toFind)
 {
 	*cursor = str.find(toFind);
 	if (*cursor != std::string::npos)

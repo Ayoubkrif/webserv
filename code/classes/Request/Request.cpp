@@ -10,7 +10,6 @@
 /* ************************************************************************** */
 
 #include "Request.hpp"
-#include "parsing_header.hpp"
 #include "Location.hpp"
 #include "Server.hpp"
 #include <sys/socket.h>
@@ -83,7 +82,7 @@ int	Request::getToken(std::string *token)
 	while (this->_header[Ows] && OWS.find(this->_header[Ows]) != std::string::npos)
 		Ows++;
 
-	if (!move_cursor(&cursor, this->_header, CRLF))
+	if (!moveCursor(&cursor, this->_header, CRLF))
 	{
 		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
 			<< "CRLF has not been find to complete token"
@@ -102,7 +101,7 @@ int	Request::getField(int *type)
 {
 	std::string field;
 	std::string::size_type	cursor = 0;
-	if (!move_cursor(&cursor, this->_header, ":"))
+	if (!moveCursor(&cursor, this->_header, ":"))
 	{
 		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
 			<< "':' has not been find to complete field"
@@ -124,7 +123,7 @@ int	Request::getField(int *type)
 int	Request::getField(std::string *field)
 {
 	std::string::size_type	cursor = 0;
-	if (!move_cursor(&cursor, this->_header, ":"))
+	if (!moveCursor(&cursor, this->_header, ":"))
 	{
 		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
 			<< "':' has not been find to complete field"
@@ -166,7 +165,7 @@ void	Request::parseURI(std::string str)
 {
 	std::string::size_type cursor = 0;
 	//or # anchor???
-	if (move_cursor(&cursor, str, "?"))
+	if (moveCursor(&cursor, str, "?"))
 	{
 		this->_queryString.assign(str.substr(cursor + 1));
 		str.erase(cursor);

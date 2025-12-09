@@ -9,43 +9,42 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/parsing_header.hpp"
+#include "Request.hpp"
 
-void	parse_request_line(Request *request, std::string token)
+//parse method
+//reconstitue/parse URI
+//check HTTP/1.1
+void	Request::parseRequestLine(std::string token)
 {
-	//parser methode
-	//reconstituer/parser URI
-	//check HTTP/1.1
-	
 	std::string::size_type cursor= 0;
 
-	if (move_cursor(&cursor, token, " "))
+	if (moveCursor(&cursor, token, " "))
 	{
-		request->parseMethod(token.substr(0, cursor));
+		this->parseMethod(token.substr(0, cursor));
 		token.erase(0, cursor + 1);
-		if (!request->getStatus().empty())
+		if (!this->getStatus().empty())
 			return;
 	}
 	else
 	{
-		request->setStatus(BAD_REQUEST);
+		this->setStatus(BAD_REQUEST);
 		return;
 	}
-	if (move_cursor(&cursor, token, " "))
+	if (moveCursor(&cursor, token, " "))
 	{
-		request->parseURI(token.substr(0, cursor));
+		this->parseURI(token.substr(0, cursor));
 		token.erase(0, cursor + 1);
-		if (!request->getStatus().empty())
+		if (!this->getStatus().empty())
 			return;
 	}
 	else
 	{
-		request->setStatus(BAD_REQUEST);
+		this->setStatus(BAD_REQUEST);
 		return;
 	}
 	if (token.compare("HTTP/1.1"))
 	{
-		request->setStatus(BAD_REQUEST);
+		this->setStatus(BAD_REQUEST);
 		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
 			<< "Wrong HTTP protocol:" << token
 			<< std::endl;

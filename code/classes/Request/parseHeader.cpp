@@ -9,44 +9,38 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/parsing_header.hpp"
-#include "../classes/Request/Request.hpp"
-#include "../classes/Cgi/Cgi.hpp"
+#include "Request.hpp"
+#include "Cgi.hpp"
 #include "statusCodes.hpp"
 
 // string = expr + final CRLF
-void	parse_header_type(Request *request)
+void	Request::parseHeaderType(void)
 {
 	std::string				token;
 
-	if (request->getHeader().empty())
-		return;
-	//cant be empty test with empty header (just DCRLF)
-	//error if empty???
-
-	if (!request->getToken(&token))//can't use this cause it skip ows
+	if (!this->getToken(&token))//can't use this cause it skip ows
 	{
-		request->setStatus(BAD_REQUEST);
+		this->setStatus(BAD_REQUEST);
 		return;
 	}
-	parse_request_line(request, token);
-	if (!request->getStatus().empty())
+	parseRequestLine(token);
+	if (!this->getStatus().empty())
 		return;
-	if (request->getState() == CGI)
-		parse_cgi_header(request);
+	if (this->getState() == CGI)
+		parseCgiHeader();
 	else
-		parse_header(request);
+		parseHeader();
 		
 
 	//if CGI parse_header in cgi mode
 	//state CGI but same parsing function?
 }
 
-void	parse_header(Request *request)
+void	Request::parseHeader(void)
 {
 	std::string				token;
 
-	if (request->getHeader().empty())
+	if (this->getHeader().empty())
 		return;
 	//error if empty??? can it be empty?? Is it an error?? have to test it
 	
@@ -54,14 +48,14 @@ void	parse_header(Request *request)
 	while (1)
 	{
 		//look at parse_cgi_header for amelioration
-		if (request->getHeader().empty())
+		if (this->getHeader().empty())
 		{
 			streams.get(LOG_REQUEST) << "[HEADER EMPTIED IN PARSING]" << std::endl;
 			break;
 		}
-		if (!request->getField(&type) || !request->getToken(&token))
+		if (!this->getField(&type) || !this->getToken(&token))
 		{
-			request->setStatus(BAD_REQUEST);
+			this->setStatus(BAD_REQUEST);
 			streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
 				<< "invalid field or token" << std::endl
 				<< "field type is :" << type << std::endl
@@ -70,10 +64,10 @@ void	parse_header(Request *request)
 			return;
 		}
 		if (type > 0 && type < 207 && Request::fctField[type] != NULL)
-			(request->*Request::fctField[type])(token);
+			(this->*Request::fctField[type])(token);
 		else if (type < 0)
 		{
-			request->setStatus(BAD_REQUEST);
+			this->setStatus(BAD_REQUEST);
 		//How to deal with expect? Does errors override expect?? Does expect override body??
 		//->Put in a string and check at response construction?
 		}
@@ -82,25 +76,25 @@ void	parse_header(Request *request)
 	//check_complete_header(event);
 }
 
-void	parse_cgi_header(Request *request)
+void	Request::parseCgiHeader(void)
 {
 	std::string				token;
 	std::string				field;
 	Cgi						cgi;
 
-	if (request->getHeader().empty())
+	if (this->getHeader().empty())
 		return;
 	
 	while (1)
 	{
-		if (request->getHeader().empty())
+		if (this->getHeader().empty())
 		{
 			streams.get(LOG_REQUEST) << "[HEADER EMPTIED IN PARSING]" << std::endl;
 			break;
 		}
-		if (!request->getField(&field) || !request->getToken(&token))
+		if (!this->getField(&field) || !this->getToken(&token))
 		{
-			request->setStatus(BAD_REQUEST);
+			this->setStatus(BAD_REQUEST);
 			streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
 				<< "invalid field or token" << std::endl
 				<< "field is :" << field << std::endl

@@ -14,17 +14,6 @@
 #include <cstdlib>
 #include <iostream>
 
-std::string	skipOWS(std::string str) //ne sert plus a rien??
-{
-	// int cursor = 0;
-	// while (str[cursor] && OWS.find(str[cursor]))
-	// {
-	// 	cursor++;
-	// }
-	// str.erase(0, cursor);
-	return str;
-}
-
 void	Request::parseHost(std::string str)
 {
 	//format: <host>:<port>
@@ -43,10 +32,9 @@ void	Request::parseCookies(std::string str)
 	//see what use for cookie bonus
 }
 
+//keep-alive ou close
 void	Request::parseConnection(std::string str)
 {
-	//keep-alive ou close
-	//DEL ou pas le client apres le traitement de la requete
 	streams.get(LOG_REQUEST) << "parseConnection<" + str + ">" << std::endl;
 	if (!str.compare("keep-alive"))
 	{
