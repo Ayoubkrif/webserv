@@ -18,8 +18,8 @@ void	EventManager::monitorNewEvent(ssize_t nEvent)
 	// Source - https://stackoverflow.com/q
 	// Posted by SAK, modified by community. See post 'Timeline' for change history
 	// Retrieved 2025-12-07, License - CC BY-SA 4.0
-
 	std::stringstream ss;
+
 	ss << nEvent << "events found !";
 	Monitor.editStatusLine(ss.str());
 }

@@ -16,6 +16,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <vector>
+#include <list>
 
 #define MAX_EVENTS 10
 #include <sys/epoll.h>
@@ -31,7 +32,7 @@ class EventManager
 {
 	public:
 		EventManager(std::vector<Server>&);
-		~EventManager(void){};
+		~EventManager(void);
 		void			run(void);
 	
 		void				getNewEvent(void);
@@ -46,6 +47,8 @@ class EventManager
 		Logger			Monitor;
 		void			monitorNewEvent(ssize_t);
 		void			monitorEventRecv(ssize_t, String);
+
+		std::list<Request*>	requests;
 	private:
 		int					_fd;
 		struct epoll_event	_events[MAX_EVENTS];

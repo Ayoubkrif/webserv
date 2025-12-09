@@ -57,10 +57,19 @@ EventManager::EventManager(std::vector<Server> &servers): Monitor(MONITOR_START)
 	}
 }
 
+EventManager::~EventManager(void)
+{
+	close (this->_fd);
+	for (std::list<Request*>::iterator it = requests.begin(); it != requests.end(); it++)
+	{
+		delete (*it);
+	}
+}
+
 Request	&EventManager::requestAdd(Server &server)
 {
 	Request *client = new Request(server);
-	// push dans la liste membre
+	requests.push_front(client);
 	return (*client);
 }
 
@@ -114,7 +123,7 @@ void	EventManager::handleClient()
 			epoll_ctl(this->_fd, EPOLL_CTL_MOD, client.fd, &getEvent());
 		}
 	}
-	if (getEvent().events & EPOLLOUT)
+	else if (getEvent().events & EPOLLOUT)
 	{
 		streams.get(LOG_EVENT) << "[ENVOI]" << std::endl
 			<< std::endl;
