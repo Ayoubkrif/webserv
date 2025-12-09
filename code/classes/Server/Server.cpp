@@ -214,3 +214,21 @@ void	printServerInfo(const std::vector<Server> &servers)
 		streams.get(LOG_SERVER) << "SERVER " << i << ":" << std::endl << *it << std::endl;
 	}
 }
+
+// reverse iterate on locations of this server
+// return the first location that url own
+// trunc location key from url
+const Location	*Server::urlSolver(std::string &url)
+{
+	const std::map<std::string, Location> &locations = getLocations();
+	for (std::map<std::string, Location>::const_reverse_iterator it = locations.rbegin();
+	it == locations.rend(); it++)
+	{
+		if (url.find(it->first) == 0)
+		{
+			url.erase(0, it->first.length());
+			return (&it->second);
+		}
+	}
+	return (NULL);
+}

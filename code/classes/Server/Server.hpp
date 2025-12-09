@@ -59,7 +59,9 @@ class	Server: public Event
 		int										getFd(void) const;
 		void									setFd(const int);
 	
+		//runtime methods
 		void									startListen(void);
+		const Location							*urlSolver(std::string&);
 	private:
 		std::map<std::string, Location>	_locations;
 		unsigned short int				_port;
