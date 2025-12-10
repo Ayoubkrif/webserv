@@ -63,6 +63,8 @@ private:
 	std::string			_body;
 	std::string			_buffer;
 
+	std::string			_response;
+
 	parsing_state		_state;
 
 	method 				_method;
@@ -118,6 +120,9 @@ public:
 	void	parseHeader(void);
 	void	parseCgiHeader(void);
 	void	parseRequestLine(std::string token);
+
+	void	generateResponse();
+	void	buildErrorResponse();
 
 private:
 	std::string			_host; //inutile mais obligatoire

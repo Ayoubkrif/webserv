@@ -24,3 +24,13 @@ static const std::string URI_TOO_LONG = "414 URI Too Long"; //or Request-URI Too
 static const std::string HEADER_TOO_LONG = "431 Request Header Fields Too Large";
 
 static const std::string INTERNAL_SERVER_ERROR = "500 Internal Server Error";
+
+
+//modele reponse erreur
+
+static const std::string CON_CLOSE = "Connection:close\r\n";
+static const std::string CON_KEEP_ALIVE = "Connection:keep-alive\r\n";
+static const std::string TEXT_HTML_TYPE = "Content-type:text/html\r\n";
+
+
+static const std::string CON_LEN = "Content-length:";
