@@ -42,6 +42,7 @@ CLASS_FILES = \
 	Request/parseHeader.cpp \
 	Request/parseRequestLine.cpp \
 	Request/parseHeaderUtils.cpp \
+	Request/stateMachine.cpp \
 	Cgi/Cgi.cpp \
 	\
 	EventManager/EventManager.cpp \

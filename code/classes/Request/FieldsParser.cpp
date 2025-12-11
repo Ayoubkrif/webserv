@@ -10,14 +10,15 @@
 /* ************************************************************************** */
 
 #include "Request.hpp"
+#include "stateMachine.hpp"
 #include "statusCodes.hpp"
 #include <cstdlib>
 #include <iostream>
 
+//format: <host>:<port>
+//<port> optional
 void	Request::parseHost(std::string str)
 {
-	//format: <host>:<port>
-	//<port> optional
 	this->_host = str;
 }
 
@@ -27,9 +28,8 @@ void	Request::parseCookies(std::string str)
 	//(previously sent by the server with the Set-Cookie header
 	//or set in JavaSript using Document.cookie)
 	//format: name=value; name2=value2; name3=value3
-	
-	(void)str;
 	//see what use for cookie bonus
+	(void)str;
 }
 
 //keep-alive ou close
@@ -63,7 +63,7 @@ void	Request::parseContentType(std::string str)
 void	Request::parseContentLength(std::string str)
 {
 	//if chunked and content length -> 400
-	if (this->_transferEncoding == CHUNKED)
+	if (isState(CHUNKED))
 	{
 		this->_status.assign(BAD_REQUEST);
 		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
@@ -106,7 +106,9 @@ void	Request::parseTransferEncoding(std::string str)
 		return;
 	}
 	if (str.find("chunked") != std::string::npos)
-		this->_transferEncoding = CHUNKED;
+	{
+		setState(CHUNKED);
+	}
 	else
 	{
 		this->_status.assign(BAD_REQUEST);

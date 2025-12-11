@@ -21,6 +21,7 @@
 #include <fcntl.h>
 #include <stdexcept>
 
+#include "Event.hpp"
 #include "Server.hpp"
 #include "Request.hpp"
 #include "logfiles.hpp"
@@ -114,7 +115,7 @@ void	EventManager::handleClient()
 			client.appendBuffer(buffer, 0, count);
 		}
 		client.parseBuffer();
-		if (client.getState() == SEND)
+		if (client.isState(SEND) || client.isState(ERROR))
 		{
 			// streams.print(LOG_EVENT) << "[CLIENT switching sending mode]" << std::endl
 			getEvent().events = EPOLLOUT;
@@ -166,9 +167,13 @@ void	EventManager::run(void)
 			{
 				serverAccept();
 			}
-			else// CLIENT
+			else if (checkEvent() == CLIENT)// CLIENT
 			{
 				handleClient();
+			}
+			else //pipe
+			{
+				;
 			}
 		}
 		sleep(1);

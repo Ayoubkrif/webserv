@@ -15,7 +15,6 @@
 int	find_type(std::string str)
 {
 	int index = 0;
-	// std::cout << str << std::endl;
 	for (int i = 0; str[i] !=':'; i++)
 	{
 		if (str[i] != '-' && !(str[i] >= 'A' && str[i] <= 'Z') && !(str[i] >= 'a' && str[i] <= 'z'))
@@ -44,12 +43,12 @@ int	find_type(std::string str)
 	}
 	for (int i = 0; i < 3; i++)
 	{
-	  // std::cout << "Field at index is "<< HeaderParsing::fields[index][i] << std::endl;
 		if (!Request::fields[index][i].empty() && !Request::fields[index][i].compare(str))
 			return index + i;
 	}
 	return 0;
-	// should not return 0 if not in fct tab but in field tab so it doesnt invalidate valid headers that should not be parsed
+	// should not return 0 if not in fct tab but in field tab
+	// so it doesnt invalidate valid headers that should not be parsed
 }
 
 unsigned long hexToLong(std::string line)

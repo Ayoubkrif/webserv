@@ -22,29 +22,32 @@ void	Request::parseRequestLine(std::string token)
 	{
 		this->parseMethod(token.substr(0, cursor));
 		token.erase(0, cursor + 1);
-		if (!this->getStatus().empty())
+		if (isState(ERROR))
 			return;
 	}
 	else
 	{
 		this->setStatus(BAD_REQUEST);
+		this->setState(ERROR);
 		return;
 	}
 	if (moveCursor(&cursor, token, " "))
 	{
 		this->parseURI(token.substr(0, cursor));
 		token.erase(0, cursor + 1);
-		if (!this->getStatus().empty())
+		if (isState(ERROR))
 			return;
 	}
 	else
 	{
 		this->setStatus(BAD_REQUEST);
+		this->setState(ERROR);
 		return;
 	}
 	if (token.compare("HTTP/1.1"))
 	{
 		this->setStatus(BAD_REQUEST);
+		this->setState(ERROR);
 		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
 			<< "Wrong HTTP protocol:" << token
 			<< std::endl;

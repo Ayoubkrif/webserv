@@ -10,6 +10,7 @@
 /* ************************************************************************** */
 
 #include "Request.hpp"
+#include "stateMachine.hpp"
 
 std::string	Request::getHeader() const
 {
@@ -26,9 +27,37 @@ std::string	Request::getBuffer() const
 	return this->_buffer;
 }
 
-parsing_state	Request::getState() const
+std::string	Request::getState() const
 {
-	return this->_state;
+	std::string state;
+	if (this->isState(SEND))
+		state.append("SEND");
+	else
+		state.append("READ");
+
+	if (this->isState(CGI))
+		state.append(" + CGI");
+
+	if (this->isState(HEADER))
+		state.append(" + HEADER");
+	else
+		state.append(" + BODY");
+
+	if (this->isState(CHUNKED))
+	{
+		state.append(" + CHUNKED");
+
+		if (this->isState(CHUNK_SIZE))
+			state.append(" + CHUNKSIZE");
+		else
+			state.append(" + OCTET");
+		if (this->isState(TRAILERS))
+			state.append(" + TRAILERS");
+
+		if (this->isState(ERROR))
+			state.append(" + ERROR");
+	}
+	return state;
 }
 
 std::string	Request::getStatus() const

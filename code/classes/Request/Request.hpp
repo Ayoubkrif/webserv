@@ -20,6 +20,7 @@
 #include <sys/socket.h>
 #include "requestDefines.hpp"
 #include "Event.hpp"
+#include "stateMachine.hpp"
 #include "statusCodes.hpp"
 
 //C comme ca que ca marche ???
@@ -30,20 +31,20 @@ extern FileStream	streams;
 int				find_type(std::string str);
 unsigned long	hexToLong(std::string line);
 
-const bool			CHUNKED = 1;
+// const bool			CHUNKED = 1;
 const bool			KEEP_ALIVE = 1;
 const bool			CLOSE = 0;
-typedef enum parsing_state
-{
-	HEADER = 0,
-	CGI,
-	BODY,
-	CHUNK_SIZE,
-	TRAILERS,
-	SEND,
-	// SEND_CGI, -> so that resonse builder knows what to parse and how
-	// or put variable in cgi or request or if *cgi==NULL?
-} parsing_state;
+// typedef enum parsing_state
+// {
+// 	HEADER = 0,
+// 	CGI,
+// 	BODY,
+// 	CHUNK_SIZE,
+// 	TRAILERS,
+// 	SEND,
+// 	// SEND_CGI, -> so that resonse builder knows what to parse and how
+// 	// or put variable in cgi or request or if *cgi==NULL?
+// } parsing_state;
 
 class Location;
 class Server;
@@ -63,7 +64,9 @@ private:
 	std::string			_body;
 	std::string			_buffer;
 
-	parsing_state		_state;
+	std::string			_response;
+
+	uint8_t				_state;
 
 	method 				_method;
 	std::string			_uri;
@@ -87,13 +90,14 @@ public:
 
 	void				resetRequest();
 
-	void				setState(parsing_state value);
+	void				setState(parsing_state new_state);
+	bool				isState(parsing_state new_state) const;
 	void				setStatus(std::string code);
 
 	std::string			getHeader() const;
 	std::string			getBody() const;
 	std::string			getBuffer() const;
-	parsing_state		getState() const;
+	std::string			getState() const;
 	std::string			getStatus() const;
 
 	method				getMethod() const;
@@ -117,6 +121,9 @@ public:
 	void	parseHeader(void);
 	void	parseCgiHeader(void);
 	void	parseRequestLine(std::string token);
+
+	void	generateResponse();
+	void	buildErrorResponse();
 
 private:
 	std::string			_host; //inutile mais obligatoire
