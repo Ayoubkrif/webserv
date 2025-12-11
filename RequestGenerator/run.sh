@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-BIN=./RequestGenerator 
+BIN=./RequestGenerator.bin
 #
 OUTPUT_DIR=../generated_requests
 #
