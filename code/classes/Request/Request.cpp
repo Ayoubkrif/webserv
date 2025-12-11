@@ -19,7 +19,7 @@
 // {
 // }
 
-Request::Request(Server &server) :Event(CLIENT), client_len(sizeof(sockaddr_in)), fd(-1), _status(), _state(HEADER), _method(OTHER), _server(server), _contentLength(0), _length(0), _transferEncoding(0), _connection(KEEP_ALIVE), _trailer(0)
+Request::Request(Server &server) :Event(CLIENT), client_len(sizeof(sockaddr_in)), fd(-1), _status(), _state(0), _method(OTHER), _server(server), _contentLength(0), _length(0), _transferEncoding(0), _connection(KEEP_ALIVE), _trailer(0)
 {
 	this->fd = accept(server.getFd(), (struct sockaddr *)&this->client_addr, &this->client_len);
 	if (this->fd == -1)
@@ -40,7 +40,7 @@ void	Request::resetRequest()
 	this->_body.clear();
 	this->_header.clear();
 	this->_status.clear();
-	this->_state = HEADER;
+	this->_state = 0;
 	this->_method = OTHER;
 	this->_contentLength = 0;
 	this->_length = 0;
@@ -54,11 +54,6 @@ void	Request::resetRequest()
 void	Request::appendBuffer(std::string str, int start, int end)
 {
 	this->_buffer.append(str, start, end);
-}
-
-void	Request::setState(parsing_state value)
-{
-	this->_state = value;
 }
 
 void	Request::setStatus(std::string code)
@@ -148,6 +143,7 @@ void	Request::parseMethod(std::string str)
 	else
 	{
 		this->_status = BAD_REQUEST;
+		this->setState(ERROR);
 		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
 			<< "Bad method identified: " << str
 			<< std::endl;
@@ -199,7 +195,7 @@ std::ostream	&operator<<(std::ostream &lhs, const Request &rhs)
 		<< "Content Length="
 		<< rhs.getContentLength() << std::endl
 		<< "Transfer Encoding =";
-	if (rhs.getTransferEncoding() == CHUNKED)
+	if (rhs.isState(CHUNKED))
 		lhs << "chunked" << std::endl;
 	else
 		lhs << "normal body" << std::endl;

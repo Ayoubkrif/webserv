@@ -114,7 +114,7 @@ void	EventManager::handleClient()
 			client.appendBuffer(buffer, 0, count);
 		}
 		client.parseBuffer();
-		if (client.getState() == SEND)
+		if (client.isState(SEND) || client.isState(ERROR))
 		{
 			// streams.print(LOG_EVENT) << "[CLIENT switching sending mode]" << std::endl
 			getEvent().events = EPOLLOUT;

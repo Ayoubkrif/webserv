@@ -11,6 +11,7 @@
 
 #include "Request.hpp"
 #include "requestDefines.hpp"
+#include "stateMachine.hpp"
 #include "statusCodes.hpp"
 
 void	Request::buildErrorResponse()
@@ -46,10 +47,11 @@ void	Request::generateResponse()
 	//3 reponses possible -> erreur, normal(get, post, delete), cgi
 	
 	//errors
-	if (!this->_status.empty())
+	if (this->isState(ERROR))
 		buildErrorResponse();
 	//CGI because we will fill response dynamically as soon as we recv in pipe and treat what we receive
-	else if (!this->_response.empty())
+	// else if (!this->_response.empty())
+	else if (isState(CGI))
 	{
 	}
 	// static request

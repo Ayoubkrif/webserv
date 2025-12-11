@@ -23,31 +23,44 @@ void	Request::parseBuffer(void)
 	//can a \r or \n be alone in header???
 	std::string::size_type cursor = 0;
 	//header is full in buffer
-	if (this->getState() == HEADER && moveCursor(&cursor, this->getBuffer(), DCRLF))
+	// if (this->getState() == HEADER && moveCursor(&cursor, this->getBuffer(), DCRLF))
+	if (isState(HEADER) && moveCursor(&cursor, this->getBuffer(), DCRLF))
 	{
+		streams.get(LOG_REQUEST) << "[PARSING HEADER]" << std::endl
+			<< std::endl;
 		this->fillHeader(cursor);
 		parseHeaderType();
-		if (!this->getStatus().empty())
+		// if (!this->getStatus().empty())
+		if (isState(ERROR))
+		{
+			printRequest(this);
 			return;
-		if (this->getContentLength() == 0 && this->getTransferEncoding() != CHUNKED)
+		}
+		//requete sans body
+		if (this->getContentLength() == 0 && !this->isState(CHUNKED))
+		{
 			this->setState(SEND);
-		else if (this->getTransferEncoding() == CHUNKED)
+			printRequest(this);
+			return;
+		}
+		this->setState(BODY);
+		if (this->isState(CHUNKED))
 			this->setState(CHUNK_SIZE);
-		else
-			this->setState(BODY);
 	}
 
-	if (this->getState() == BODY || this->getState() == CHUNK_SIZE || this->getState() == TRAILERS)
+	if (this->isState(BODY))
 	{
-		//fill body according to content-length and transfer-encoding (chunked)
-		if (this->getTransferEncoding() == CHUNKED)
+		streams.get(LOG_REQUEST) << "[PARSING BODY]" << std::endl
+			<< std::endl;
+		if (this->isState(CHUNKED))
 			this->fillChunkedBody();
 		else
 			this->fillBody();
 	}
-	if (this->getState() == SEND && this->getContentLength() != this->getBody().length())
+	if (this->isState(SEND) && this->getContentLength() != this->getBody().length())
 	{
 		this->setStatus(BAD_REQUEST);
+		this->setState(ERROR);
 	}
 	printRequest(this);
 }

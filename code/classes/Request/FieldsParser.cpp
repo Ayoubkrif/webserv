@@ -10,6 +10,7 @@
 /* ************************************************************************** */
 
 #include "Request.hpp"
+#include "stateMachine.hpp"
 #include "statusCodes.hpp"
 #include <cstdlib>
 #include <iostream>
@@ -63,7 +64,8 @@ void	Request::parseContentType(std::string str)
 void	Request::parseContentLength(std::string str)
 {
 	//if chunked and content length -> 400
-	if (this->_transferEncoding == CHUNKED)
+	// if (this->_transferEncoding == CHUNKED)
+	if (isState(CHUNKED))
 	{
 		this->_status.assign(BAD_REQUEST);
 		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
@@ -106,7 +108,10 @@ void	Request::parseTransferEncoding(std::string str)
 		return;
 	}
 	if (str.find("chunked") != std::string::npos)
-		this->_transferEncoding = CHUNKED;
+	{
+		setState(CHUNKED);
+		// this->_transferEncoding = CHUNKED;
+	}
 	else
 	{
 		this->_status.assign(BAD_REQUEST);
