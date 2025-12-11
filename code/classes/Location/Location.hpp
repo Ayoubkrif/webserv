@@ -54,6 +54,10 @@ class	Location
 	public:void								setAutoindex(bool);
 	private:bool						_autoindex;
 
+	public:bool								getIndex(void) const;
+	public:void								setIndex(bool);
+	private:bool						_index;
+
 	public:const std::map<int, std::string>	&getErrorPages(void) const;
 	public:void								setErrorPage(int, std::string);
 	public:void								setErrorPagesVector(std::map<int, std::string>);

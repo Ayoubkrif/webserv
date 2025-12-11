@@ -20,6 +20,7 @@ static const std::string				DEFAULT_LOCATION_ALIAS = "";
 static const unsigned int				DEFAULT_LOCATION_MAX_BODY_SIZE = 2048;
 static const std::string				DEFAULT_LOCATION_REDIRECTION = "";
 static const bool						DEFAULT_LOCATION_AUTOINDEX = false;
+static const std::string				DEFAULT_LOCATION_INDEX = "index.html";
 static const std::string				DEFAULT_LOCATION_POST_DIRECTORY = "";
 // static const std::map<int, std::string>	DEFAULT_LOCATION_ERROR_PAGE = "";
 static const bool						DEFAULT_LOCATION_GET = true;
