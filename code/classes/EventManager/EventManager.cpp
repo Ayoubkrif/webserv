@@ -104,11 +104,11 @@ void	EventManager::handleClient()
 			ssize_t count = recv(client.fd, buffer, sizeof(buffer), 0); // kesako
 			if (count == -1)
 				throw (std::runtime_error("RECV KO"));
-			if (count == 0) // gerer client deconecte
+			if (count == 0)
 			{
 				Monitor.printNewLine(RED + "connection is CLOSE" + WHITE);
 				epoll_ctl(this->_fd, EPOLL_CTL_DEL, client.fd, &getEvent());
-				delete (Request *)getPtr(); //vraiment pas sur de la syntaxe
+				delete (Request *)getPtr();
 				return ;
 			}
 			monitorEventRecv(count, String(buffer).substr(0, count));
@@ -117,7 +117,6 @@ void	EventManager::handleClient()
 		client.parseBuffer();
 		if (client.isState(SEND) || client.isState(ERROR))
 		{
-			// streams.print(LOG_EVENT) << "[CLIENT switching sending mode]" << std::endl
 			getEvent().events = EPOLLOUT;
 			epoll_ctl(this->_fd, EPOLL_CTL_MOD, client.fd, &getEvent());
 		}
@@ -137,19 +136,12 @@ void	EventManager::handleClient()
 			getEvent().events = EPOLLIN;
 			client.resetRequest();
 			epoll_ctl(this->_fd, EPOLL_CTL_MOD, client.fd, &getEvent());
-			// event == eppollin
-			// epoll_ctl(MOD EPOLLIN) 
-			//reinitialiser client ?????? C CLARA LA FOLLE
 		}
 		else
 		{
 			Monitor.printNewLine(RED + "connection is CLOSE" + WHITE);
 			epoll_ctl(this->_fd, EPOLL_CTL_DEL, client.fd, &getEvent());
-			delete (Request *)getPtr(); //vraiment pas sur de la syntaxe
-			//else a verifier
-
-			// close(events[i].data.fd);
-			// epoll ctl delete
+			delete (Request *)getPtr();
 		}
 	}
 }
