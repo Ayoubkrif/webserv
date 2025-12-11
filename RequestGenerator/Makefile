@@ -24,7 +24,7 @@ INC_DIR = \
 
 ##################################################################################
 #compilation
-NAME		= RequestGenerator
+NAME		= RequestGenerator.bin
 CC			= c++
 CFLAGS 		= -Wall -Wextra -Werror -std=c++98 -MMD -MP -g3
 PREPROC		=

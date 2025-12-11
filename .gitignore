@@ -4,6 +4,7 @@ build/
 *.d
 *.obj
 *.out
+*.bin
 
 # Executable
 WebServ

@@ -78,8 +78,6 @@ INCLUDES	= $(addprefix -I, $(INC_DIR))
 OBJS = $(CLASSES:%.cpp=$(OBJ_DIR)/%.o) \
 		$(SOURCES:%.cpp=$(OBJ_DIR)/%.o)
 
-
-
 DEPS = $(OBJS:.o=.d)
 
 all: $(NAME)
