@@ -107,7 +107,6 @@ public:
 
 	void				parseMethod(std::string);
 	void				parseURI(std::string);
-	void				resolveURL(void);
 
 	int					getToken(std::string *header);
 	int					getField(int *type);

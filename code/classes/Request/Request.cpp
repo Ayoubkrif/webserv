@@ -170,7 +170,6 @@ void	Request::parseURI(std::string str)
 	// }
 
 	this->_url.assign(str);
-	resolveURL();
 }
 
 std::ostream	&operator<<(std::ostream &lhs, const Request &rhs)
