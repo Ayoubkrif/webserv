@@ -72,7 +72,7 @@ private:
 
 	Cgi*				_cgi;
 
-	Location*			_location;
+	const Location*		_location;
 	Server&				_server;
 
 	Request(Request&);

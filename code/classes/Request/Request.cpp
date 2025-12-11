@@ -14,11 +14,6 @@
 #include "Server.hpp"
 #include <sys/socket.h>
 
-
-// Request::Request() : _status(), _state(HEADER), _method(OTHER), _connection(1), _trailer(0)
-// {
-// }
-
 Request::Request(Server &server) :Event(CLIENT), client_len(sizeof(sockaddr_in)), fd(-1), _status(), _state(HEADER), _method(OTHER), _server(server), _contentLength(0), _length(0), _transferEncoding(0), _connection(KEEP_ALIVE), _trailer(0)
 {
 	this->fd = accept(server.getFd(), (struct sockaddr *)&this->client_addr, &this->client_len);
@@ -154,13 +149,6 @@ void	Request::parseMethod(std::string str)
 	}
 }
 
-// 
-void Request::resolveURL(void)
-{
-	//DO NOT modify request->_uri put it in _path
-	;
-}
-
 void	Request::parseURI(std::string str)
 {
 	std::string::size_type cursor = 0;
@@ -171,9 +159,17 @@ void	Request::parseURI(std::string str)
 		str.erase(cursor);
 	}
 	
-	//resolve uri
-	//deal with errors
 	this->_uri.assign(str);
+	//resolve uri
+	this->_location = this->_server.urlSolver(str);
+	//deal with errors
+	// if (!this->_location)
+	// {
+	// 	this->setState(ERROR);
+	// 	this->_status = 404;
+	// }
+
+	this->_url.assign(str);
 	resolveURL();
 }
 
