@@ -40,6 +40,7 @@ class EventManager
 		struct epoll_event	&getEvent(void);
 		void				eventNext(void);
 		bool				checkEvent(void);
+		void				EventAdd(uint32_t, int, void*);
 
 		void			serverAccept(void);
 		void			handleClient(void);

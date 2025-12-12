@@ -82,14 +82,7 @@ void	EventManager::serverAccept(void)
 	fcntl(client.fd, F_SETFL, O_NONBLOCK);
 
 	// Ajouter le socket client à epoll
-	struct epoll_event event;
-	event.events = EPOLLIN;
-	event.data.ptr = &client;
-	if (epoll_ctl(this->_fd, EPOLL_CTL_ADD, client.fd, &event) == -1) 
-	{
-		perror("epoll_ctl: client_fd");
-		throw(std::runtime_error("Epoll ctl add fail failed !"));
-	}
+	EventAdd(EPOLLIN, client.fd, &client);
 	streams.get(LOG_EVENT) << "Nouvelle connexion acceptée: " << client.fd
 		<< std::endl;
 }

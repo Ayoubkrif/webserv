@@ -58,3 +58,16 @@ bool	EventManager::checkEvent()
 {
 	return (static_cast<Event*>(getPtr())->_type);
 }
+
+void	EventManager::EventAdd(uint32_t event_mode, int event_fd, void *event_ptr)
+{
+		struct epoll_event event;
+		event.events = event_mode;
+		event.data.ptr = event_ptr;
+
+		if (epoll_ctl(this->_fd, EPOLL_CTL_ADD, event_fd, &event) == -1)
+		{
+			perror("epoll_ctl: server_fd");
+			throw (std::runtime_error("ERROR"));
+		}
+}
