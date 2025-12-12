@@ -188,7 +188,8 @@ void	Request::parseCgiHeader(void)
 {
 	std::string				token;
 	std::string				field;
-	Cgi						cgi;
+
+	// this->_cgi = new Cgi(*this);
 
 	if (this->getHeader().empty())
 		return;
@@ -211,7 +212,8 @@ void	Request::parseCgiHeader(void)
 				<< std::endl;
 			return;
 		}
-		cgi.addFields(field, token);
+		//need to add fct tab cause should also add info to Request just in case
+		// this->_cgi->addFields(field, token);
 	}
 	//check_complete_header(event); //if content_length absent -> add it
 }

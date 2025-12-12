@@ -24,6 +24,7 @@
 #include "Event.hpp"
 #include "Server.hpp"
 #include "Request.hpp"
+#include "Cgi.hpp"
 #include "logfiles.hpp"
 #include "string.hpp"
 
@@ -110,14 +111,36 @@ void	EventManager::handleClient()
 		client.parseBuffer();
 		if (client.isState(SEND) || client.isState(ERROR))
 		{
-			getEvent().events = EPOLLOUT;
-			epoll_ctl(this->_fd, EPOLL_CTL_MOD, client.fd, &getEvent());
+			// streams.print(LOG_EVENT) << "[CLIENT switching sending mode]" << std::endl
+			if (client.isState(CGI))
+			{
+				//put 1 << 1 a 1 pour running_cgi -> inutile
+				//mettre l'event en dormant (EPOLLONESHOT) faut il d'abord le mettre en EPOLLOUT?
+				//-> .events = 0 est plus propre car EPOLLONESHOT est fais pour bloquer apres la reception d'un event
+				//comme client va etre mis dans l'event de la cgi(ou inversement) on aura le fd pour le reactiver
+				//lancer cgi et add l'event en EPOLLIN
+				//quand cgi finit on le met dans la rep du client et on le reactive et on le passe en EPOLLOUT
+
+				// struct epoll_event cgi;
+				// cgi.data.ptr = &client.getCgi();
+				// Cgi& CGI = *(Cgi*)cgi.data.ptr;
+				// //create pipe fork and send optional body through new pipe and fork here??
+				// epoll_ctl(this->_fd, EPOLL_CTL_MOD, CGI._responsePipe[1], &cgi);//bon cote du pipe??
+				// getEvent().events = 0;
+				// epoll_ctl(this->_fd, EPOLL_CTL_MOD, client.fd, &getEvent());
+			}
+			else
+			{
+				getEvent().events = EPOLLOUT;
+				epoll_ctl(this->_fd, EPOLL_CTL_MOD, client.fd, &getEvent());
+			}
 		}
 	}
 	else if (getEvent().events & EPOLLOUT)
 	{
 		streams.get(LOG_EVENT) << "[ENVOI]" << std::endl
 			<< std::endl;
+		//have to send by small buffers to not exceed the socket's buffer
 		std::string toSend = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length:12\r\nConnection:close\r\n\r\nHello, World!";
 		if (send(client.fd, toSend.c_str(), toSend.length(), 0) == -1)
 			throw (std::runtime_error("SEND"));
@@ -139,6 +162,13 @@ void	EventManager::handleClient()
 	}
 }
 
+void	EventManager::handlePipe()
+{
+	//recv pipe
+	//treat info and put into cgi.request.response
+	//when finished DEL event cgi and EPOLL_CTL_MOD en EPOLLOUT cgi.request
+}
+
 void	EventManager::run(void)
 {
 	Monitor.popStatus("STARTING ..");
@@ -158,7 +188,7 @@ void	EventManager::run(void)
 			}
 			else //pipe
 			{
-				;
+				handlePipe();
 			}
 		}
 		sleep(1);

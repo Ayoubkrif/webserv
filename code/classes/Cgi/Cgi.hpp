@@ -19,16 +19,18 @@ class Request;
 class Cgi
 {
 private:
-	int							_responsePipe[2];
 	std::vector<std::string>	_env;
 	bool						_contentLength;
 	std::vector<std::string>	_arg;
 
 	std::string					_buffer;
+	// Request&					_client;
+
 
 public:
 	Cgi();
-	// Cgi(Request&); //copie de CGI_HEADER + prendre adresse de request
+	int							_responsePipe[2];
+	// Cgi(Request&); //prendre adresse de request
 
 	void						createBasicEnv();
 
