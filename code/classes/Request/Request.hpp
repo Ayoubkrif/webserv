@@ -32,8 +32,8 @@ int				find_type(std::string str);
 unsigned long	hexToLong(std::string line);
 
 // const bool			CHUNKED = 1;
-const bool			KEEP_ALIVE = 1;
-const bool			CLOSE = 0;
+const bool			KEEP_ALIVE = true;
+const bool			CLOSE = false;
 // typedef enum parsing_state
 // {
 // 	HEADER = 0,

@@ -117,7 +117,8 @@ void	Request::parseURI(std::string str)
 	if (!this->_location)
 	{
 		this->setState(ERROR);
-		this->_status = "404";
+		this->_status = NOT_FOUND;
+		this->_connection = CLOSE;
 	}
 	this->_url.assign(str);
 	// si rien ou slash sans rien alors verifier index
