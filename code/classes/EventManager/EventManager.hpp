@@ -43,6 +43,7 @@ class EventManager
 
 		void			serverAccept(void);
 		void			handleClient(void);
+		void			handlePipe(void);
 		Request			&requestAdd(Server&);
 		Logger			Monitor;
 		void			monitorNewEvent(ssize_t);

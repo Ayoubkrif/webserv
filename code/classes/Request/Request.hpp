@@ -103,6 +103,7 @@ public:
 	method				getMethod() const;
 	std::string			getUri() const;
 	std::string			getQueryString() const;
+	Cgi&				getCgi();
 
 	void				fillHeader(std::string::size_type cursor);
 	void				fillBody();
