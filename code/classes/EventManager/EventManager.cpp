@@ -148,7 +148,8 @@ void	EventManager::handleClient()
 		streams.get(LOG_EVENT) << "[ENVOI]" << std::endl
 			<< std::endl;
 		//have to send by small buffers to not exceed the socket's buffer
-		std::string toSend = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length:12\r\nConnection:close\r\n\r\nHello, World!";
+		std::string toSend = "HTTP/1.1 " + client.getStatus();
+		toSend.append("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length:12\r\nConnection:close\r\n\r\nHello, World!");
 		if (send(client.fd, toSend.c_str(), toSend.length(), 0) == -1)
 			throw (std::runtime_error("SEND"));
 		streams.get(LOG_EVENT) << "[SUCCESS]" << std::endl

@@ -57,5 +57,14 @@ void	Request::generateResponse()
 	// static request
 	else
 	{
+		//si GET
+			//open file from url
+			//in header: status line (200 OK ou Expect), content-length, content-type
+		//si POST
+			//
+			//
+		//si DELETE
+			//open file from url
+			//in header: status line (200 OK ou Expect), content-length, content-type
 	}
 }
