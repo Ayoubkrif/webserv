@@ -100,7 +100,7 @@ Location	&Location::operator=(const Location &copy)
 // }
 
 //root
-void	Location::setRoot(std::string  root)
+void	Location::setRoot(const std::string &root)
 {
 	this->_root = root;
 }
@@ -111,7 +111,7 @@ const std::string	&Location::getRoot(void) const
 }
 
 //alias
-void	Location::setAlias(std::string  alias)
+void	Location::setAlias(const std::string &alias)
 {
 	this->_alias = alias;
 }
@@ -133,12 +133,12 @@ unsigned int	Location::getClientMaxBodySize(void) const
 }
 
 // cgi_suffix
-void	Location::setCgiSuffixSet(std::set<std::string>  cgi_suffix)
+void	Location::setCgiSuffixSet(const std::set<std::string> &cgi_suffix)
 {
 	this->_cgi_suffix = cgi_suffix;
 }
 
-void	Location::addCgiSuffix(std::string cgi_suffix)
+void	Location::addCgiSuffix(const std::string &cgi_suffix)
 {
 	this->_cgi_suffix.insert(cgi_suffix);
 }
@@ -167,7 +167,7 @@ const std::string	&Location::getRedirect(void) const
 	return (this->_redirect);
 }
 
-void	Location::setRedirect(std::string redirect)
+void	Location::setRedirect(const std::string &redirect)
 {
 	this->_redirect = redirect;
 }
@@ -184,12 +184,12 @@ void	Location::setAutoindex(bool autoindex)
 }
 
 //root
-void	Location::setIndex(std::string  index)
+void	Location::setIndex(const std::string &index)
 {
 	this->_index = index;
 }
 
-const std::string	Location::getIndex(void) const
+const std::string	&Location::getIndex(void) const
 {
 	return (this->_index);
 }
@@ -200,12 +200,12 @@ const std::map<int, std::string>	&Location::getErrorPages(void) const
 	return (this->_error_page);
 }
 
-void	Location::setErrorPagesVector(std::map<int, std::string> error_page)
+void	Location::setErrorPagesVector(const std::map<int, std::string> &error_page)
 {
 	this->_error_page = error_page;
 }
 
-void	Location::setErrorPage(int key, std::string value)
+void	Location::setErrorPage(int key, const std::string &value)
 {
 	this->_error_page[key] = value;
 }
@@ -217,7 +217,7 @@ const std::string	&Location::getPostDirectory(void) const
 }
 
 
-void	Location::setPostDirectory(std::string post_directory)
+void	Location::setPostDirectory(const std::string &post_directory)
 {
 	this->_post_directory = post_directory;
 }
