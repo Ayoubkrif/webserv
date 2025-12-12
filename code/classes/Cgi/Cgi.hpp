@@ -24,13 +24,13 @@ private:
 	std::vector<std::string>	_arg;
 
 	std::string					_buffer;
-	// Request&					_client;
+	Request&					_client;
 
 
 public:
 	Cgi();
 	int							_responsePipe[2];
-	// Cgi(Request&); //prendre adresse de request
+	Cgi(Request&); //prendre adresse de request
 
 	void						createBasicEnv();
 

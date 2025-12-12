@@ -106,7 +106,8 @@ int	Request::getField(int *type)
 	return *type;
 }
 
-int	Request::getField(std::string *field)
+//getField() pour CGI
+int	Request::getField(std::string *field, int *type)
 {
 	std::string::size_type	cursor = 0;
 	if (!moveCursor(&cursor, this->_header, ":"))
@@ -118,6 +119,11 @@ int	Request::getField(std::string *field)
 	}
 	cursor += 1;
 	field->assign(this->_header.substr(0, cursor));
+	*type = find_type(*field);
+	if (*type == -1)
+		return 0;
+	if (*type == 0)
+		field->clear();
 	this->_header.erase(0, cursor);
 	return 1;
 }

@@ -80,13 +80,13 @@ void	EventManager::handleClient()
 				//lancer cgi et add l'event en EPOLLIN
 				//quand cgi finit on le met dans la rep du client et on le reactive et on le passe en EPOLLOUT
 
-				// struct epoll_event cgi;
-				// cgi.data.ptr = &client.getCgi();
-				// Cgi& CGI = *(Cgi*)cgi.data.ptr;
-				// //create pipe fork and send optional body through new pipe and fork here??
-				// epoll_ctl(this->_fd, EPOLL_CTL_MOD, CGI._responsePipe[1], &cgi);//bon cote du pipe??
-				// getEvent().events = 0;
-				// epoll_ctl(this->_fd, EPOLL_CTL_MOD, client.fd, &getEvent());
+				struct epoll_event cgi;
+				cgi.data.ptr = &client.getCgi();
+				Cgi& CGI = *(Cgi*)cgi.data.ptr;
+				//create pipe fork and send optional body through new pipe and fork here??
+				epoll_ctl(this->_fd, EPOLL_CTL_MOD, CGI._responsePipe[1], &cgi);//bon cote du pipe??
+				getEvent().events = 0;
+				epoll_ctl(this->_fd, EPOLL_CTL_MOD, client.fd, &getEvent());
 			}
 			else
 			{
