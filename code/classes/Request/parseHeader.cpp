@@ -114,13 +114,15 @@ void	Request::parseURI(std::string str)
 	//resolve uri
 	this->_location = this->_server.urlSolver(str);
 	//deal with errors
-	if (!this->_location)
 	{
-		this->setState(ERROR);
-		this->_status = NOT_FOUND;
-		this->_connection = CLOSE;
+		// if (!this->_location)
+		// {
+		// 	this->setState(ERROR);
+		// 	this->_status = NOT_FOUND;
+		// 	this->_connection = CLOSE;
+		// }
+		// this->_url.assign(str);
 	}
-	this->_url.assign(str);
 	// si rien ou slash sans rien alors verifier index
 		// access -->file (index)
 	// sinon verifier CGI
