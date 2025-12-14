@@ -39,10 +39,11 @@ void	EventManager::recvFromClient(void)
 	// si reception
 	// si aucun element est recu
 	// CECI n'est pas tres propre
-	if (!recvBuffer(client))
+	if (!recvBuffer(client)) // si rien recu
 		return ;
 	client.parseBuffer();
 	// si parsing est fini
+	// (should be only send because error is send)
 	if (client.isState(SEND) || client.isState(ERROR))
 	{
 		// streams.print(LOG_EVENT) << "[CLIENT switching sending mode]" << std::endl
@@ -64,9 +65,8 @@ void	EventManager::recvFromClient(void)
 			// mute les envois clients
 			EventModify(client.fd, 0, &client);
 		}
-		else
+		else // passe en emission
 		{
-			// passe en emission
 			EventModify(client.fd, EPOLLOUT, &client);
 		}
 	}

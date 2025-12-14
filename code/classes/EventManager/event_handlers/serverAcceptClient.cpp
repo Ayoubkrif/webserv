@@ -25,8 +25,9 @@ Request	&EventManager::requestAdd(Server &server)
 
 void	EventManager::serverAcceptClient(void)
 {
-	Server &server = *(Server*)getPtr();
+	Server	&server = *(Server*)getPtr();
 	Request	&client = requestAdd(server);
+
 	// Configurer le socket client en non-bloquant
 	fcntl(client.fd, F_SETFL, O_NONBLOCK);
 

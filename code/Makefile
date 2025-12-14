@@ -14,42 +14,42 @@ SRC_DIR   = sources
 CLASS_DIR = classes
 OBJ_DIR   = build
 
-# Sources listing
+# Sources files listing
 SRC_FILES = \
 	main.cpp \
 	time.cpp \
 	\
 
-# Classes listing
+# Classes files listing
 CLASS_FILES = \
 	ArgChecker/ArgChecker.cpp \
 	ConfigParser/ConfigParser.cpp \
-	ConfigParser/tokenize.cpp \
-	ConfigParser/run.cpp \
-	ConfigParser/parseDirective.cpp \
-	ConfigParser/helpers.cpp \
+		ConfigParser/tokenize.cpp \
+		ConfigParser/run.cpp \
+		ConfigParser/parseDirective.cpp \
+		ConfigParser/helpers.cpp \
 	FileStream/FileStream.cpp \
 	Location/Location.cpp \
 	Server/Server.cpp \
 	\
 	Request/Request.cpp \
-	Request/Getter.cpp \
-	Request/FieldsParser.cpp \
-	Request/FillBody.cpp \
-	Request/RequestUtils.cpp \
-	Request/parseBuffer.cpp \
-	Request/parseHeader.cpp \
-	Request/parseHeaderUtils.cpp \
-	Request/stateMachine.cpp \
+		Request/Getter.cpp \
+		Request/RequestUtils.cpp \
+			Request/parser/FieldsParser.cpp \
+			Request/parser/FillBody.cpp \
+			Request/parser/parseBuffer.cpp \
+			Request/parser/parseHeader.cpp \
+			Request/parser/parseHeaderUtils.cpp \
+			Request/parser/stateMachine.cpp \
 	Cgi/Cgi.cpp \
 	\
 	EventManager/EventManager.cpp \
-	EventManager/event_handlers/serverAcceptClient.cpp \
-	EventManager/event_handlers/recvFromClient.cpp \
-	EventManager/event_handlers/sendToClient.cpp \
-	EventManager/event_handlers/handlePipe.cpp \
-	EventManager/utils.cpp \
-	EventManager/monitor.cpp \
+		EventManager/event_handlers/serverAcceptClient.cpp \
+		EventManager/event_handlers/recvFromClient.cpp \
+		EventManager/event_handlers/sendToClient.cpp \
+		EventManager/event_handlers/handlePipe.cpp \
+		EventManager/utils.cpp \
+		EventManager/monitor.cpp \
 	Logger/Logger.cpp \
 
 CLASSES = $(addprefix $(CLASS_DIR)/, $(CLASS_FILES))
@@ -64,6 +64,7 @@ INC_DIR = \
 		  $(CLASS_DIR)/Location \
 		  $(CLASS_DIR)/Server \
 		  $(CLASS_DIR)/Request \
+		  $(CLASS_DIR)/Request/parser \
 		  $(CLASS_DIR)/Cgi \
 		  $(CLASS_DIR)/EventManager \
 		  $(CLASS_DIR)/Event \
