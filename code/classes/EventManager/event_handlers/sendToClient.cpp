@@ -20,7 +20,7 @@ void	EventManager::sendBuffer(Request &client)
 		/**/<< std::endl;
 	std::string toSend = "HTTP/1.1 " + (client.getStatus().empty() ? "200 OK" : client.getStatus());
 	toSend.append("\r\nContent-Type: text/plain\r\nContent-Length:12\r\nConnection:close\r\n\r\nHello, World!");
-	if (send(client.fd, toSend.c_str(), toSend.length(), 0) == -1)
+	if (send(client._fd, toSend.c_str(), toSend.length(), 0) == -1)
 		throw (std::runtime_error("SEND"));
 }
 
@@ -43,12 +43,12 @@ void	EventManager::sendToClient(void)
 	{
 		Monitor.printNewLine(RED + "connection is KEEP ALIVE" + WHITE);
 		client.resetRequest();
-		EventModify(client.fd, EPOLLIN, &client);
+		EventModify(client._fd, EPOLLIN, &client);
 	}
 	else
 	{
 		Monitor.printNewLine(RED + "connection is CLOSE" + WHITE);
-		EventDelete(client.fd);
+		EventDelete(client._fd);
 		delete (Request *)getPtr();
 	}
 }

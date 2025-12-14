@@ -22,27 +22,18 @@ static const unsigned short				DEFAULT_SERVER_PORT = 8080;
 Server::Server(void):
 	Event(SRV),
 	_port(DEFAULT_SERVER_PORT),
-	_interface(DEFAULT_SERVER_INTERFACE),
-	_fd(-1)
+	_interface(DEFAULT_SERVER_INTERFACE)
 {}
 
-#include <unistd.h>
 Server::~Server(void)
-{
-	if (_fd != -1)
-		close (_fd);
-}
+{}
 
 Server::Server(const Server &copy):
 	Event(SRV),
 	_locations(copy._locations),
 	_port(copy.getPort()),
-	_interface(copy._interface),
-	_fd(copy.getFd())
-{
-	if (_fd != -1)
-		throw (std::runtime_error("FD IS NOT -1"));
-}
+	_interface(copy._interface)
+{}
 
 Server	Server::operator=(const Server &rhs)
 {
@@ -93,16 +84,6 @@ unsigned int	Server::getInterface(void) const
 void	Server::setInterface(unsigned int interface)
 {
 	this->_interface = interface;
-}
-
-int		Server::getFd(void) const
-{
-	return (this->_fd);
-}
-
-void	Server::setFd(const int fd)
-{
-	this->_fd = fd;
 }
 
 #include <iostream>

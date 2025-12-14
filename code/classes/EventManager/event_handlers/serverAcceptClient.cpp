@@ -28,10 +28,10 @@ void	EventManager::serverAcceptClient(void)
 	Server &server = *(Server*)getPtr();
 	Request	&client = requestAdd(server);
 	// Configurer le socket client en non-bloquant
-	fcntl(client.fd, F_SETFL, O_NONBLOCK);
+	fcntl(client._fd, F_SETFL, O_NONBLOCK);
 
 	// Ajouter le socket client à epoll
-	EventAdd(client.fd, EPOLLIN, &client);
-	streams.get(LOG_EVENT) << "Nouvelle connexion acceptée: " << client.fd
+	EventAdd(client._fd, EPOLLIN, &client);
+	streams.get(LOG_EVENT) << "Nouvelle connexion acceptée: " << client._fd
 		<< std::endl;
 }

@@ -56,9 +56,6 @@ class	Server: public Event
 		unsigned int							getInterface(void) const;
 		void									setInterface(unsigned int);
 
-		int										getFd(void) const;
-		void									setFd(const int);
-	
 		//runtime methods
 		void									startListen(void);
 		const Location							*urlSolver(std::string&);
@@ -66,7 +63,6 @@ class	Server: public Event
 		std::map<std::string, Location>	_locations;
 		unsigned short int				_port;
 		unsigned int					_interface;
-		int								_fd;
 };
 
 std::ostream	&operator<<(std::ostream &lhs, const Server &rhs);

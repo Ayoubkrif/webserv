@@ -56,17 +56,20 @@ EventManager::EventManager(std::vector<Server> &servers): Monitor(MONITOR_START)
 EventManager::~EventManager(void)
 {
 	close (this->_fd);
-	for (std::list<Request*>::iterator it = requests.begin(); it != requests.end(); it++)
-	{
-		delete (*it);
-	}
+	// for (std::list<Request*>::iterator it = requests.begin(); it != requests.end(); it++)
+	// {
+	// 	delete (*it);
+	// }
 }
 
 void	EventManager::run(void)
 {
 	Monitor.popStatus("STARTING ..");
+	int i = 0;
     while (1)
 	{
+		if (i++ > 10)
+			break ;
 		// for each events
 		for (getNewEvent(); getPtr(); eventNext())
 		{

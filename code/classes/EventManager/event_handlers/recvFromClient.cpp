@@ -18,13 +18,13 @@ bool	EventManager::recvBuffer(Request &client)
 {
 	static char buffer[BUFFER_SIZE + 1] = {0};
 
-	ssize_t count = recv(client.fd, buffer, sizeof(buffer), 0); // kesako
+	ssize_t count = recv(client._fd, buffer, sizeof(buffer), 0); // kesako
 	if (count == -1)
 		throw (std::runtime_error("RECV KO"));
 	if (count == 0)
 	{
 		Monitor.printNewLine(RED + "connection is CLOSE" + WHITE);
-		EventDelete(client.fd);
+		EventDelete(client._fd);
 		delete (Request *)getPtr();
 		return (false);
 	}
@@ -62,12 +62,12 @@ void	EventManager::recvFromClient(void)
 			// ecoute le pipe cgi
 			EventAdd(client.getCgi()._responsePipe[1], EPOLLIN, &client.getCgi());
 			// mute les envois clients
-			EventModify(client.fd, 0, &client);
+			EventModify(client._fd, 0, &client);
 		}
 		else
 		{
 			// passe en emission
-			EventModify(client.fd, EPOLLOUT, &client);
+			EventModify(client._fd, EPOLLOUT, &client);
 		}
 	}
 }
