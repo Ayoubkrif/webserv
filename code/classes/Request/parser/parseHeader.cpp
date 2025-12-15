@@ -23,9 +23,9 @@ void	Request::parseHeaderType(void)
 	if (!this->getToken(&token))//can't use this cause it skip ows
 	{
 		this->setStatus(BAD_REQUEST);
-		buildErrorResponse();
+		// buildErrorResponse();
 		this->setState(ERROR);
-		this->setState(SEND);
+		this->setState(EXEC);
 		return;
 	}
 	parseRequestLine(token);
@@ -59,7 +59,7 @@ void	Request::parseRequestLine(std::string token)
 	{
 		this->setStatus(BAD_REQUEST);
 		this->setState(ERROR);
-		this->setState(SEND);
+		this->setState(EXEC);
 		return;
 	}
 	if (moveCursor(&cursor, token, " "))
@@ -73,14 +73,14 @@ void	Request::parseRequestLine(std::string token)
 	{
 		this->setStatus(BAD_REQUEST);
 		this->setState(ERROR);
-		this->setState(SEND);
+		this->setState(EXEC);
 		return;
 	}
 	if (token.compare("HTTP/1.1"))
 	{
 		this->setStatus(BAD_REQUEST);
 		this->setState(ERROR);
-		this->setState(SEND);
+		this->setState(EXEC);
 		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
 			<< "Wrong HTTP protocol:" << token
 			<< std::endl;
@@ -99,7 +99,7 @@ void	Request::parseMethod(std::string str)
 	{
 		this->_status = BAD_REQUEST;
 		this->setState(ERROR);
-		this->setState(SEND);
+		this->setState(EXEC);
 		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
 			<< "Bad method identified: " << str
 			<< std::endl;
@@ -172,7 +172,7 @@ void	Request::parseHeader(void)
 		{
 			this->setStatus(BAD_REQUEST);
 			this->setState(ERROR);
-			this->setState(SEND);
+			this->setState(EXEC);
 			streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
 				<< "invalid field or token" << std::endl
 				<< "field type is :" << type << std::endl
@@ -186,7 +186,7 @@ void	Request::parseHeader(void)
 		{
 			this->setStatus(BAD_REQUEST);
 			this->setState(ERROR);
-			this->setState(SEND);
+			this->setState(EXEC);
 		//How to deal with expect? Does errors override expect?? Does expect override body??
 		//->Put in a string and check at response construction?
 		}
@@ -217,7 +217,7 @@ void	Request::parseCgiHeader(void)
 		{
 			this->setStatus(BAD_REQUEST);
 			this->setState(ERROR);
-			this->setState(SEND);
+			this->setState(EXEC);
 			streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
 				<< "invalid field or token" << std::endl
 				<< "field is :" << field << std::endl
@@ -231,7 +231,7 @@ void	Request::parseCgiHeader(void)
 		{
 			this->setStatus(BAD_REQUEST);
 			this->setState(ERROR);
-			this->setState(SEND);
+			this->setState(EXEC);
 		//How to deal with expect? Does errors override expect?? Does expect override body??
 		//->Put in a string and check at response construction?
 		}

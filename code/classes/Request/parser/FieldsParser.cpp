@@ -66,7 +66,7 @@ void	Request::parseContentLength(std::string str)
 	if (isState(CHUNKED))
 	{
 		this->_status.assign(BAD_REQUEST);
-		this->setState(SEND);
+		this->setState(EXEC);
 		this->setState(ERROR);
 		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
 			<< "Cannot have Content-Length and Transfer-encoding at the same time"
@@ -78,7 +78,7 @@ void	Request::parseContentLength(std::string str)
 	if (this->_contentLength > MAX_BODY_SIZE)
 	{
 		this->_status.assign(BAD_REQUEST);
-		this->setState(SEND);
+		this->setState(EXEC);
 		this->setState(ERROR);
 	}
 }
@@ -104,7 +104,7 @@ void	Request::parseTransferEncoding(std::string str)
 	if (this->_length == 1)
 	{
 		this->_status.assign(BAD_REQUEST);
-		this->setState(SEND);
+		this->setState(EXEC);
 		this->setState(ERROR);
 		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
 			<< "Cannot have Content-Length and Transfer-encoding at the same time"
@@ -118,7 +118,7 @@ void	Request::parseTransferEncoding(std::string str)
 	else
 	{
 		this->_status.assign(BAD_REQUEST);
-		this->setState(SEND);
+		this->setState(EXEC);
 		this->setState(ERROR);
 		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
 			<< "Only accept chunked encoding"

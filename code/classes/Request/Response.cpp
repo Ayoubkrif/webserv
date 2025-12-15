@@ -16,10 +16,9 @@
 
 void	Request::buildErrorResponse()
 {
+	this->_response.assign(TEXT_HTML_TYPE);
 	if (_status.compare(0, 3, "404"))
 	{
-		this->_response.assign("HTTP/1.1 " + this->_status + CRLF
-			+ TEXT_HTML_TYPE);
 		if (this->_connection == KEEP_ALIVE)
 			this->_response.append(CON_KEEP_ALIVE);
 		else
@@ -32,28 +31,30 @@ void	Request::buildErrorResponse()
 	}
 	else
 	{
-		this->_response.assign("HTTP/1.1 " + this->_status + CRLF
-			+ TEXT_HTML_TYPE + CON_CLOSE);
+		this->_response.assign(CON_CLOSE);
 		//ne pas oublier DCRLF a la fin du header
 		//open fichier erreur et mettre body dans une autre chaine
 		//pour pouvoir connaitre sa longueur et l'ajouter au header
 		//ou compter la taille du body qui est direct append a la reponse
 		//et insert Content-length a response.find(CRLF) donc apres la status line
 	}
+	this->_response.append(CRLF);
+	//appendbody
 }
 
 void	Request::generateResponse()
 {
 	//3 reponses possible -> erreur, normal(get, post, delete), cgi
 	
+	this->_response.append("HTTP/1.1 " + (this->_status.empty() ? "200 OK" : this->_status) + CRLF);
 	//errors
 	if (this->isState(ERROR))
 		buildErrorResponse();
 	//CGI because we will fill response dynamically as soon as we recv in pipe and treat what we receive
 	// else if (!this->_response.empty())
-	else if (isState(CGI))
-	{
-	}
+	// else if (isState(CGI))
+	// {
+	// }
 	// static request
 	else
 	{
