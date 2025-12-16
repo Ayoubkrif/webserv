@@ -13,6 +13,8 @@
 #include "requestDefines.hpp"
 #include "stateMachine.hpp"
 #include "statusCodes.hpp"
+#include <cstddef>
+#include <fcntl.h>
 
 void	Request::buildErrorResponse()
 {
@@ -42,11 +44,61 @@ void	Request::buildErrorResponse()
 	//appendbody
 }
 
+#include <sstream>
+std::string	nbrToString(size_t nbr)
+{
+	std::ostringstream oss;
+	oss << nbr;
+	std::string str = oss.str();
+	return str;
+}
+
+#include <sys/stat.h>
+void	Request::buildGetResponse()
+{
+	//open file from url
+	//in header: status line (200 OK ou Expect), content-length, content-type, date
+	
+	struct stat fileStat;
+	if (stat(this->_url.c_str(), &fileStat) == 0)
+	{
+		this->_response.append(CON_LEN + nbrToString(fileStat.st_size) + CRLF);
+	}
+	//add Content-type
+	//add Date ??
+	this->_response.append(CRLF);
+	//open(this->_url);
+	//read() in a buffer and append to this->_response
+	//close(this->_url);
+}
+
+void	Request::buildPostResponse()
+{
+	//error : method not allowed
+	//c la merde
+}
+
+void	Request::buildDeleteResponse()
+{
+	//error : method not allowed
+	//open file from url
+	//in header: status line (200 OK ou Expect)
+	//if DELETE autorise dans la location && url est un fichier
+		//if fichier existe
+			//supprimer fichier -> 204 No Content
+		//else
+			//404 Not Found
+	//if DELETE pas autorise ou url est un dossier
+		//403 Forbidden
+	
+
+	//faire une cgi (script bash) qui delete un fichier
+}
+
 void	Request::generateResponse()
 {
 	//3 reponses possible -> erreur, normal(get, post, delete), cgi
 	
-	this->_response.append("HTTP/1.1 " + (this->_status.empty() ? "200 OK" : this->_status) + CRLF);
 	//errors
 	if (this->isState(ERROR))
 		buildErrorResponse();
@@ -58,21 +110,32 @@ void	Request::generateResponse()
 	// static request
 	else
 	{
-		//si GET
-			//open file from url
-			//in header: status line (200 OK ou Expect), content-length, content-type (if body)
-		//si POST
-			//c la merde
-			//
-		//si DELETE
-			//open file from url
-			//in header: status line (200 OK ou Expect)
-			//if DELETE autorise dans la location && url est un fichier
-				//if fichier existe
-					//supprimer fichier -> 204 No Content
-				//else
-					//404 Not Found
-			//if DELETE pas autorise ou url est un dossier
-				//403 Forbidden
+		//first have to exec to see if no error
+		//-> is there error possible for these method??
+		//GET -> open fail?? throw + stop server, method not allowed + bad uri?? delt with in parseUri()
+		//POST -> open fail?? throw + stop server, method not allowed + bad uri?? delt with in parseUri()
+		//DELETE -> open fail?? throw + stop server, method not allowed + bad uri?? delt with in parseUri()
+				//for open fail should we access() in parseUri() to check rights???
+
+		//attention -> pas le meme code pour post (201 Created) et delete (204 No Content), 3xx pour redirections
+		this->_response.append("HTTP/1.1 " + (this->_status.empty() ? "200 OK" : this->_status) + CRLF);
+		if (this->_connection == KEEP_ALIVE)
+			this->_response.append(CON_KEEP_ALIVE);
+		else
+			this->_response.append(CON_CLOSE);
+		switch(this->_method)
+		{
+			case GET:
+				buildGetResponse();
+				break;
+			case POST:
+				buildPostResponse();
+				break;
+			case DELETE:
+				buildDeleteResponse();
+				break;
+			default:
+				break;
+		}
 	}
 }

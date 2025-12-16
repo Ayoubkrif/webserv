@@ -36,7 +36,7 @@ void	Request::parseBuffer(void)
 			return;
 		}
 		//requete sans body
-		if (this->getContentLength() == 0 && !this->isState(CHUNKED))
+		if (this->getContentLength() == 0 && this->_length == 0 && !this->isState(CHUNKED))
 		{
 			this->setState(EXEC);
 			printRequest(this);
