@@ -18,6 +18,7 @@ OBJ_DIR   = build
 SRC_FILES = \
 	main.cpp \
 	time.cpp \
+	nbrToString.cpp \
 	\
 
 # Classes files listing
