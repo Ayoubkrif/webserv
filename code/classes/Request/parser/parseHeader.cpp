@@ -11,6 +11,8 @@
 
 #include "Request.hpp"
 #include "Cgi.hpp"
+#include "logfiles.hpp"
+#include "requestDefines.hpp"
 #include "statusCodes.hpp"
 #include "Location.hpp"
 #include "Server.hpp"
@@ -111,21 +113,39 @@ void	Request::parseURI(std::string str)
 		str.erase(cursor);
 	}
 	
-	this->_uri.assign(str);
+
 	//resolve uri
+	this->_uri.assign(str);
+	streams.get(LOG_REQUEST) << "[urlSolver]" << "start with:<" << str + '>' << std::endl;
 	this->_location = this->_server.urlSolver(str);
+	streams.get(LOG_REQUEST) << "[urlSolver]" << "end" << std::endl;
+
 	//deal with errors
 	{
-		// if (!this->_location)
-		// {
-		// 	this->setState(ERROR);
-		// 	this->_status = NOT_FOUND;
-		// 	this->_connection = CLOSE;
-		// }
-		// this->_url.assign(str);
+		// 404 not found
+		if (!this->_location)
+		{
+			this->setState(ERROR);
+			this->_status = NOT_FOUND;
+			this->_connection = CLOSE;
+			return ;
+		}
+		// 400 bad request (not authorized request)
+		if (!this->_location->getMethods()[this->getMethod()])
+		{
+			this->setState(ERROR);
+			this->_status = BAD_REQUEST;
+			this->_connection = CLOSE;
+			streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
+				<< "un authorized method " + METHODS[getMethod()] + " in location " + this->_uri
+				<< std::endl;
+			return ;
+		}
 	}
 	// si rien ou slash sans rien alors verifier index
 		// access -->file (index)
+	if ((str.empty() || str == "/"))
+		;
 	// sinon verifier CGI
 		// si CGI
 			// access --> executable
@@ -136,6 +156,10 @@ void	Request::parseURI(std::string str)
 	// sinon 404
 	// this->isCGI();
 }
+
+// void	Request::buildIndex()
+// {
+// }
 
 void	Request::isCGI(void)
 {
