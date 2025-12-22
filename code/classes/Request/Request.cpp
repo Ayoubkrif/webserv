@@ -35,6 +35,7 @@ void	Request::resetRequest()
 	this->_header.clear();
 	this->_status.clear();
 
+	// this->_responseCursor = 0;
 	this->_requestedRessource.clear();
 	this->_url.clear();
 	this->_uri.clear();

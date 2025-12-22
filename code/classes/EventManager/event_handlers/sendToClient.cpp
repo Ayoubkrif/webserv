@@ -16,6 +16,8 @@
 void	EventManager::sendBuffer(Request &client)
 {// Send to client function
 	//have to send by small buffers to not exceed the socket's buffer
+	//Should send buffer size byte of respone and increment response cursor by buffersize.
+	//return false if request not fully sent true if fully sent
 	/**/streams.get(LOG_EVENT) << "[ENVOI]" << std::endl
 		/**/<< std::endl;
 	std::string toSend = "HTTP/1.1 " + (client.getStatus().empty() ? "200 OK" : client.getStatus());
@@ -30,6 +32,8 @@ void	EventManager::sendToClient(void)
 	Request &client = *(Request *)getPtr();
 
 	sendBuffer(client);
+	// shoul return if false
+	// continue if true then checkif shoukld close request or keepalive
 	/**/streams.get(LOG_EVENT) << "[SUCCESS]" << std::endl
 		/**/<< std::endl;
 

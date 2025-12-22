@@ -100,7 +100,8 @@ public:
 	void					parseBuffer(void);
 
 private:
-	std::string		_response;
+	std::string				_response;
+// size_t					_responseCursor;
 public:
 	void					generateResponse();
 	void					buildErrorResponse();

@@ -71,6 +71,7 @@ void	Request::buildGetResponse()
 		ifs >> body;
 	}
 	this->_response.append(body);
+	// this->_responseCursor = 0;
 }
 
 void	Request::buildPostResponse()
