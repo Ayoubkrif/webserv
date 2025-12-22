@@ -34,6 +34,11 @@ void	Request::resetRequest()
 	this->_body.clear();
 	this->_header.clear();
 	this->_status.clear();
+
+	this->_requestedRessource.clear();
+	this->_url.clear();
+	this->_uri.clear();
+
 	this->_state = 0;
 	this->_method = OTHER;
 	this->_contentLength = 0;
