@@ -50,6 +50,12 @@ class Location;
 class Server;
 class Cgi;
 
+struct Response
+{
+	std::string				str;
+	size_t					cursor;
+};
+
 class Request: public Event
 {
 public://epollloop variable for accept
@@ -99,9 +105,8 @@ public:
 	void					appendBuffer(std::string, int start, int end);
 	void					parseBuffer(void);
 
-private:
-	std::string				_response;
-// size_t					_responseCursor;
+public:
+	struct Response			_response;
 public:
 	void					generateResponse();
 	void					buildErrorResponse();

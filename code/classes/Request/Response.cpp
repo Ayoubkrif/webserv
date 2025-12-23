@@ -19,13 +19,13 @@
 
 void	Request::buildErrorResponse()
 {
-	this->_response.assign(TEXT_HTML_TYPE);
+	this->_response.str.assign(TEXT_HTML_TYPE);
 	if (_status.compare(0, 3, "404"))
 	{
 		if (this->_connection == KEEP_ALIVE)
-			this->_response.append(CON_KEEP_ALIVE);
+			this->_response.str.append(CON_KEEP_ALIVE);
 		else
-			this->_response.append(CON_CLOSE);
+			this->_response.str.append(CON_CLOSE);
 		//ne pas oublier DCRLF a la fin du header
 		//open fichier et mettre body dans une autre chaine
 		//pour pouvoir connaitre sa longueur et l'ajouter au header
@@ -34,14 +34,14 @@ void	Request::buildErrorResponse()
 	}
 	else
 	{
-		this->_response.assign(CON_CLOSE);
+		this->_response.str.assign(CON_CLOSE);
 		//ne pas oublier DCRLF a la fin du header
 		//open fichier erreur et mettre body dans une autre chaine
 		//pour pouvoir connaitre sa longueur et l'ajouter au header
 		//ou compter la taille du body qui est direct append a la reponse
 		//et insert Content-length a response.find(CRLF) donc apres la status line
 	}
-	this->_response.append(CRLF);
+	this->_response.str.append(CRLF);
 	//appendbody
 }
 
@@ -55,11 +55,11 @@ void	Request::buildGetResponse()
 	struct stat fileStat;
 	if (stat(this->_requestedRessource.c_str(), &fileStat) == 0)
 	{
-		this->_response.append(CON_LEN + nbrToString(fileStat.st_size) + CRLF);
+		this->_response.str.append(CON_LEN + nbrToString(fileStat.st_size) + CRLF);
 	}
 	//add Content-type
 	//add Date ??
-	this->_response.append(CRLF);
+	this->_response.str.append(CRLF);
 	{
 
 	}
@@ -70,7 +70,7 @@ void	Request::buildGetResponse()
 		//read() in a buffer and append to this->_response
 		ifs >> body;
 	}
-	this->_response.append(body);
+	this->_response.str.append(body);
 	// this->_responseCursor = 0;
 }
 
@@ -120,11 +120,11 @@ void	Request::generateResponse()
 				//for open fail should we access() in parseUri() to check rights???
 
 		//attention -> pas le meme code pour post (201 Created) et delete (204 No Content), 3xx pour redirections
-		this->_response.append("HTTP/1.1 " + (this->_status.empty() ? "200 OK" : this->_status) + CRLF);
+		this->_response.str.append("HTTP/1.1 " + (this->_status.empty() ? "200 OK" : this->_status) + CRLF);
 		if (this->_connection == KEEP_ALIVE)
-			this->_response.append(CON_KEEP_ALIVE);
+			this->_response.str.append(CON_KEEP_ALIVE);
 		else
-			this->_response.append(CON_CLOSE);
+			this->_response.str.append(CON_CLOSE);
 		switch(this->_method)
 		{
 			case GET:
