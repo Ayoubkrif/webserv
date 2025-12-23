@@ -19,6 +19,7 @@ SRC_FILES = \
 	main.cpp \
 	time.cpp \
 	nbrToString.cpp \
+	hexToLong.cpp
 	\
 
 # Classes files listing

@@ -50,16 +50,3 @@ int	find_type(std::string str)
 	// should not return 0 if not in fct tab but in field tab
 	// so it doesnt invalidate valid headers that should not be parsed
 }
-
-unsigned long hexToLong(std::string line)
-{
-	unsigned long chunk_size;
-	const char* semicolon = std::strchr(line.data(), ';');
-
-	chunk_size = std::strtoul(line.data(), semicolon ? (char**)&semicolon : NULL, 16);
-
-		streams.get(LOG_REQUEST) << "[CHUNK SIZE]" << std::endl
-			<< "octet to read: " << chunk_size
-			<< std::endl;
-	return chunk_size;
-}
