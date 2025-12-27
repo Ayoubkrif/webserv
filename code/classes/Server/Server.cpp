@@ -227,7 +227,7 @@ const Location	*Server::urlSolver(std::string &url)
 	{
 		streams.get(LOG_REQUEST) << url << "match" << it->first << std::endl;
 		if (url.find(it->first) == 0 &&
-			(url.length() == it->first.length() || url[it->first.length()] == '/'))
+			(url.length() == it->first.length() || url[it->first.length() - 1] == '/'))
 		{
 			url.erase(0, it->first.length());
 			streams.get(LOG_REQUEST) << "location match, remainder: <" << url << ">" << std::endl;
