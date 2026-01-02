@@ -25,7 +25,7 @@ void	Request::parseHeaderType(void)
 
 	if (!this->getToken(&token))//can't use this cause it skip ows
 	{
-		this->setStatus(BAD_REQUEST);
+		this->setStatus(Status(BAD_REQUEST, 400));
 		// buildErrorResponse();
 		this->setState(ERROR);
 		this->setState(EXEC);
@@ -53,7 +53,7 @@ void	Request::parseRequestLine(std::string token)
 
 	if (!moveCursor(&cursor, token, " "))
 	{
-		this->setStatus(BAD_REQUEST);
+		this->setStatus(Status(BAD_REQUEST, 400));
 		this->setState(ERROR);
 		this->setState(EXEC);
 		return;
@@ -64,7 +64,7 @@ void	Request::parseRequestLine(std::string token)
 	token.erase(0, cursor + 1);
 	if (!moveCursor(&cursor, token, " "))
 	{
-		this->setStatus(BAD_REQUEST);
+		this->setStatus(Status(BAD_REQUEST, 400));
 		this->setState(ERROR);
 		this->setState(EXEC);
 		return;
@@ -75,7 +75,7 @@ void	Request::parseRequestLine(std::string token)
 	token.erase(0, cursor + 1);
 	if (token.compare("HTTP/1.1"))
 	{
-		this->setStatus(BAD_REQUEST);
+		this->setStatus(Status(BAD_REQUEST, 400));
 		this->setState(ERROR);
 		this->setState(EXEC);
 		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
@@ -95,7 +95,7 @@ void	Request::parseMethod(std::string str)
 		this->_method = DELETE;
 	else
 	{
-		this->_status = BAD_REQUEST;
+		this->setStatus(Status(BAD_REQUEST, 400));
 		this->setState(ERROR);
 		this->setState(EXEC);
 		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
@@ -130,7 +130,7 @@ void	Request::parseURI(std::string str)
 		{
 			this->setState(EXEC);
 			this->setState(ERROR);
-			this->_status = NOT_FOUND;
+			this->setStatus(Status(NOT_FOUND, 404));
 			this->_connection = CLOSE;
 			return ;
 		}
@@ -139,7 +139,7 @@ void	Request::parseURI(std::string str)
 		{
 			this->setState(EXEC);
 			this->setState(ERROR);
-			this->_status = BAD_REQUEST;
+			this->setStatus(Status(BAD_REQUEST, 400));
 			this->_connection = CLOSE;
 			streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
 				<< "un authorized method " + METHODS[getMethod()] + " in location " + this->_uri
@@ -162,7 +162,7 @@ void	Request::parseURI(std::string str)
 			// for yet it return error
 			this->setState(EXEC);
 			this->setState(ERROR);
-			this->_status = NOT_FOUND;
+			this->setStatus(Status(NOT_FOUND, 404));
 			this->_connection = CLOSE;
 			return ;
 			// _requestedRessource = _location->getRoot() + _location->getAlias() + "index.html";
@@ -177,7 +177,7 @@ void	Request::parseURI(std::string str)
 		{
 			this->setState(EXEC);
 			this->setState(ERROR);
-			this->_status = NOT_FOUND;
+			this->setStatus(Status(NOT_FOUND, 404));
 			this->_connection = CLOSE;
 			return ;
 		}
@@ -216,7 +216,7 @@ void	Request::parseHeader(void)
 		}
 		if (!this->getField(&type) || !this->getToken(&token))
 		{
-			this->setStatus(BAD_REQUEST);
+			this->setStatus(Status(BAD_REQUEST, 400));
 			this->setState(ERROR);
 			this->setState(EXEC);
 			streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
@@ -230,7 +230,7 @@ void	Request::parseHeader(void)
 			(this->*Request::fctField[type])(token);
 		else if (type < 0)
 		{
-			this->setStatus(BAD_REQUEST);
+			this->setStatus(Status(BAD_REQUEST, 400));
 			this->setState(ERROR);
 			this->setState(EXEC);
 		//How to deal with expect? Does errors override expect?? Does expect override body??
@@ -261,7 +261,7 @@ void	Request::parseCgiHeader(void)
 		}
 		if (!this->getField(&field, &type) || !this->getToken(&token))
 		{
-			this->setStatus(BAD_REQUEST);
+			this->setStatus(Status(BAD_REQUEST, 400));
 			this->setState(ERROR);
 			this->setState(EXEC);
 			streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
@@ -275,7 +275,7 @@ void	Request::parseCgiHeader(void)
 			(this->*Request::fctField[type])(token);
 		else if (type < 0)
 		{
-			this->setStatus(BAD_REQUEST);
+			this->setStatus(Status(BAD_REQUEST, 400));
 			this->setState(ERROR);
 			this->setState(EXEC);
 		//How to deal with expect? Does errors override expect?? Does expect override body??

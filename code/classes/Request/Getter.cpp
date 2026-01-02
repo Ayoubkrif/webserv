@@ -60,9 +60,9 @@ std::string	Request::getState() const
 	return state;
 }
 
-std::string	Request::getStatus() const
+const Status	&Request::getStatus() const
 {
-	return this->_status;
+	return (_status);
 }
 
 std::string	Request::getHost() const

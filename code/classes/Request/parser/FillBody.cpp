@@ -21,7 +21,7 @@ void	Request::fillBody()
 	{ //a quel moment ceci est possible?? length = 1 que si Content-type trouve
 		if (this->_length == false)
 		{
-			this->_status.assign(LENGTH_REQUIRED);
+			this->setStatus(Status(LENGTH_REQUIRED, 411));
 			this->setState(ERROR);
 			this->setState(EXEC);
 			return;
@@ -61,7 +61,7 @@ void	Request::fillChunkedBody()
 	{
 		if (this->_body.size() > MAX_BODY_SIZE)
 		{
-			this->_status.assign(PAYLOAD_TOO_LARGE);
+			this->setStatus(Status(PAYLOAD_TOO_LARGE, 413));
 			this->setState(ERROR);
 			this->setState(EXEC);
 			return;
@@ -96,7 +96,7 @@ void	Request::fillChunkedBody()
 			this->_body.append(this->_buffer, 0, chunk_size);
 			if (this->_buffer[chunk_size ] != '\r' && this->_buffer[chunk_size + 1] != '\n')
 			{
-				this->_status = BAD_REQUEST;
+				this->setStatus(Status(BAD_REQUEST, 400));
 				this->setState(ERROR);
 				this->setState(EXEC);
 				streams.get(LOG_REQUEST) << "[ERROR]" << std::endl

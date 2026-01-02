@@ -13,7 +13,7 @@
 #include "Server.hpp"
 #include <sys/socket.h>
 
-Request::Request(Server &server) :Event(CLIENT), client_len(sizeof(sockaddr_in)), fd(-1), _status(), _response(), _state(0), _method(OTHER), _server(server), _contentLength(0), _length(0), _connection(KEEP_ALIVE), _trailer(0)
+Request::Request(Server &server) :Event(CLIENT), client_len(sizeof(sockaddr_in)), fd(-1), _status(Status(OK, 200)), _response(), _state(0), _method(OTHER), _server(server), _contentLength(0), _length(0), _connection(KEEP_ALIVE), _trailer(0)
 {
 	this->fd = accept(server.getFd(), (struct sockaddr *)&this->client_addr, &this->client_len);
 	if (this->fd == -1)
@@ -33,7 +33,7 @@ void	Request::resetRequest()
 {
 	this->_body.clear();
 	this->_header.clear();
-	this->_status.clear();
+	this->_status = Status(OK, 200);
 
 	this->_requestedRessource.clear();
 	this->_url.clear();
@@ -54,9 +54,9 @@ void	Request::appendBuffer(std::string str, int start, int end)
 	this->_buffer.append(str, start, end);
 }
 
-void	Request::setStatus(std::string code)
+void	Request::setStatus(const Status &status)
 {
-	this->_status.assign(code);
+	this->_status = status;
 }
 
 void	Request::fillHeader(std::string::size_type cursor)
@@ -171,7 +171,7 @@ std::ostream	&operator<<(std::ostream &lhs, const Request &rhs)
 	lhs	<< "state="
 		<< rhs.getState() << std::endl
 		<< "status="
-		<< rhs.getStatus() << std::endl
+		<< rhs.getStatus().str << std::endl
 		<< "method="
 		<< METHODS[rhs.getMethod()] << std::endl
 		<< "URI="

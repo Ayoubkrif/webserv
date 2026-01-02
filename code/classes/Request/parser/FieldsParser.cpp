@@ -65,7 +65,7 @@ void	Request::parseContentLength(std::string str)
 	//if chunked and content length -> 400
 	if (isState(CHUNKED))
 	{
-		this->_status.assign(BAD_REQUEST);
+		this->setStatus(Status(BAD_REQUEST, 400));
 		this->setState(EXEC);
 		this->setState(ERROR);
 		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
@@ -77,7 +77,7 @@ void	Request::parseContentLength(std::string str)
 	this->_contentLength = std::strtol(str.c_str(), NULL, 10);
 	if (this->_contentLength > MAX_BODY_SIZE)
 	{
-		this->_status.assign(BAD_REQUEST);
+		this->setStatus(Status(BAD_REQUEST, 400));
 		this->setState(EXEC);
 		this->setState(ERROR);
 	}
@@ -103,7 +103,7 @@ void	Request::parseTransferEncoding(std::string str)
 	//if chunked and content length -> 400
 	if (this->_length == 1)
 	{
-		this->_status.assign(BAD_REQUEST);
+		this->setStatus(Status(BAD_REQUEST, 400));
 		this->setState(EXEC);
 		this->setState(ERROR);
 		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
@@ -117,7 +117,7 @@ void	Request::parseTransferEncoding(std::string str)
 	}
 	else
 	{
-		this->_status.assign(BAD_REQUEST);
+		this->setStatus(Status(BAD_REQUEST, 400));
 		this->setState(EXEC);
 		this->setState(ERROR);
 		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl

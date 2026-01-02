@@ -20,7 +20,7 @@
 void	Request::buildErrorResponse()
 {
 	this->_response.str.assign(TEXT_HTML_TYPE);
-	if (_status.compare(0, 3, "404"))
+	if (_status.code == 404)
 	{
 		if (this->_connection == KEEP_ALIVE)
 			this->_response.str.append(CON_KEEP_ALIVE);
@@ -113,7 +113,7 @@ void	Request::generateResponse()
 				//for open fail should we access() in parseUri() to check rights???
 
 		//attention -> pas le meme code pour post (201 Created) et delete (204 No Content), 3xx pour redirections
-		this->_response.str.append("HTTP/1.1 " + (this->_status.empty() ? "200 OK" : this->_status) + CRLF);
+		this->_response.str.append("HTTP/1.1 " + getStatus().str + CRLF);
 		if (this->_connection == KEEP_ALIVE)
 			this->_response.str.append(CON_KEEP_ALIVE);
 		else

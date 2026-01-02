@@ -70,6 +70,13 @@ struct Response
 	}
 };
 
+struct Status
+{
+	Status(std::string _str, unsigned int _code): str(_str), code(_code){}
+	std::string		str;
+	unsigned int	code;
+};
+
 class Request: public Event
 {
 public://epollloop variable for accept
@@ -88,10 +95,10 @@ public:
 private:
 	int				_start; //pour chuncked request, pour verifier le temps
 private:
-	std::string		_status; //to put in response
+	Status			_status; //to put in response
 public:
-	void					setStatus(std::string code);
-	std::string				getStatus() const;
+	void			setStatus(const Status &);
+	const Status			&getStatus() const;
 	
 private:
 	std::string		_header;
