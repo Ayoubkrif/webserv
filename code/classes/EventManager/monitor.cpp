@@ -11,6 +11,8 @@
 
 
 #include "EventManager.hpp"
+#include "Request.hpp"
+#include "helpers.hpp"
 #include <sstream>
 
 void	EventManager::monitorNewEvent(ssize_t nEvent)
@@ -24,11 +26,9 @@ void	EventManager::monitorNewEvent(ssize_t nEvent)
 	Monitor.editStatusLine(ss.str());
 }
 
-void	EventManager::monitorEventRecv(ssize_t count, String recv)
+void	EventManager::monitorEventRecv(ssize_t count, String recv, Request &client)
 {
-	std::stringstream ss;
-	ss << " " << count << " bytes recv";
-	Monitor.printNewLine(ss.str());
+	Monitor.printNewLine("FROM "+client.ip_str+": "+nbrToString(count)+" bytes recv");
 	streams.get(LOG_EVENT) << " " << count << " bytes recv" << std::endl
 	<< recv << std::endl; 
 }

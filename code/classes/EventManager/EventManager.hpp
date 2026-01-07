@@ -56,7 +56,7 @@ class EventManager
 		// Logger
 		Logger			Monitor;
 		void			monitorNewEvent(ssize_t);
-		void			monitorEventRecv(ssize_t, String);
+		void			monitorEventRecv(ssize_t, String, Request&);
 
 		// utils
 		void				getNewEvent(void);

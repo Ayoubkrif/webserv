@@ -41,13 +41,13 @@ void	EventManager::sendToClient(void)
 	*/
 	if (client.getConnection() == KEEP_ALIVE)
 	{
-		Monitor.printNewLine(RED + "connection is KEEP ALIVE" + WHITE);
+		Monitor.printNewLine(RED + "FROM "+client.ip_str+" KEEPALIVE (end of the request)"  + WHITE);
 		client.resetRequest();
 		EventModify(client.fd, EPOLLIN, &client);
 	}
 	else
 	{
-		Monitor.printNewLine(RED + "connection is CLOSE" + WHITE);
+		Monitor.printNewLine(RED + "FROM "+client.ip_str+" CLOSE (end of the request)"  + WHITE);
 		EventDelete(client.fd);
 		delete (Request *)getPtr();
 	}
