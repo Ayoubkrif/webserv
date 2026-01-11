@@ -25,6 +25,7 @@ class	Location
 	~Location(void);
 	Location						&operator=(const Location&);
 	Location(void);
+	std::string					_name;
 
 	public:
 	void							setAlias(const std::string&);

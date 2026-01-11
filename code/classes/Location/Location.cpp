@@ -13,7 +13,7 @@
 #include "default.hpp"
 
 Location::Location(void):
-	// _name(DEFAULT_LOCATION_NAME),
+	_name(DEFAULT_LOCATION_NAME),
 	_alias(DEFAULT_LOCATION_ALIAS),
 	_root(DEFAULT_LOCATION_ROOT),
 	_client_max_body_size(DEFAULT_LOCATION_MAX_BODY_SIZE),
@@ -31,6 +31,7 @@ Location::Location(void):
 }
 
 Location::Location(const std::string &name):
+	_name(name),
 	_alias(name),
 	_root(DEFAULT_LOCATION_ROOT),
 	_client_max_body_size(DEFAULT_LOCATION_MAX_BODY_SIZE),
@@ -48,7 +49,7 @@ Location::Location(const std::string &name):
 }
 
 Location::Location(const Location &copy):
-	// _name(copy._name),
+	_name(copy._name),
 	_alias(copy._alias),
 	_root(copy._root),
 	_client_max_body_size(copy._client_max_body_size),
@@ -71,7 +72,7 @@ Location::~Location(void)
 
 Location	&Location::operator=(const Location &copy)
 {
-	// this->_name = copy._name;
+	this->_name = copy._name;
 	this->_root = copy._root;
 	this->_alias = copy._alias;
 	this->_client_max_body_size = copy._client_max_body_size;
@@ -224,10 +225,10 @@ void	Location::setPostDirectory(const std::string &post_directory)
 
 std::ostream	&operator<<(std::ostream &lhs, const Location &rhs)
 {
-	// lhs << "location: "
-	// 	<< rhs.getName()
-	// 	<< std::endl;
-	//
+	lhs << "name: "
+		<< rhs._name
+		<< std::endl;
+
 	lhs << "root: "
 		<< rhs.getRoot()
 		<< std::endl;

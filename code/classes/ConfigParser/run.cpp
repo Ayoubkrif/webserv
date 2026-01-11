@@ -89,8 +89,7 @@ void	ConfigParser::parseLocation(std::map<std::string, Location> &locations)
 	if (name == DIRECTIVE[CLOSING_BRACKET])
 		throw (std::runtime_error("location need an path identifier"));
 
-	Location	current;
-	current.setAlias(name);
+	Location	current(name);
 	next();
 	if (end() || get() != "{")
 		throw (std::runtime_error("Missing bracket after location '" + name + "'\n-->" + get()));
