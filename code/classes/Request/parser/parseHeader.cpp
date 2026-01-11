@@ -17,6 +17,7 @@
 #include "Location.hpp"
 #include "Server.hpp"
 #include <unistd.h>
+#include "helpers.hpp"
 
 // string = expr + final CRLF
 void	Request::parseHeaderType(void)
@@ -104,7 +105,6 @@ void	Request::parseMethod(std::string str)
 	}
 }
 
-void	trimSlash(std::string &str);
 void	Request::parseURI(std::string str)
 {
 	std::string::size_type cursor = 0;
