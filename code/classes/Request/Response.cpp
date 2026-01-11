@@ -63,7 +63,7 @@ void	Request::buildErrorResponse()
 void	Request::buildGetResponse()
 {
 	//open file from url if not autoindexed yet
-	if (_body.empty())
+	if (_response.body.empty())
 		_response.body = extractStr(_requestedRessource.c_str());
 
 	// size of body
