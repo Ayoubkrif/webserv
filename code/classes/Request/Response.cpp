@@ -62,20 +62,16 @@ void	Request::buildErrorResponse()
 
 void	Request::buildGetResponse()
 {
-	//open file from url
-	//in header: status line (200 OK ou Expect), content-length, content-type, date
-	
-	struct stat fileStat;
-	if (stat(this->_requestedRessource.c_str(), &fileStat) == 0)
-	{
-		this->_response.str.append(CON_LEN + nbrToString(fileStat.st_size) + CRLF);
-	}
+	//open file from url if not autoindexed yet
+	if (_body.empty())
+		_response.body = extractStr(_requestedRessource.c_str());
+
+	// size of body
+	this->_response.str.append(CON_LEN + nbrToString(_response.body.size()) + CRLF);
 	//add Content-type
 	//add Date ??
 	this->_response.str.append(CRLF);
-	std::string		body = extractStr(_requestedRessource.c_str());
-	this->_response.str.append(body);
-	// this->_responseCursor = 0;
+	this->_response.str.append(_response.body);
 }
 
 void	Request::buildPostResponse()

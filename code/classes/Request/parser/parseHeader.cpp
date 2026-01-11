@@ -160,6 +160,7 @@ void	Request::parseURI(std::string str)
 		if ((str.empty() || str == "/")) // index ressource
 		{
 			_requestedRessource = _location->getRoot() + _location->getAlias() + "/" + _location->getIndex();
+			streams.get(LOG_REQUEST) << "concatenation :" + _requestedRessource<< std::endl;
 			trimSlash(_requestedRessource);
 			streams.get(LOG_REQUEST) << " Empty remainder, testing index:" + _requestedRessource<< std::endl;
 			if (access(_requestedRessource.c_str(), R_OK))// if no index no auto index
@@ -174,11 +175,15 @@ void	Request::parseURI(std::string str)
 					return ;
 				}
 				// should handle auto index here
+				_requestedRessource = _location->getRoot() + _location->getAlias();
+				if (!recursiveReaddir(_requestedRessource, _body))
+				{
 					this->setState(EXEC);
 					this->setState(ERROR);
 					this->setStatus(Status(NOT_FOUND, 404));
 					this->_connection = CLOSE;
 					return ;
+				}
 				//
 			}
 		}
@@ -186,15 +191,15 @@ void	Request::parseURI(std::string str)
 		{
 			_requestedRessource = _location->getRoot() + _location->getAlias() + str;
 			trimSlash(_requestedRessource);
-		}
-		streams.get(LOG_EVENT) << "file: " << _requestedRessource << std::endl;
-		if (access(_requestedRessource.c_str(), R_OK))// if ressource cannot be read
-		{
-			this->setState(EXEC);
-			this->setState(ERROR);
-			this->setStatus(Status(NOT_FOUND, 404));
-			this->_connection = CLOSE;
-			return ;
+			streams.get(LOG_EVENT) << "file: " << _requestedRessource << std::endl;
+			if (access(_requestedRessource.c_str(), R_OK))// if ressource cannot be read
+			{
+				this->setState(EXEC);
+				this->setState(ERROR);
+				this->setStatus(Status(NOT_FOUND, 404));
+				this->_connection = CLOSE;
+				return ;
+			}
 		}
 	}
 	if (this->_method == POST)
