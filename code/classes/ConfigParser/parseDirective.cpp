@@ -46,7 +46,7 @@ static unsigned int	parse_ipv4(std::string str)
 				throw (std::invalid_argument("each number should be separated by dot"));
 			else if (*end)// trail garbage
 				throw (std::invalid_argument("garbage found at the end of interface"));
-			p =+ end + 1; // go after .
+			p = end + 1; // go after .
 		}
 		ipv4 = nb[0] << 24
 		| nb[1] << 16
