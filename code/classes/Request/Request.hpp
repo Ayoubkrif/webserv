@@ -131,6 +131,7 @@ public:
 public:
 	struct Response			_response;
 public:
+	bool					recursiveReaddir(std::string);
 	void					generateResponse();
 	void					buildErrorResponse();
 	void					buildGetResponse();

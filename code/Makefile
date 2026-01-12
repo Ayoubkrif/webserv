@@ -22,7 +22,7 @@ SRC_FILES = \
 	utils/hexToLong.cpp \
 	utils/trimSlash.cpp \
 	utils/extractStr.cpp \
-	utils/recursiveReaddir.cpp \
+	utils/buildIpPortStr.cpp \
 	\
 
 # Classes files listing
@@ -40,6 +40,7 @@ CLASS_FILES = \
 		Request/Getter.cpp \
 		Request/RequestUtils.cpp \
 		Request/Response.cpp \
+		Request/recursiveReaddir.cpp \
 			Request/parser/FieldsParser.cpp \
 			Request/parser/FillBody.cpp \
 			Request/parser/parseBuffer.cpp \

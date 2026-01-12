@@ -13,6 +13,7 @@
 #include "Location.hpp"
 #include <stdexcept>
 #include "FileStream.hpp"
+#include "helpers.hpp"
 #include "logfiles.hpp"
 
 extern FileStream	streams;
@@ -24,7 +25,10 @@ Server::Server(void):
 	_port(DEFAULT_SERVER_PORT),
 	_interface(DEFAULT_SERVER_INTERFACE),
 	_fd(-1)
-{}
+{
+	this->ipPortStr = buildIpPortStr(_interface, _port);
+}
+
 
 #include <unistd.h>
 Server::~Server(void)
@@ -42,6 +46,7 @@ Server::Server(const Server &copy):
 {
 	if (_fd != -1)
 		throw (std::runtime_error("FD IS NOT -1"));
+	this->ipPortStr = buildIpPortStr(_interface, _port);
 }
 
 Server	Server::operator=(const Server &rhs)
@@ -54,6 +59,7 @@ Server	Server::operator=(const Server &rhs)
 	this->setFd(rhs.getFd());
 	if (_fd != -1)
 		throw (std::runtime_error("FD IS NOT -1"));
+	this->ipPortStr = buildIpPortStr(_interface, _port);
 	return (*this);
 }
 
@@ -83,6 +89,7 @@ unsigned short int	Server::getPort(void) const
 void	Server::setPort(unsigned short int port)
 {
 	this->_port = port;
+	this->ipPortStr = buildIpPortStr(_interface, _port);
 }
 
 unsigned int	Server::getInterface(void) const
@@ -93,6 +100,7 @@ unsigned int	Server::getInterface(void) const
 void	Server::setInterface(unsigned int interface)
 {
 	this->_interface = interface;
+	this->ipPortStr = buildIpPortStr(_interface, _port);
 }
 
 int		Server::getFd(void) const
@@ -103,6 +111,11 @@ int		Server::getFd(void) const
 void	Server::setFd(const int fd)
 {
 	this->_fd = fd;
+}
+
+const std::string	&Server::getIpPortStr(void) const
+{
+	return (this->ipPortStr);
 }
 
 #include <iostream>

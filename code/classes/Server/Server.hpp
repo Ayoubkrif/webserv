@@ -58,15 +58,19 @@ class	Server: public Event
 
 		int										getFd(void) const;
 		void									setFd(const int);
+
+		const std::string						&getIpPortStr(void) const;
 	
 		//runtime methods
 		void									startListen(void);
 		const Location							*urlSolver(std::string&);
+
 	private:
 		std::map<std::string, Location>	_locations;
 		unsigned short int				_port;
 		unsigned int					_interface;
 		int								_fd;
+		std::string	ipPortStr;
 };
 
 std::ostream	&operator<<(std::ostream &lhs, const Server &rhs);
