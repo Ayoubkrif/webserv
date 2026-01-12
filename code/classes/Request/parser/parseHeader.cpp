@@ -154,6 +154,8 @@ void	Request::parseURI(std::string str)
 		// access --> executable
 
 	streams.get(LOG_EVENT) << "Okay" << std::endl;
+	streams.get(LOG_EVENT) << "Solving remainder "<< "<"+str+">" << std::endl;
+	streams.get(LOG_REQUEST) << "Solving remainder "<< "<"+str+">" << std::endl;
 	if (this->_method == GET)
 	{// fusionner root + alias + remainder pour access
 		// si rien ou slash sans rien alors verifier index
@@ -194,7 +196,7 @@ void	Request::parseURI(std::string str)
 		}
 		else // regular file
 		{
-			_requestedRessource = _location->getRoot() + _location->getAlias() + str;
+			_requestedRessource = _location->getRoot() + _location->getAlias() + "/" + str;
 			trimSlash(_requestedRessource);
 			streams.get(LOG_EVENT) << "file: " << _requestedRessource << std::endl;
 			if (access(_requestedRessource.c_str(), R_OK))// if ressource cannot be read
