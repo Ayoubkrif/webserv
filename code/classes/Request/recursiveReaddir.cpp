@@ -19,11 +19,11 @@
 #include "Location.hpp"
 #include "helpers.hpp"
 
-bool	Request::recursiveReaddir(std::string strbizar)
+bool	Request::recursiveReaddir(std::string subPath)
 {
     struct dirent *entry;
 	// root + alias + dossier courant dans l'alias
-	std::string	current_path = _location->getRoot() + _location->getAlias() + strbizar;
+	std::string	current_path = _location->getRoot() + _location->getAlias() + subPath;
     DIR *dir = opendir(current_path.c_str());
 
     // 1. Vérifier si le chemin peut être ouvert
@@ -45,7 +45,7 @@ bool	Request::recursiveReaddir(std::string strbizar)
 		{
 			// : on relance la fonction récursivement
 			// en ajoutant a subpath le dir trouve
-			recursiveReaddir(strbizar + "/" + entry->d_name);
+			recursiveReaddir(subPath + "/" + entry->d_name);
 		}
 		else if (entry->d_type == DT_REG)// C'est un fichier régulier
 		{
@@ -54,15 +54,19 @@ bool	Request::recursiveReaddir(std::string strbizar)
 			std::string	toTrim;
 			toTrim.reserve(256);
 			toTrim += "<a href=\"";
-			toTrim += entry->d_name;
-			toTrim += "\">";
-			toTrim += _server.getIpPortStr();
-			toTrim +=  "/";
 			toTrim += _location->_name;
 			toTrim += "/";
-			toTrim += strbizar;
+			toTrim += subPath;
 			toTrim += "/";
 			toTrim += entry->d_name;
+			toTrim += "\">";
+			
+			toTrim += _location->_name;
+			toTrim += "/";
+			toTrim += subPath;
+			toTrim += "/";
+			toTrim += entry->d_name;
+
 			toTrim += "</a><br>\n";
 			trimSlash(toTrim);
 			_response.body.append(toTrim);
