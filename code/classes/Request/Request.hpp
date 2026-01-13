@@ -134,6 +134,7 @@ public:
 	bool					recursiveReaddir(std::string);
 	void					generateResponse();
 	void					buildErrorResponse();
+		bool				findErrorPage();
 	void					buildGetResponse();
 	void					buildPostResponse();
 	void					buildDeleteResponse();

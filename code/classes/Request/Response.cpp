@@ -17,44 +17,48 @@
 #include <cstddef>
 #include <fcntl.h>
 #include <fstream>
+#include <unistd.h>
 
 #include "helpers.hpp"
+
+bool	Request::findErrorPage(void)
+{
+	std::map<int, std::string>::const_iterator	errorPage = this->_location->getErrorPages().find(_status.code);
+
+	if (errorPage == this->_location->getErrorPages().end())
+		return (false);
+	if (access(errorPage->second.c_str(), R_OK))
+		return (false);
+	_response.body = extractStr(errorPage->second.c_str());
+	return (true);
+}
+
 void	Request::buildErrorResponse()
 {
+	//ne pas oublier DCRLF a la fin du header
+	//open fichier erreur et mettre body dans une autre chaine
+	//pour pouvoir connaitre sa longueur et l'ajouter au header
+	//ou compter la taille du body qui est direct append a la reponse
+	//et insert Content-length a response.find(CRLF) donc apres la status line
 	this->_response.str.append(TEXT_HTML_TYPE);
 	if (_status.code == 404)
-	{
 		if (this->_connection == KEEP_ALIVE)
 			this->_response.str.append(CON_KEEP_ALIVE);
 		else
 			this->_response.str.append(CON_CLOSE);
-		//ne pas oublier DCRLF a la fin du header
-		//open fichier et mettre body dans une autre chaine
-		//pour pouvoir connaitre sa longueur et l'ajouter au header
-		//ou compter la taille du body qui est direct append a la reponse
-		//et insert Content-length a response.find(CRLF) donc apres la status line
-	}
 	else
-	{
-		this->_response.str.assign(CON_CLOSE);
-		//ne pas oublier DCRLF a la fin du header
-		//open fichier erreur et mettre body dans une autre chaine
-		//pour pouvoir connaitre sa longueur et l'ajouter au header
-		//ou compter la taille du body qui est direct append a la reponse
-		//et insert Content-length a response.find(CRLF) donc apres la status line
-	}
-	if (!this->_location)
-	{
-		this->_response.str.append("No location");
-		return ;
-	}
-	const std::map<int, std::string>	ErrorPages = this->_location->getErrorPages();
-	if (ErrorPages.find(_status.code) != ErrorPages.end())
-	{
-		this->_response.body.append("Error " + nbrToString(_status.code));
-		this->_response.str.append(CON_LEN + nbrToString(_response.body.length()) + CRLF);
-	}
+		this->_response.str.append(CON_CLOSE);
+	// check if error page exists
+	// if not or if access fail fall back on our default error page
+	// if yes append page to body
 	// this->_response.str.append(extractStr(_requestedRessource.c_str()));
+	if (!findErrorPage())
+	{
+		this->_response.body.append(_status.str);
+		if (!this->_location)
+			this->_response.body.append("No location");
+	}
+	this->_response.str.append(CON_LEN + nbrToString(_response.body.length()) + CRLF);
 	this->_response.str.append(CRLF);
 	this->_response.str.append(_response.body);
 }
