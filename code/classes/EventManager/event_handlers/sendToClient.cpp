@@ -29,7 +29,8 @@ void	EventManager::sendToClient(void)
 	// si on est en emission
 	Request &client = *(Request *)getPtr();
 
-	sendBuffer(client);
+	if (!sendBuffer(client))
+		return;
 	// shoul return if false
 	// continue if true then checkif shoukld close request or keepalive
 	/**/streams.get(LOG_EVENT) << "[SUCCESS]" << std::endl
