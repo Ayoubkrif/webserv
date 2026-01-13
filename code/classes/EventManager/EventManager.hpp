@@ -25,9 +25,15 @@
 extern FileStream	streams;
 
 class	Logger;
-
 class	Server;
 class	Request;
+
+#include "Event.hpp"
+struct	StdinEvent : public Event
+{
+	StdinEvent() : Event(STDIN){}
+	std::string	buf;
+};
 
 class EventManager
 {
@@ -52,6 +58,7 @@ class EventManager
 			bool			recvBuffer(Request&);
 		void			handlePipe(void);
 		void			serverAcceptClient(void);
+		void			handleStdin(void);
 	
 		// Logger
 		Logger			Monitor;
@@ -71,11 +78,13 @@ class EventManager
 		void				EventDelete(int);
 		// allocated request vector
 		std::list<Request*>	requests;
-		void(EventManager::*epollinHandler[3])(void);// jumptable
+		void(EventManager::*epollinHandler[4])(void);// jumptable
 		int					_fd;
 		struct epoll_event	_events[MAX_EVENTS];
 		int					_nEvent;
 		int					_it;
+		StdinEvent			_stdin;
+		bool				_alive;
 };
 
 static const int	BUFFER_SIZE = 1024;

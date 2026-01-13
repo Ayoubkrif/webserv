@@ -28,7 +28,7 @@
 #include "string.hpp"
 
 static const String	MONITOR_START = "Starting Webserv...";
-EventManager::EventManager(std::vector<Server> &servers): Monitor(MONITOR_START)
+EventManager::EventManager(std::vector<Server> &servers): Monitor(MONITOR_START), _alive(true)
 {
     // 2. Créer une instance epoll
 	Monitor.popStatus("Creating an epoll instance");
@@ -38,7 +38,7 @@ EventManager::EventManager(std::vector<Server> &servers): Monitor(MONITOR_START)
         perror("epoll_create1");
 		throw (std::runtime_error("ERROR"));
     }
-	Monitor.popStatus("Opening Server fd...");
+	Monitor.printNewLine("Opening Server fd...");
 	for(std::vector<Server>::iterator it = servers.begin(); it != servers.end(); it++)
 	{
 		it->startListen();
@@ -47,10 +47,13 @@ EventManager::EventManager(std::vector<Server> &servers): Monitor(MONITOR_START)
 		EventAdd(it->getFd(), EPOLLIN, &*it);
 		Monitor.printNewLine("Adding listening socket to epoll Succeed !");
 	}
+	// stdin event add
+	EventAdd(STDIN_FILENO, EPOLLIN, &this->_stdin);
 	// building jumptable thx to gemini
 	epollinHandler[0] = &EventManager::serverAcceptClient;
 	epollinHandler[1] = &EventManager::recvFromClient;
 	epollinHandler[2] = &EventManager::handlePipe;
+	epollinHandler[3] = &EventManager::handleStdin;
 }
 
 EventManager::~EventManager(void)
@@ -64,8 +67,8 @@ EventManager::~EventManager(void)
 
 void	EventManager::run(void)
 {
-	Monitor.popStatus("STARTING ..");
-    while (1)
+	Monitor.printNewLine("STARTING ..");
+    while (_alive)
 	{
 		// for each events
 		for (getNewEvent(); getPtr(); eventNext())
@@ -75,6 +78,5 @@ void	EventManager::run(void)
 			else // EPOLLOUT can only be for client send queue
 				sendToClient();
 		}
-		Monitor.printNewLine("");
     }
 }

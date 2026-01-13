@@ -53,6 +53,7 @@ CLASS_FILES = \
 		EventManager/event_handlers/recvFromClient.cpp \
 		EventManager/event_handlers/sendToClient.cpp \
 		EventManager/event_handlers/handlePipe.cpp \
+		EventManager/event_handlers/handleStdin.cpp \
 		EventManager/utils.cpp \
 		EventManager/monitor.cpp \
 	Logger/Logger.cpp \
