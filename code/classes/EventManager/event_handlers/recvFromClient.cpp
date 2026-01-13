@@ -21,9 +21,9 @@ bool	EventManager::recvBuffer(Request &client)
 	ssize_t count = recv(client.fd, buffer, sizeof(buffer), 0); // kesako
 	if (count == -1)
 		throw (std::runtime_error("RECV KO"));
-	if (count == 0)
+	if (count == 0) // client has closed connection
 	{
-		Monitor.printNewLine(RED + "END FROM "+client.ip_str+" connection:CLOSE (client disconnected)"  + WHITE);
+		Monitor.printNewLine(RED + "END FROM "+client.ip_str+" connection:CLOSE (client disconnected)"  + RESET);
 		EventDelete(client.fd);
 		delete (Request *)getPtr();
 		return (false);
