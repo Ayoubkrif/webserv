@@ -16,6 +16,7 @@
 #include "statusCodes.hpp"
 #include "Location.hpp"
 #include "Server.hpp"
+#include <fcntl.h>
 #include <unistd.h>
 #include "helpers.hpp"
 
@@ -105,6 +106,8 @@ void	Request::parseMethod(std::string str)
 	}
 }
 
+#include <sys/stat.h>
+
 void	Request::parseURI(std::string str)
 {
 	std::string::size_type cursor = 0;
@@ -145,32 +148,43 @@ void	Request::parseURI(std::string str)
 			return ;
 		}
 	}
-
+	checkURI(str);
+}
 //Todo:
 // verifier CGI
 	// si CGI
 		// access --> executable
 
-	streams.get(LOG_EVENT) << "Okay" << std::endl;
-	streams.get(LOG_EVENT) << "Solving remainder "<< "<"+str+">" << std::endl;
-	streams.get(LOG_REQUEST) << "Solving remainder "<< "<"+str+">" << std::endl;
+
+void	Request::checkURI(std::string	&remainder)
+{
+	streams.get(LOG_REQUEST) << "Solving remainder "<< "<"+remainder+">" << std::endl;
 	if (this->_method == GET)
 	{
 		// fusionner root + alias + remainder pour access
 		// ERRATUM > il fau pas access mais stat en premier
 		// si rien ou slash sans rien alors verifier index
 		// ERRATUM SI STAT RENVOIE DIR VERIFIER INDEX
-		// _requestedRessource = _location->getRoot() + _location->getAlias() + "/" + str;
-		if ((str.empty() || str == "/")) // index ressource
+		_requestedRessource = _location->getRoot() + "/" +_location->getAlias() + "/" + remainder;
+		trimSlash(_requestedRessource);
+
+		struct stat	statbuf;
+		if (stat(_requestedRessource.c_str(), &statbuf) == -1) // does not exist
 		{
-			_requestedRessource = _location->getRoot() + _location->getAlias() + "/" + _location->getIndex();
-			streams.get(LOG_REQUEST) << "concatenation :" + _requestedRessource<< std::endl;
+			this->setState(EXEC);
+			this->setState(ERROR);
+			this->setStatus(Status(NOT_FOUND, 404));
+			return ;
+		}
+		if ((statbuf.st_mode & S_IFMT) == S_IFDIR) // path is a directory
+		{
+			_requestedRessource = _location->getRoot() + "/" + _location->getAlias() + "/" + remainder+ "/" + _location->getIndex();
 			trimSlash(_requestedRessource);
-			streams.get(LOG_REQUEST) << " Empty remainder, testing index:" + _requestedRessource<< std::endl;
-			if (access(_requestedRessource.c_str(), R_OK))// if no index no auto index
+			streams.get(LOG_REQUEST) << "path is a directory, checking index :" + _requestedRessource<< std::endl;
+			if (access(_requestedRessource.c_str(), R_OK))// if cannot read index
 			{
 				streams.get(LOG_REQUEST) << " index missing, testing auto index "<< std::endl;
-				if (_location->getAutoindex() == false)
+				if (_location->getAutoindex() == false) // if no auto index error
 				{
 					streams.get(LOG_REQUEST) << "error no auto index"<< std::endl;
 					this->setState(EXEC);
@@ -178,10 +192,9 @@ void	Request::parseURI(std::string str)
 					this->setStatus(Status(NOT_FOUND, 404));
 					return ;
 				}
-				// should handle auto index here
-				_requestedRessource = _location->getRoot() + _location->getAlias();
+				_requestedRessource = _location->getRoot() + "/" + _location->getAlias() + "/" + remainder;
 				trimSlash(_requestedRessource);
-				streams.get(LOG_REQUEST) << "building auto index"<< std::endl;
+				streams.get(LOG_REQUEST) << "building auto index with :"<< _requestedRessource<< std::endl;
 				if (!recursiveReaddir(""))
 				{
 					streams.get(LOG_REQUEST) << "error auto index failed"<< std::endl;
@@ -194,10 +207,8 @@ void	Request::parseURI(std::string str)
 				//
 			}
 		}
-		else // regular file
+		else if ((statbuf.st_mode & S_IFMT) == S_IFREG) // path is a regular file
 		{
-			_requestedRessource = _location->getRoot() + _location->getAlias() + "/" + str;
-			trimSlash(_requestedRessource);
 			streams.get(LOG_EVENT) << "file: " << _requestedRessource << std::endl;
 			if (access(_requestedRessource.c_str(), R_OK))// if ressource cannot be read
 			{
@@ -206,6 +217,13 @@ void	Request::parseURI(std::string str)
 				this->setStatus(Status(NOT_FOUND, 404));
 				return ;
 			}
+		}
+		else // bad request not dir or reg
+		{
+			this->setState(EXEC);
+			this->setState(ERROR);
+			this->setStatus(Status(NOT_FOUND, 404));
+			return ;
 		}
 	}
 	if (this->_method == POST)

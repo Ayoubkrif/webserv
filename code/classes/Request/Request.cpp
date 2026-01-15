@@ -68,6 +68,7 @@ void	Request::appendBuffer(std::string str, int start, int end)
 
 void	Request::setStatus(const Status &status)
 {
+	streams.get(LOG_REQUEST) << "STATUS: " << status.code << std::endl;
 	this->_status = status;
 }
 

@@ -159,6 +159,7 @@ public:
 	std::string				getQueryString() const;
 	void					parseMethod(std::string);
 	void					parseURI(std::string);
+	void					checkURI(std::string&);
 	void					isCGI(void);
 
 private:

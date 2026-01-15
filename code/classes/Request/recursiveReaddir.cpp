@@ -23,7 +23,7 @@ bool	Request::recursiveReaddir(std::string subPath)
 {
     struct dirent *entry;
 	// root + alias + dossier courant dans l'alias
-	std::string	current_path = _location->getRoot() + _location->getAlias() + subPath;
+	std::string	current_path = _requestedRessource + subPath;
     DIR *dir = opendir(current_path.c_str());
 
     // 1. Vérifier si le chemin peut être ouvert
