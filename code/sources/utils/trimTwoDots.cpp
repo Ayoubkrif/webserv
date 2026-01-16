@@ -14,12 +14,13 @@
 void	trimTwoDots(std::string &str)
 {
     size_t pos = 0;
+    size_t next = 0;
 	while (str.size() > pos + 1)
 	{
 		pos = str.find_first_not_of("/", pos);
 		if (pos == std::string::npos)
 			break ;
-    	size_t next = str.find_first_of("/", pos);
+    	next = str.find_first_of("/", pos);
 		if (next == std::string::npos)
 			next = str.size();
 		size_t len = next - pos;
@@ -30,6 +31,8 @@ void	trimTwoDots(std::string &str)
 		}
 		if (str.substr(pos, len) == "..")
 			str.erase(pos, len);
+		else
+			pos += len;
 	}
 }
 //
