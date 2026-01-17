@@ -76,6 +76,7 @@ INC_DIR = \
 		$(CLASS_DIR)/EventManager \
 		$(CLASS_DIR)/Event \
 		$(CLASS_DIR)/Logger \
+		$(CLASS_DIR)/Status \
 
 ##################################################################################
 #compilation

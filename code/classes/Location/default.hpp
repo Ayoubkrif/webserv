@@ -10,6 +10,7 @@
 /* ************************************************************************** */
 
 #pragma once
+#include "Status.hpp"
 #include <string>
 #include <vector>
 #include <map>
@@ -18,7 +19,7 @@ static const std::string				DEFAULT_LOCATION_NAME = "";
 static const std::string				DEFAULT_LOCATION_ROOT = "";
 static const std::string				DEFAULT_LOCATION_ALIAS = "";
 static const unsigned int				DEFAULT_LOCATION_MAX_BODY_SIZE = 2048;
-static const std::string				DEFAULT_LOCATION_REDIRECTION = "";
+static const Status						DEFAULT_LOCATION_REDIRECTION = Status("", 0);
 static const bool						DEFAULT_LOCATION_AUTOINDEX = false;
 static const std::string				DEFAULT_LOCATION_INDEX = "index.html";
 static const std::string				DEFAULT_LOCATION_POST_DIRECTORY = "";

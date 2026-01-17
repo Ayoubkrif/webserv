@@ -230,13 +230,54 @@ void	ConfigParser::parseReturn(Location &current)
 	if (end())
 		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
 
-	//TBD
-	if (0)
-		throw (std::runtime_error(DIRECTIVE[RETURN] + " must be a valid url\n-->" + get()));
-	current.setRedirect(get());
-	next();
-	if (get() != ";")
-		throw (std::runtime_error("too much argument in directive " + DIRECTIVE[getDirective()] + "\n-->" + get()));
+	static const int	codes[] = {300, 301, 302, 303, 307, 308};
+	static const int	max = sizeof(codes) / sizeof(int);
+
+	Status returnStatus = Status("", 300);
+
+	std::vector<std::string>::iterator it_start = _token_it;
+	std::vector<std::string>::iterator page;
+	{
+		int	size = 0;
+		for (;get() != ";" && !end(); next())
+		{
+			size++;
+			page = _token_it;// get last argument (the page)
+						// should be the location of each error_pages
+		}
+		if (end())
+			throw (std::runtime_error("Expected ';' at end of" + DIRECTIVE[getDirective()] + "\n-->" + *(--_token_it)));
+		if (size > 2)
+			throw (std::runtime_error("Directive" + DIRECTIVE[RETURN] + "need at most 2 arguments\n-->" + *(--_token_it)));
+		streams.get(LOG_DIRECTIVE) << size - 1 << " return to fill" << std::endl;
+		//TBD
+		if (0)
+			throw (std::runtime_error(DIRECTIVE[RETURN] + " must be a valid url\n-->" + get()));
+	}
+
+	// for each token until page
+	for (; it_start < page; it_start++)
+	{
+		int	nb;
+		nb = std::strtol(it_start->c_str(), NULL, 10);
+		// work in progress thro strtol
+		if (0)
+			throw (std::runtime_error("return code must be a number argument\n-->" + *it_start));
+		if (0)
+			throw (std::runtime_error("return code must not exceed int value\n-->" + *it_start));
+		for (int i = 0; i < max + 1; i++)
+		{
+			if (i == max)
+				throw (std::runtime_error("Unrecognized return code \n-->" + *it_start));
+			if (codes[i] == nb)
+			{
+				returnStatus.code = nb;
+				streams.get(LOG_DIRECTIVE) << nb << ": " + *page << std::endl;
+				break ;
+			}
+		}
+		current.setReturn(Status(*page, nb));
+	}
 	streams.get(LOG_DIRECTIVE) << "[succeed]" << std::endl << std::endl;
 }
 
@@ -290,22 +331,16 @@ void	ConfigParser::parseErrorPages(Location &current)
 	for (; it_start < page; it_start++)
 	{
 		int	nb;
-		try// extraire le nb de la str
-		{
-			nb = std::strtol(it_start->c_str(), NULL, 10);
-		}
-		catch (std::invalid_argument const& ex)
-		{
+		nb = std::strtol(it_start->c_str(), NULL, 10);
+		// work in progress thro strtol
+		if (0)
 			throw (std::runtime_error("error page code must be a number argument\n-->" + *it_start));
-		}
-		catch (std::out_of_range const& ex)
-		{
+		if (0)
 			throw (std::runtime_error("error page code must not exceed int value\n-->" + *it_start));
-		}
 		for (int i = 0; i < max + 1; i++)
 		{
 			if (i == max)
-				throw ("Unrecognized error page code \n-->" + *it_start);
+				throw (std::runtime_error("Unrecognized error page code \n-->" + *it_start));
 			if (codes[i] == nb)
 			{
 				current.setErrorPage(nb, *page);
