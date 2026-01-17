@@ -26,6 +26,7 @@
 //C comme ca que ca marche ???
 #include "FileStream.hpp"
 #include "logfiles.hpp"
+#include "Status.hpp"
 
 extern FileStream	streams;
 int				find_type(std::string str);
@@ -69,13 +70,6 @@ struct Response
 	{
 		return (this->str.size() == cursor);
 	}
-};
-
-struct Status
-{
-	Status(std::string _str, unsigned int _code): str(_str), code(_code){}
-	std::string		str;
-	unsigned int	code;
 };
 
 class Request: public Event

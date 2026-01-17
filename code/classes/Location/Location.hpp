@@ -16,6 +16,7 @@
 #include <map>
 #include <ostream>
 #include "requestDefines.hpp"
+#include "Status.hpp"
 
 class	Location
 {
@@ -59,10 +60,10 @@ class	Location
 	bool						_methods[3];
 
 	public:
-	void							setRedirect(const std::string&);
-	const std::string				&getRedirect(void) const;
+	void							setReturn(const Status&);
+	const Status					&getReturn(void) const;
 	private:
-	std::string					_redirect;
+	Status						_return;
 
 	public:
 	void							setAutoindex(bool);

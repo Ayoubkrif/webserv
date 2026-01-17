@@ -117,39 +117,39 @@ void	Request::parseURI(std::string str)
 		this->_queryString.assign(str.substr(cursor + 1));
 		str.erase(cursor);
 	}
-	
-
 	trimTwoDots(str);
-	//resolve uri
+{//resolve uri
 	this->_uri.assign(str);
 	streams.get(LOG_REQUEST) << "[urlSolver]" << "start with:<" << str + '>' << std::endl;
 	this->_location = this->_server.urlSolver(str);
 	streams.get(LOG_REQUEST) << "[urlSolver]" << "end" << std::endl;
-
-	streams.get(LOG_EVENT) << "Okay" << std::endl;
-	//deal with location errors
+}
+{//deal with location errors
+	// 404 not found
+	if (!this->_location)
 	{
-		// 404 not found
-		if (!this->_location)
-		{
-			this->setState(EXEC);
-			this->setState(ERROR);
-			this->setStatus(Status(NOT_FOUND, 404));
-			return ;
-		}
-		// 400 bad request (not authorized request)
-		if (!this->_location->getMethods()[this->getMethod()])
-		{
-			this->setState(EXEC);
-			this->setState(ERROR);
-			this->setStatus(Status(BAD_REQUEST, 400));
-			streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
-				<< "un authorized method " + METHODS[getMethod()] + " in location " + this->_uri
-				<< std::endl;
-			return ;
-		}
+		this->setState(EXEC);
+		this->setState(ERROR);
+		this->setStatus(Status(NOT_FOUND, 404));
+		return ;
 	}
-	checkURI(str);
+	// 400 bad request (not authorized request)
+	if (!this->_location->getMethods()[this->getMethod()])
+	{
+		this->setState(EXEC);
+		this->setState(ERROR);
+		this->setStatus(Status(BAD_REQUEST, 400));
+		streams.get(LOG_REQUEST) << "[ERROR]" << std::endl
+			<< "un authorized method " + METHODS[getMethod()] + " in location " + this->_uri
+			<< std::endl;
+		return ;
+	}
+}
+	streams.get(LOG_EVENT) << "Location found, method authorized" << std::endl;
+	if (this->_location->getReturn().code) // redirection
+		this->setStatus(Status(nbrToString(this->_location->getReturn().code) + " See Other", this->_location->getReturn().code));
+	else
+		checkURI(str);
 }
 //Todo:
 // verifier CGI

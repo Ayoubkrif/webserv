@@ -17,7 +17,7 @@ Location::Location(void):
 	_alias(DEFAULT_LOCATION_ALIAS),
 	_root(DEFAULT_LOCATION_ROOT),
 	_client_max_body_size(DEFAULT_LOCATION_MAX_BODY_SIZE),
-	_redirect(DEFAULT_LOCATION_REDIRECTION),
+	_return(DEFAULT_LOCATION_REDIRECTION),
 	_autoindex(DEFAULT_LOCATION_AUTOINDEX),
 	_index(DEFAULT_LOCATION_INDEX),
 	_post_directory(DEFAULT_LOCATION_POST_DIRECTORY)
@@ -35,7 +35,7 @@ Location::Location(const std::string &name):
 	_alias(name),
 	_root(DEFAULT_LOCATION_ROOT),
 	_client_max_body_size(DEFAULT_LOCATION_MAX_BODY_SIZE),
-	_redirect(DEFAULT_LOCATION_REDIRECTION),
+	_return(DEFAULT_LOCATION_REDIRECTION),
 	_autoindex(DEFAULT_LOCATION_AUTOINDEX),
 	_index(DEFAULT_LOCATION_INDEX),
 	_post_directory(DEFAULT_LOCATION_POST_DIRECTORY)
@@ -54,7 +54,7 @@ Location::Location(const Location &copy):
 	_root(copy._root),
 	_client_max_body_size(copy._client_max_body_size),
 	_cgi_suffix(copy._cgi_suffix),
-	_redirect(copy._redirect),
+	_return(copy._return),
 	_autoindex(copy._autoindex),
 	_index(copy._index),
 	_error_page(copy._error_page),
@@ -77,7 +77,7 @@ Location	&Location::operator=(const Location &copy)
 	this->_alias = copy._alias;
 	this->_client_max_body_size = copy._client_max_body_size;
 	this->_cgi_suffix = copy._cgi_suffix;
-	this->_redirect = copy._redirect;
+	this->_return = copy._return;
 	this->_autoindex = copy._autoindex;
 	this->_index = copy._index,
 	this->_error_page = copy._error_page;
@@ -163,14 +163,14 @@ const bool	*Location::getMethods(void) const
 }
 
 // return
-const std::string	&Location::getRedirect(void) const
+const Status	&Location::getReturn(void) const
 {
-	return (this->_redirect);
+	return (this->_return);
 }
 
-void	Location::setRedirect(const std::string &redirect)
+void	Location::setReturn(const Status &redirect)
 {
-	this->_redirect = redirect;
+	this->_return = redirect;
 }
 
 // autoindex
@@ -257,7 +257,9 @@ std::ostream	&operator<<(std::ostream &lhs, const Location &rhs)
 		<< std::endl;
 
 	lhs << "redirection: "
-		<< rhs.getRedirect()
+		<< rhs.getReturn().str
+		<< " redirection code: "
+		<< rhs.getReturn().code
 		<< std::endl;
 
 	lhs << "autoindex: "
