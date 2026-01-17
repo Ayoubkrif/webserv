@@ -83,19 +83,24 @@ void	Request::buildPostResponse()
 {
 	//error : method not allowed
 	//c la merde
+	//si dossier -> 400 Bad Request
+	//else si fichier existe deja -> truncate; ;ettre body dans fichier
+	//else -> open dans le dossier upload de la config, mettre body dans fichier
+	//if success -> 201 created
+	//+ Location header field that provides an identifier for the primary ressource created
 }
 
 void	Request::buildDeleteResponse()
 {
 	//error : method not allowed
 	//open file from url
-	//in header: status line (200 OK ou Expect)
 	//if DELETE autorise dans la location && url est un fichier
 		//if fichier existe
 			//supprimer fichier -> 204 No Content
+			//comment?? -> std::remove??
 		//else
 			//404 Not Found
-	//if DELETE pas autorise ou url est un dossier
+	//else if DELETE pas autorise ou url est un dossier
 		//403 Forbidden
 	
 
