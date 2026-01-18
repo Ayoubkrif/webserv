@@ -15,6 +15,6 @@
 std::string	nbrToString(size_t nbr);
 std::string	extractStr(const char *file);
 void		trimSlash(std::string &str);
-void	trimTwoDots(std::string &str);
+void	trimDots(std::string &str);
 std::string	buildIpPortStr(unsigned int	ip, unsigned short int port);
 bool	canBuildOnDir(std::string &str);
