@@ -94,6 +94,8 @@ void	Request::buildPostResponse()
 	//+ Location header field that provides an identifier for the primary ressource created
 	this->generateRequestLine();
 	this->appendConnection();
+	//a modifier
+	this->_response.str.append("Location:" + _requestedRessource + CRLF);
 	this->headerEnd();
 }
 
