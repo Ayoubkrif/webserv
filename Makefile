@@ -26,6 +26,19 @@ request:
 	$(MAKE) -C RequestGenerator
 .PHONY: request
 
+post:
+	curl -v \
+		-X POST http://localhost:8002/test.txt \
+		-H "Content-Type: text/plain" \
+		-H "Connection: close" \
+		-d "test"
+.PHONY: post
+
+delete:
+	curl -v \
+		-X DELETE http://localhost:8002/test.txt
+.PHONY: delete
+
 test:
 	bash netcat.sh
 .PHONY: test
