@@ -40,6 +40,10 @@ delete:
 		-X DELETE http://localhost:8002/test.txt
 .PHONY: delete
 
+get:
+	firefox localhost:8002/
+.PHONY: get
+
 test:
 	bash netcat.sh
 .PHONY: test
