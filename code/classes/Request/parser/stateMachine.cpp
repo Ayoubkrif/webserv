@@ -51,6 +51,7 @@ void	Request::setState(parsing_state new_state)
 
 		case ERROR:
 			this->_state |= BIT_ERROR;
+			this->_state |= BIT_RW;
 			break;
 
 		default:
