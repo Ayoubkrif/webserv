@@ -19,7 +19,7 @@ static const std::string NO_CONT = "204 No Content";
 static const std::string BAD_REQUEST = "400 Bad Request";
 static const std::string FORBIDDEN = "403 Forbidden";
 static const std::string NOT_FOUND = "404 Not Found";
-static const std::string NOT_ALLOWED = "405 Not Found";
+static const std::string NOT_ALLOWED = "405 Not Allowed";
 	
 static const std::string REQUEST_TIMEOUT = "408 Request Timeout";
 static const std::string LENGTH_REQUIRED = "411 Length Required";
