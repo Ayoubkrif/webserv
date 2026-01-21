@@ -28,10 +28,10 @@ request:
 
 post:
 	curl -v \
-		-X POST http://localhost:8002/test.txt \
+		-X POST http://localhost:8002/smile_post \
 		-H "Content-Type: text/plain" \
 		-H "Connection: close" \
-		-d "test"
+		-d @www/default/img/smile
 .PHONY: post
 
 delete:
