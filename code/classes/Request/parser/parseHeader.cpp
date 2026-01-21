@@ -248,11 +248,19 @@ void	Request::checkURI(std::string	&remainder)
 	// TBD
 	{
 		_requestedRessource = this->_location->getPostDirectory() + remainder;
-		if (access(_requestedRessource.c_str(), F_OK))// if ressource does not exist
+		struct stat	statbuf;
+		if (stat(_requestedRessource.c_str(), &statbuf) == -1) // does not exist
 		{
 			this->setState(EXEC);
 			this->setState(ERROR);
 			this->setStatus(Status(NOT_FOUND, 404));
+			return ;
+		}
+		if ((statbuf.st_mode & S_IFMT) == S_IFDIR) // path is a directory
+		{
+			this->setState(EXEC);
+			this->setState(ERROR);
+			this->setStatus(Status(FORBIDDEN, 403));
 			return ;
 		}
 		if (access(_requestedRessource.c_str(), W_OK))// if ressource cannot be wrote
