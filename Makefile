@@ -31,8 +31,8 @@ post:
 		-X POST http://localhost:8002/test \
 		-H "Content-Type: text/plain" \
 		-H "Connection: close" \
-		--data-binary @Makefile 
-		#--data-binary @www/default/img/smile
+		--data-binary @www/default/img/smile
+		#--data-binary @Makefile 
 .PHONY: post
 
 delete:
