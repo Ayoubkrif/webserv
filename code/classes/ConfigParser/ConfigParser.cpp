@@ -10,13 +10,11 @@
 /* ************************************************************************** */
 
 #include "ConfigParser.hpp"
-#include "Server.hpp"
-#include "Location.hpp"
 #include "tokens.hpp"
 
 std::string	extractStr(const char *file);
 
-ConfigParser::ConfigParser(char *file): _last_directive(NONE)
+ConfigParser::ConfigParser(const char *file)
 {
 	this->_str = extractStr(file);
 }

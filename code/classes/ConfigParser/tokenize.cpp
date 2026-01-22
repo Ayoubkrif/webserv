@@ -12,42 +12,43 @@
 
 #include "ConfigParser.hpp"
 #include "tokens.hpp"
-
-static void	commentFilter(std::string &str)
-{
-	size_t	found = 0;
-	size_t	slash = 0;
-	size_t	diez = 0;
-	size_t	eraseUntil = 0;
-	size_t	len = 0;
-
-	while (true)
-	{
-		slash = str.find("/*", found);
-		diez = str.find("#", found);
-		if (diez == slash)
-			break ;
-		else if (diez < slash && diez != std::string::npos)
-		{
-			found = diez;
-			eraseUntil = str.find("\n", found + 1);
-			len = (eraseUntil == std::string::npos) ? eraseUntil : eraseUntil - found;
-			str.erase(found, len);
-			if (eraseUntil == std::string::npos)
-				break ;
-		}
-		else if (slash < diez && slash != std::string::npos)
-		{
-			found = slash;
-			eraseUntil = str.find("*/", found + 2);
-			len = (eraseUntil == std::string::npos) ? eraseUntil : eraseUntil - found + 2;
-			str.erase(found, len);
-			if (eraseUntil == std::string::npos)
-				break ;
-		}
-	}
-	// /**/streams.get(LOG_CONFIGPARSER) << SEPARATOR + "|| Comment trimmed \nVV" << std::endl << str;
-}
+#include <iostream>
+//
+// static void	commentFilter(std::string &str)
+// {
+// 	size_t	found = 0;
+// 	size_t	slash = 0;
+// 	size_t	diez = 0;
+// 	size_t	eraseUntil = 0;
+// 	size_t	len = 0;
+//
+// 	while (true)
+// 	{
+// 		slash = str.find("/*", found);
+// 		diez = str.find("#", found);
+// 		if (diez == slash)
+// 			break ;
+// 		else if (diez < slash && diez != std::string::npos)
+// 		{
+// 			found = diez;
+// 			eraseUntil = str.find("\n", found + 1);
+// 			len = (eraseUntil == std::string::npos) ? eraseUntil : eraseUntil - found;
+// 			str.erase(found, len);
+// 			if (eraseUntil == std::string::npos)
+// 				break ;
+// 		}
+// 		else if (slash < diez && slash != std::string::npos)
+// 		{
+// 			found = slash;
+// 			eraseUntil = str.find("*/", found + 2);
+// 			len = (eraseUntil == std::string::npos) ? eraseUntil : eraseUntil - found + 2;
+// 			str.erase(found, len);
+// 			if (eraseUntil == std::string::npos)
+// 				break ;
+// 		}
+// 	}
+// 	// /**/streams.get(LOG_CONFIGPARSER) << SEPARATOR + "|| Comment trimmed \nVV" << std::endl << str;
+// }
 
 void	ConfigParser::tokenInit(void)
 {
@@ -57,32 +58,38 @@ void	ConfigParser::tokenInit(void)
 
 void	ConfigParser::tokenize(void)
 {
-	commentFilter(_str);
+	// commentFilter(_str);
 
 	size_t	cursor = 0;
+	size_t	line = 1;
 
 	while (cursor < this->_str.length())
 	{
 		size_t	end;
 
-		if (WHITESPACES.find(_str[cursor]) != std::string::npos)
+		if (_str[cursor] == '\n')
+		{
+			end = cursor + 1;
+			line++;
+		}
+		else if (WHITESPACES.find(_str[cursor]) != std::string::npos)
 		{
 			end = this->_str.find_first_not_of(WHITESPACES, cursor);
 		}
 		else if (OPERAND.find(_str[cursor]) != std::string::npos)
 		{
 			end = cursor + 1;
-			_token_vec.push_back(_str.substr(cursor, end - cursor));
+			_token_vec.push_back(Token(_str.substr(cursor, end - cursor), line));
 		}
 		else
 		{
-			end = this->_str.find_first_of(WHITESPACES + OPERAND, cursor);
-			_token_vec.push_back(_str.substr(cursor, end - cursor));
+			end = this->_str.find_first_of(WHITESPACES + OPERAND + "\n", cursor);
+			_token_vec.push_back(Token(_str.substr(cursor, end - cursor), line));
 		}
 		cursor = end;
 	}
-	/**/streams.get(LOG_CONFIGPARSER) << SEPARATOR + "VV Token list VV" << std::endl;
-	/**/for (std::vector<std::string>::iterator it = _token_vec.begin(); it != _token_vec.end(); ++it)
-	/**/{streams.get(LOG_CONFIGPARSER) << "<"<< *it << "> ";}
-	/**/streams.get(LOG_CONFIGPARSER) << std::endl;
+	/**/std::cout << "VV Token list VV" << std::endl;
+	/**/for (std::vector<Token>::iterator it = _token_vec.begin(); it != _token_vec.end(); ++it)
+	/**/{std::cout << *it << std::endl;}
+	/**/std::cout << std::endl;
 }

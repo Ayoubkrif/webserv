@@ -13,7 +13,8 @@
 
 #include <string>
 
-static const std::string	WHITESPACES = "\f\r\n\t\v ";
+static const std::string	WHITESPACES = "\f\r\t\v ";
+static const std::string	LINE_FEED = "\n";
 static const std::string	OPERAND = "{};";
 
 static const std::string	DIRECTIVE[] =

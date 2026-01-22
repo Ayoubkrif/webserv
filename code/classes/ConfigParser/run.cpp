@@ -10,160 +10,105 @@
 /* ************************************************************************** */
 
 #include "ConfigParser.hpp"
-#include "Server.hpp"
-#include "Location.hpp"
-#include "logfiles.hpp"
 #include "tokens.hpp"
+#include <exception>
+#include <iostream>
+#include <memory>
+#include <ostream>
+#include <stdexcept>
+#include <vector>
 
-Location	ConfigParser::parseLocationLoop(Location &current)
+Node	*ConfigParser::parseToken(void)
 {
-	streams.get(LOG_DIRECTIVE) << "SCOPE LOCATION" << std::endl;
-	while (true)
+	std::vector<Token>	token;
+	while (_token_it->str != ";" 
+		&& _token_it->str != "{"
+		&& _token_it->str != "}")
 	{
-		checkDirective();
-		switch (getDirective())
-		{
-			case ROOT:
-			next();
-			parseRoot(current);
-			break ;
+		std::cout << "pushing" << _token_it->str;
+		token.push_back(*_token_it);
+		_token_it = _token_vec.erase(_token_it);
+		if (_token_it == _token_vec.end())
+			throw (std::runtime_error("END OF FILE WITHOUT DELIMITER"));
+	}
+	std::cout << std::endl << "size of actual vec:" << token.size() << std::endl;
+	Node	*current = new Node(token);
 
-			case ALIAS:
-			next();
-			parseAlias(current);
-			break ;
+	// if ((_token_it->str == ";" || _token_it->str == "{")
+	// 	&& token.size() == 0)
+	// {
+	// 	throw (std::runtime_error("error size 0"));
+	// }
 
-			case CLIENT_MAX_BODY_SIZE:
-			next();
-			parseClientMaxBodySize(current);
-			break ;
-
-			case CGI_SUFFIX:
-			next();
-			parseCgi(current);
-			break ;
-
-			case ALLOWED_METHODS:
-			next();
-			parseAllowedMethods(current);
-			break ;
-
-			case RETURN:
-			next();
-			parseReturn(current);
-			break ;
-
-			case AUTOINDEX:
-			next();
-			parseAutoIndex(current);
-			break ;
-
-			case ERROR_PAGE:
-			next();
-			parseErrorPages(current);
-			break ;
-
-			case POST_LOCATION:
-			next();
-			parsePostLocation(current);
-			break ;
-
-			case CLOSING_BRACKET:
+	if (_token_it->str == ";")
+	{
+		_token_it = _token_vec.erase(_token_it);
+		if (_token_it == _token_vec.end())
 			return (current);
-
-			default :
-			throw (std::runtime_error("Unauthorized directive in location scope \n-->" + get()));
-		}
-		next();
-		if (end())
-			throw (std::runtime_error("Unexpected end context location not closed by '}'"));
+		current->sibling = parseToken();
 	}
-}
-
-void	ConfigParser::parseLocation(std::map<std::string, Location> &locations)
-{
-	// save current location name
-	std::string	name = get();
-	if (locations.find(name) != locations.end())
-		throw (std::runtime_error("location " + name + " already exists"));
-	if (name == DIRECTIVE[CLOSING_BRACKET])
-		throw (std::runtime_error("location need an path identifier"));
-
-	Location	current(name);
-	next();
-	if (end() || get() != "{")
-		throw (std::runtime_error("Missing bracket after location '" + name + "'\n-->" + get()));
-	next();
-	if (end())
-		throw (std::runtime_error("Unexpected end context location not closed by '}'"));
-	parseLocationLoop(current);
-	locations.insert(std::make_pair(name, current));
-}
-
-std::map<std::string, Location>	ConfigParser::parseServerLoop(Server &current)
-{
-	std::map<std::string, Location> locations;
-	while (true)
+	if (_token_it->str == "{")
 	{
-		checkDirective();
-		switch (getDirective())
-		{
-			case LISTEN:
-				next();
-				parseListen(current);
-				break ;
-			case LOCATION:
-				next();
-				parseLocation(locations);
-				break ;
-			case CLOSING_BRACKET:
-			return (locations);
-			default :
-				throw (std::runtime_error("Unauthorized directive in server scope :" + DIRECTIVE[this->getDirective()]));
-		}
-		next();
+		_token_it = _token_vec.erase(_token_it);
+		if (_token_it == _token_vec.end())
+			throw (std::runtime_error("Unexpected end after token {"));
+		current->child = parseToken();
+		if (!current->child)
+			throw (std::runtime_error("error child empty"));
+		if (_token_it == _token_vec.end())
+			throw (std::runtime_error("Unexpected end after token {"));
+		current->sibling = parseToken();
 	}
+	if (_token_it->str == "}")
+	{
+		_token_it = _token_vec.erase(_token_it);
+		return (NULL);
+	}
+
+	return (current);
 }
 
-void	ConfigParser::parseServer(std::vector<Server> &servers)
+void	printnode(Node *node)
 {
-	Server	current;
-	// check if there is an opening bracket
-	if (checkDirective() != OPENING_BRACKET)
+	std::cout << "node: ";
+	for (std::vector<Token>::iterator it = node->tok.begin(); it != node->tok.end(); it++)
 	{
-		throw (std::runtime_error("Missing opening bracket instead of " + this->get()));
+		std::cout << it->str + ' ';
 	}
-	next();
-	if (end())
-		throw (std::runtime_error("Unexpected end context server not closed by '}'"));
+	std::cout << std::endl;
+	
+	std::cout << " his son :";
+	if (!node->child)
+		std::cout << "NULL";
+	else
+		printnode(node->child);
 
-	// build location for current
-	std::map<std::string, Location> locations = parseServerLoop(current);
-	// should check interface:port are unique
-	// should check if at least one location
-	current.setLocationsMap(locations);
-	servers.push_back(current);
+	std::cout << "node: ";
+	for (std::vector<Token>::iterator it = node->tok.begin(); it != node->tok.end(); it++)
+	{
+		std::cout << it->str + ' ';
+	}
+	std::cout << std::endl;
+
+	std::cout << "his sibling :";
+	if (!node->sibling)
+		std::cout << "NULL";
+	else
+		printnode(node->sibling);
 }
 
-std::vector<Server>	ConfigParser::run(void)
+void	ConfigParser::run(void)
 {
-	std::vector<Server>	servers;
+	Node	*head;
+	tokenInit();
 
-	for (this->tokenInit(); !this->end(); this->next())
+	try
 	{
-		switch (checkDirective())
-		{
-			case SERVER:
-			next();
-			parseServer(servers);
-			if (end())
-				return (servers);
-			break ;
-
-			default :
-				throw (std::runtime_error("Unauthorized directive in global scope :" + this->get()));
-		}
+		head = parseToken();
+		printnode(head);
 	}
-	streams.get(LOG_CONFIGPARSER) << std::endl << "END";
-	return (servers);
+	catch (std::exception &e)
+	{
+		std::cerr << e.what() << std::endl;
+	}
 }

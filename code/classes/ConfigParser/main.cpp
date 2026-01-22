@@ -1,38 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ConfigParser.hpp                                   :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aykrifa <aykrifa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/19 12:28:02 by aykrifa           #+#    #+#             */
+/*   Created: 2026/01/22 15:39:41 by aykrifa           #+#    #+#             */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
+#include "ConfigParser.hpp"
 
-#include <string>
-#include <vector>
-#include <map>
-
-#include "Node.hpp"
-
-class	ConfigParser
+std::ostream	&operator<<(std::ostream&lhs, const Token&rhs)
 {
-	public:
-		ConfigParser(const char *);
-		~ConfigParser(){}
-		void	run(void);
-		Node	*parseToken(void);
+	lhs << '"' + rhs.str + '"' + " l:" << rhs.line;
+	return (lhs);
+}
 
-	private:
-
-		std::string							_str;
-
-		void	tokenInit(void);
-		void	tokenize(void);
-
-		std::vector<Token>			_token_vec;
-		std::vector<Token>::iterator	_token_it;
-		ConfigParser(){}
-};
+int	main(void)
+{
+	ConfigParser	config("default.conf");
+	config.run();
+}
