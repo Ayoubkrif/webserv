@@ -34,8 +34,8 @@ void	Request::parseHeader(void)
 		return;
 	}
 	parseRequestLine(token);
-	// if (this->isState(ERROR))
-	// 	return;
+	if (this->isState(ERROR))
+		return;
 	if (this->isState(CGI))
 		parseHeaderCgi();
 	else
