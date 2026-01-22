@@ -58,6 +58,8 @@ Node	*ConfigParser::parseToken(void)
 		if (_token_it == _token_vec.end())
 			throw (std::runtime_error("Unexpected end after token {"));
 		current->sibling = parseToken();
+		if (_token_it == _token_vec.end())
+			throw (std::runtime_error("Unexpected end after token {"));
 	}
 	if (_token_it->str == "}")
 	{
