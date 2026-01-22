@@ -96,3 +96,22 @@ bool	Request::isState(parsing_state new_state) const
 			break;
 	}
 }
+
+void	Request::setEndOfHeaderState()
+{
+	if (isState(ERROR))
+	{
+		printRequest(this);
+		return;
+	}
+	//requete sans body
+	if (this->getContentLength() == 0 && this->_length == 0 && !this->isState(CHUNKED))
+	{
+		this->setState(EXEC);
+		printRequest(this);
+		return;
+	}
+	this->setState(BODY);
+	if (this->isState(CHUNKED))
+		this->setState(CHUNK_SIZE);
+}

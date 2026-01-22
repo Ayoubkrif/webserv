@@ -90,6 +90,15 @@ public:
 	void					resetRequest();
 private:
 	int				_start; //pour chuncked request, pour verifier le temps
+
+private:
+	uint8_t			_state;
+public:
+	void					setState(parsing_state new_state);
+	bool					isState(parsing_state new_state) const;
+	std::string				getState() const;
+	void					setEndOfHeaderState();
+
 private:
 	Status			_status; //to put in response
 public:
@@ -124,26 +133,19 @@ public:
 	void					parseBuffer(void);
 
 public:
-	struct Response			_response;
+	struct Response	_response;
 public:
 	bool					recursiveReaddir(std::string);
 	void					generateResponse();
-		void					buildErrorResponse();
-			bool					findErrorPage();
-		void					buildGetResponse();
-		void					buildPostResponse();
-		void					buildDeleteResponse();
+	void					buildErrorResponse();
+	bool					findErrorPage();
+	void					buildGetResponse();
+	void					buildPostResponse();
+	void					buildDeleteResponse();
 // utils
-		void					generateRequestLine();
-		void					appendConnection(void);
-		void					headerEnd(void);
-
-private:
-	uint8_t			_state;
-public:
-	void					setState(parsing_state new_state);
-	bool					isState(parsing_state new_state) const;
-	std::string				getState() const;
+	void					generateRequestLine();
+	void					appendConnection(void);
+	void					headerEnd(void);
 
 private:
 	method 			_method;
