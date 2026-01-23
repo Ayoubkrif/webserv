@@ -23,7 +23,7 @@ class	ConfigParser
 		ConfigParser(const char *);
 		~ConfigParser(){}
 		void	run(void);
-		Node	*parseToken(void);
+		Node	*parseToken(int);
 
 	private:
 
@@ -34,5 +34,12 @@ class	ConfigParser
 
 		std::vector<Token>			_token_vec;
 		std::vector<Token>::iterator	_token_it;
+		void	next()
+				{_token_it++;}
+		bool	end()
+				{return _token_it == _token_vec.end();}
+		bool	comp(std::string str)
+				{return _token_it->str == str;}
+
 		ConfigParser(){}
 };

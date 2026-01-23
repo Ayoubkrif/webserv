@@ -18,55 +18,41 @@
 #include <stdexcept>
 #include <vector>
 
-Node	*ConfigParser::parseToken(void)
+Node	*ConfigParser::parseToken(int depth)
 {
-	std::vector<Token>	token;
-	while (_token_it->str != ";" 
-		&& _token_it->str != "{"
-		&& _token_it->str != "}")
+	std::vector<Token>	buffer;
+	while (comp(";") || comp("{") || comp("}") || end())
 	{
-		std::cout << "pushing" << _token_it->str;
-		token.push_back(*_token_it);
-		_token_it = _token_vec.erase(_token_it);
-		if (_token_it == _token_vec.end())
-			throw (std::runtime_error("END OF FILE WITHOUT DELIMITER"));
+		buffer.push_back(*_token_it);
+		next();
 	}
-	std::cout << std::endl << "size of actual vec:" << token.size() << std::endl;
-	Node	*current = new Node(token);
-
-	// if ((_token_it->str == ";" || _token_it->str == "{")
-	// 	&& token.size() == 0)
-	// {
-	// 	throw (std::runtime_error("error size 0"));
-	// }
-
-	if (_token_it->str == ";")
+	if (end())
 	{
-		_token_it = _token_vec.erase(_token_it);
-		if (_token_it == _token_vec.end())
-			return (current);
-		current->sibling = parseToken();
-	}
-	if (_token_it->str == "{")
-	{
-		_token_it = _token_vec.erase(_token_it);
-		if (_token_it == _token_vec.end())
-			throw (std::runtime_error("Unexpected end after token {"));
-		current->child = parseToken();
-		if (!current->child)
-			throw (std::runtime_error("error child empty"));
-		if (_token_it == _token_vec.end())
-			throw (std::runtime_error("Unexpected end after token {"));
-		current->sibling = parseToken();
-		if (_token_it == _token_vec.end())
-			throw (std::runtime_error("Unexpected end after token {"));
-	}
-	if (_token_it->str == "}")
-	{
-		_token_it = _token_vec.erase(_token_it);
+		if (!buffer.empty())
+			throw (std::runtime_error("token must be ended by { or ;"));
 		return (NULL);
 	}
+	if (comp("}"))
+	{
+		if (!buffer.empty())
+			throw (std::runtime_error("token  in { must be ended by { or ; and not }"));
+		if (!depth)
+			throw (std::runtime_error("} error"));
+		return (NULL);
+	}
+	Node	*current = new Node(buffer);
 
+	if (comp("{"))
+	{
+		next();
+		current->child = parseToken(depth + 1);
+		current->sibling = parseToken(depth);
+	}
+	else
+	{
+		next();
+		current->sibling = parseToken(depth);
+	}
 	return (current);
 }
 
@@ -106,7 +92,7 @@ void	ConfigParser::run(void)
 
 	try
 	{
-		head = parseToken();
+		head = parseToken(0);
 		printnode(head);
 	}
 	catch (std::exception &e)
