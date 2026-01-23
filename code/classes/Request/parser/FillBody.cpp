@@ -74,6 +74,7 @@ void	Request::fillChunkedBody()
 		{
 			if (!moveCursor(&cursor, this->_buffer, DCRLF))
 				break;
+			setTrailers(cursor);
 			return;
 		}
 		break;
