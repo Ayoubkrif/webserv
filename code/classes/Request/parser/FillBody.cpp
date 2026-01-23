@@ -65,23 +65,15 @@ void	Request::fillChunkedBody()
 		}
 		if (this->isState(OCTET) && this->_buffer.size() >= chunk_size + 2)
 		{
-			this->_body.append(this->_buffer, 0, chunk_size);
-			if (this->_buffer[chunk_size ] != '\r' && this->_buffer[chunk_size + 1] != '\n')
-			{
-				this->setError(Status(BAD_REQUEST, 400));
+			this->putChunkInBody(chunk_size);
+			if (isState(EXEC))
 				return;
-			}
-			this->_buffer.erase(0, chunk_size + 2);
-			this->setState(CHUNK_SIZE);
 			continue;
 		}
 		if (this->isState(TRAILERS))
 		{
 			if (!moveCursor(&cursor, this->_buffer, DCRLF))
 				break;
-			this->_buffer.erase(0, cursor + 3);
-			this->setState(EXEC);
-			this->_contentLength = this->_body.size();
 			return;
 		}
 		break;
@@ -108,6 +100,25 @@ unsigned long	Request::getChunkLength(std::string::size_type cursor)
 	else
 		this->setState(OCTET);
 	return CHUNK_SIZE;
+}
+
+void	Request::putChunkInBody(unsigned long chunk_size)
+{
+	this->_body.append(this->_buffer, 0, chunk_size);
+	if (this->_buffer[chunk_size ] != '\r' && this->_buffer[chunk_size + 1] != '\n')
+	{
+		this->setError(Status(BAD_REQUEST, 400));
+		return;
+	}
+	this->_buffer.erase(0, chunk_size + 2);
+	this->setState(CHUNK_SIZE);
+}
+
+void	Request::setTrailers(std::string::size_type cursor)
+{
+	this->_buffer.erase(0, cursor + 3);
+	this->setState(EXEC);
+	this->_contentLength = this->_body.size();
 }
 
 //version with logger

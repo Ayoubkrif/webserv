@@ -124,7 +124,9 @@ public:
 	std::string				getBody() const;
 	void					fillBody();
 	void					fillChunkedBody();
-	unsigned long					getChunkLength(std::string::size_type cursor);
+	unsigned long			getChunkLength(std::string::size_type cursor);
+	void					putChunkInBody(unsigned long chunk_size);
+	void					setTrailers(std::string::size_type cursor);
 
 private:
 	std::string		_buffer;
