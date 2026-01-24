@@ -21,7 +21,7 @@ class	ConfigParser
 {
 	public:
 		ConfigParser(const char *);
-		~ConfigParser(){}
+		~ConfigParser(){delete head;}
 		void	run(void);
 		Node	*parseToken(int);
 
@@ -40,6 +40,11 @@ class	ConfigParser
 				{return _token_it == _token_vec.end();}
 		bool	comp(const char *str)
 				{return _token_it->str == str;}
-
+		Node	*head;
+		Node	*currentNode;
+		void	nextChild(void)
+				{currentNode = currentNode->child;}
+		void	nextSibling(void)
+				{currentNode = currentNode->sibling;}
 		ConfigParser(){}
 };

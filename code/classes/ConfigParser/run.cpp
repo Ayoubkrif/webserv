@@ -76,16 +76,15 @@ Node	*ConfigParser::parseToken(int depth)
 
 void	ConfigParser::run(void)
 {
-	Node	*head;
 	tokenInit();
 
 	try
 	{
-		head = parseToken(0);
+		this->head = parseToken(0);
 	}
 	catch (std::exception &e)
 	{
 		std::cerr << "Error in config: " << e.what() << std::endl;
 	}
-	delete (head);
+	currentNode = head;
 }
