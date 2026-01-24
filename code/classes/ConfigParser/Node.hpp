@@ -22,6 +22,8 @@ struct Token
 };
 
 std::ostream	&operator<<(std::ostream&lhs, const Token&rhs);
+std::string	&operator+(std::string&lhs, const Token&rhs);
+std::string	operator+(const char *lhs, const Token&rhs);
 
 struct Node
 {

@@ -38,7 +38,7 @@ class	ConfigParser
 				{_token_it++;}
 		bool	end()
 				{return _token_it == _token_vec.end();}
-		bool	comp(std::string str)
+		bool	comp(const char *str)
 				{return _token_it->str == str;}
 
 		ConfigParser(){}
