@@ -82,6 +82,12 @@ public://epollloop variable for accept
 public:
 	Request(Server&);
 	~Request(void);
+	// Request(Request&);
+	// Request();
+
+	const Location*	_location;
+	Server&			_server;
+
 
 	static std::string	fields[207][3];
 	static void			(Request::*fctField[210])(std::string);
@@ -102,9 +108,9 @@ public:
 private:
 	Status			_status; //to put in response
 public:
-	void			setStatus(const Status &);
+	void					setStatus(const Status &);
 	const Status			&getStatus() const;
-	void			setError(const Status &);
+	void					setError(const Status &);
 	
 private:
 	std::string		_header;
@@ -171,12 +177,6 @@ private:
 public:
 	Cgi&					getCgi();
 
-	const Location*	_location;
-	Server&			_server;
-
-	Request(Request&);
-	Request();
-
 private:
 	std::string		_host; //inutile mais obligatoire
 	std::string		_cookies;
@@ -216,6 +216,6 @@ public:
 //faire surcharge de << pour imprimer toute la classe
 std::ostream	&operator<<(std::ostream &lhs, const Request &rhs);
 
-static const int	MAX_BODY_SIZE = (1UL << 16); //juste la le temps de le resoudre dans la config du serveur
+// static const int	MAX_BODY_SIZE = (1UL << 16); //juste la le temps de le resoudre dans la config du serveur
 int		moveCursor(std::string::size_type *cursor, std::string str, std::string toFind);
 void	printRequest(Request *request);
