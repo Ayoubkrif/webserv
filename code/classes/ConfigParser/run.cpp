@@ -82,10 +82,10 @@ void	ConfigParser::run(void)
 	try
 	{
 		head = parseToken(0);
-		(void)head;
 	}
 	catch (std::exception &e)
 	{
 		std::cerr << "Error in config: " << e.what() << std::endl;
 	}
+	delete (head);
 }
