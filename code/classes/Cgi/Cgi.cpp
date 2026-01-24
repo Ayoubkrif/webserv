@@ -11,8 +11,10 @@
 
 #include "Cgi.hpp"
 #include "Request.hpp"
+#include <exception>
+#include <stdexcept>
 
-Cgi::Cgi(Request &request): _env(CGI_HEADER), _contentLength(0), _client(request)
+Cgi::Cgi(Request *request): _env(CGI_HEADER), _contentLength(0), _client(request)
 {
 }
 
@@ -59,4 +61,21 @@ void	Cgi::getFieldFromUri(Request *request)
 	else if (request->getMethod() == DELETE)
 		token.append("=DELETE");
 	this->_env.push_back(token);
+}
+
+#include <unistd.h>
+
+void	Cgi::start()
+{
+	if (pipe(_bodyPipe) == -1)
+		throw (std::runtime_error("Cannot Pipe !"));
+	if (pipe(_responsePipe) == -1)
+		std::runtime_error("Cannot Pipe !");
+	_pid = fork();
+	if (_pid == -1)
+		throw (std::runtime_error("Cannot fork !"));
+	if (_pid == 0);
+		//this->childProcess;
+	else
+		;
 }

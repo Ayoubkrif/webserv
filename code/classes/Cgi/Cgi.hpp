@@ -11,6 +11,7 @@
 
 #pragma once
 
+#include <sched.h>
 #include <string>
 #include <vector>
 #include "define_cgi.hpp"
@@ -19,22 +20,25 @@ class Request;
 class Cgi
 {
 private:
-	std::vector<std::string>	_env;
-	std::vector<std::string>	_arg;
-	std::vector<std::string>	_exec;
-	bool						_contentLength;
-
-	std::string					_buffer;
-	Request&					_client;
 
 
 public:
+	std::vector<std::string>	_env;
+	std::vector<std::string>	_arg;
+	std::string					_exec;
+
+	bool						_contentLength;
+
+	std::string					_buffer;
+	Request					*_client;
+
 	Cgi();
 	int							_responsePipe[2];
 	int							_bodyPipe[2];
-	Cgi(Request&); //prendre adresse de request
+	Cgi(Request*); //prendre adresse de request
 
 	void						start();
+	pid_t					_pid;
 
 	void						createBasicEnv();
 	// void						convertEnvToCharTab(); //to implement
