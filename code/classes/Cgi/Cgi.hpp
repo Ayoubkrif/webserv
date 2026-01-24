@@ -34,8 +34,10 @@ public:
 	int							_bodyPipe[2];
 	Cgi(Request&); //prendre adresse de request
 
-	void						createBasicEnv();
+	void						start();
 
+	void						createBasicEnv();
+	// void						convertEnvToCharTab(); //to implement
 	void						addFields(std::string field, std::string token);//check for host, type, length and or add
 	void						getFieldFromUri(Request *request);//to call in constructor -> no
 	//do function in request createCgi() to add uri, methode, query without getters

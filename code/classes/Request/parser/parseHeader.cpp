@@ -201,6 +201,7 @@ void	Request::checkURI(std::string	&remainder)
 			this->setError(Status(NOT_FOUND, 404));
 			return ;
 		}
+		//reminder.find_last_of(".") to fill _response.contentType
 	}
 	if (this->_method == POST)
 	// _requested ressource will be post location + remainder
