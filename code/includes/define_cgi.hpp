@@ -71,7 +71,7 @@ const std::string PATH_INFO = "PATH_INFO=";
 const std::string SCRIPT_NAME = "SCRIPT_NAME=";
 const std::string PATH_TRANSLATED = "PATH_TRANSLATED=";
 const std::string QUERY_STRING = "QUERY_STRING=";
-const std::string METHOD = "METHOD=";
+const std::string METHOD = "REQUEST_METHOD=";
 
 //const std::string REMOTE_HOST = "REMOTE_HOST="; ->why here??
 const std::string CONTENT_LENGTH = "CONTENT_LENGTH=";
