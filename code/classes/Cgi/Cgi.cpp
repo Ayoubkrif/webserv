@@ -11,11 +11,14 @@
 
 #include "Cgi.hpp"
 #include "Request.hpp"
+#include "define_cgi.hpp"
+#include "statusCodes.hpp"
+#include <cstdlib>
 #include <exception>
 #include <stdexcept>
 #include <string>
 
-Cgi::Cgi(Request *request): Event(PIPE) ,_env(CGI_HEADER), _contentLength(0), _client(request)
+Cgi::Cgi(Request *request): Event(PIPE) ,_env(CGI_HEADER), _client(request)
 {
 }
 
@@ -28,6 +31,8 @@ std::string	httpToCgiHeader(std::string field)
 		if (field[i] >= 'a' && field[i] <= 'z')
 			field[i] += 32;
 	}
+	//if content-length -> trigger variable
+	//if no content-length -> take content-length for client (means it was a chunked body)
 	if (!field.compare("CONTENT_TYPE") || !field.compare("CONTENT_LENGTH"))
 		return (field + "=");
 	return (HTTP + field + "=");
@@ -45,26 +50,34 @@ void	Cgi::addFields(std::string field, std::string token)
 	this->_env.push_back(variable);
 }
 
-void	Cgi::getFieldFromUri(Request *request)
+void	Cgi::getFieldFromUri()
 {
+	streams.get(LOG_EVENT) << "[getFieldFromUri]" << std::endl;
 	std::string	token;
-	token.assign(REQUEST_URI);
-	token.append("=" + request->getUri());
-	this->_env.push_back(token);
-	token.assign(QUERY_STRING);
-	token.append("=" + request->getQueryString());
-	this->_env.push_back(token);
 	token.assign(METHOD);
-	if (request->getMethod() == GET)
-		token.append("=GET");
-	else if (request->getMethod() == POST)
-		token.append("=POST");
-	else if (request->getMethod() == DELETE)
-		token.append("=DELETE");
+	if (_client->getMethod() == GET)
+		token.append("GET");
+	else if (_client->getMethod() == POST)
+		token.append("POST");
+	else if (_client->getMethod() == DELETE)
+		token.append("DELETE");
+	this->_env.push_back(token);
+
+	token.assign(REQUEST_URI);
+	token.append(_client->getUri());
+	this->_env.push_back(token);
+
+	token.assign(PATH_INFO);
+	token.append(_client->getUri());
+	this->_env.push_back(token);
+
+	token.assign(QUERY_STRING);
+	token.append(_client->getQueryString());
 	this->_env.push_back(token);
 }
 
 #include <unistd.h>
+#include <fcntl.h>
 #include "deleteVector.hpp"
 
 void	Cgi::init(void)
@@ -73,10 +86,12 @@ void	Cgi::init(void)
 		throw (std::runtime_error("Cannot Pipe !"));
 	if (pipe(_responsePipe) == -1)
 		std::runtime_error("Cannot Pipe !");
+	fcntl(_responsePipe[0], F_SETFL, O_NONBLOCK);
 }
 
-void	Cgi::start()
+void	Cgi::start(EventManager &webServ)
 {
+	(void)webServ;
 	_pid = fork();
 	if (_pid == -1)
 		throw (std::runtime_error("Cannot fork !"));
@@ -98,6 +113,9 @@ void	Cgi::start()
 
 		dup2(_bodyPipe[0], STDIN_FILENO);
 		close(_bodyPipe[0]);
+
+		for (int fd = 3; fd < 1024; fd++)
+			close(fd);
 
 		std::vector<char*> arg = strToArray(_arg);
 		std::vector<char*> env = strToArray(_env);
@@ -127,13 +145,96 @@ std::vector<char*>	Cgi::strToArray(std::vector<std::string> vect_str)
 	std::vector<char*> array;
 
 	array.reserve(vect_str.size() + 1); // Optionnel mais optimisé
+	streams.get(LOG_EVENT) << "[ENV in std::vector<string>]" << std::endl;
 	for (std::vector<std::string>::iterator it = vect_str.begin();
 		it != vect_str.end(); it++)
 	{
+	streams.get(LOG_EVENT) << *it << std::endl;
 		char	*copy = new char[it->size() + 1];
 		std::strcpy(copy, it->c_str());
 		array.push_back(copy);
 	}
 	array.push_back(NULL);
 	return (array);
+}
+
+void	Cgi::parseBuffer()
+{
+	//can a \r or \n be alone in header???
+	std::string::size_type cursor = 0;
+	if (!moveCursor(&cursor, this->_buffer, DCRLF))
+	{
+		//error
+		//500 Internal Server Error
+	}
+	streams.get(LOG_EVENT) << "[PARSING HEADER]" << std::endl
+		<< std::endl;
+	this->fillHeader(cursor);
+	this->parseHeader();
+
+	if (this->_length != this->_buffer.size())
+	{
+		//error
+	}
+	//buffer.size() pose probleme avec binaire, comment faire?
+	this->_client->_response.body.append(this->_buffer, this->_buffer.size());
+	this->_client->_response.str.append(this->_client->_response.body);
+	/**/streams.get(LOG_EVENT) << "[in cgi]" << this->_client->_response.cursor << std::endl
+	/**/<< "[in cgi]" << this->_client->_response.str.size() << std::endl
+	/**/<< "[in cgi]" << this->_client->_response.str << std::endl
+		/**/<< std::endl;
+	//mettre client EPOLLOUT
+}
+
+void	Cgi::fillHeader(std::string::size_type cursor)
+{
+	this->_header.append(this->_buffer, 0, cursor + 2);
+	this->_buffer.erase(0, cursor + 4);
+}
+
+#include "helpers.hpp"
+void	Cgi::parseHeader()
+{
+	std::string::size_type cursorStart = 0;
+	std::string::size_type cursorEnd = 0;
+	if (moveCursor(&cursorStart, this->_header, "Status:"))
+	{
+		if (!moveCursor(&cursorEnd, this->_header, CRLF))
+		{
+			//error
+		}
+		this->_client->_response.str.append("HTTP/1.1 ");
+		this->_client->_response.str.append(this->_header.substr(cursorStart + std::string("Status:").size(), cursorEnd + 2));
+		//remove status/content-length/connection de _header puis append le reste de _header a response._header + CRLF
+		this->_header.erase(cursorStart, cursorEnd + 2);
+	}
+	if (!moveCursor(&cursorStart, this->_header, "Content-Type:"))
+	{
+		//what to do??
+	}
+	if (!moveCursor(&cursorStart, this->_header, CON_LEN))
+	{
+		this->_length = this->_buffer.size();//what about binaries
+		this->_client->_response.str.append(CON_LEN);
+		this->_client->_response.str.append(nbrToString(this->_length));
+		this->_client->_response.str.append(CRLF);
+	}
+	else
+	{
+		if (!moveCursor(&cursorEnd, this->_header, DCRLF))
+		{
+			//error
+		}
+		this->_length = strtol(this->_header.substr(cursorStart + CON_LEN.size(), cursorEnd).c_str(), NULL, 10);
+	}
+	if (!moveCursor(&cursorStart, this->_header, "Connection:"))
+	{
+		if (this->_client->getConnection() == KEEP_ALIVE)
+			this->_client->_response.str.append(CON_KEEP_ALIVE);
+		else
+			this->_client->_response.str.append(CON_CLOSE);
+	}
+	this->_client->_response.str.append(this->_header);
+	this->_client->_response.str.append(CRLF);
+
 }

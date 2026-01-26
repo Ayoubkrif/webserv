@@ -220,4 +220,5 @@ std::ostream	&operator<<(std::ostream &lhs, const Request &rhs);
 
 // static const int	MAX_BODY_SIZE = (1UL << 16); //juste la le temps de le resoudre dans la config du serveur
 int		moveCursor(std::string::size_type *cursor, std::string str, std::string toFind);
+int		moveCursor(std::string::size_type *cursor, std::string str, int start, std::string toFind);
 void	printRequest(Request *request);

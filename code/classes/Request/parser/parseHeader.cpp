@@ -35,7 +35,10 @@ void	Request::parseHeader(void)
 	if (this->isState(ERROR))
 		return;
 	if (this->isState(CGI))
+	{
+		this->_cgi->getFieldFromUri();
 		parseHeaderCgi();
+	}
 	else
 		parseHeaderRegular();
 		

@@ -29,9 +29,10 @@ void	Request::generateResponse()
 		this->buildErrorResponse();
 	//CGI because we will fill response dynamically as soon as we recv in pipe and treat what we receive
 	// else if (!this->_response.empty())
-	// else if (isState(CGI))
-	// {
-	// }
+	else if (isState(CGI))
+	{
+		return;
+	}
 	else if (this->_location->getReturn().code)
 	{
 		this->generateRequestLine();

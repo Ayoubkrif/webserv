@@ -14,6 +14,7 @@
 #include <sched.h>
 #include <string>
 #include <vector>
+#include "EventManager.hpp"
 #include "define_cgi.hpp"
 #include "Event.hpp"
 
@@ -28,10 +29,16 @@ public:
 	std::vector<std::string>	_arg;
 	std::string					_exec;
 
-	bool						_contentLength;
-
 	std::string					_buffer;
-	Request					*_client;
+	void							parseBuffer();
+
+	std::string					_header;
+	void							fillHeader(std::string::size_type cursor);
+	void							parseHeader();
+
+	std::string::size_type		_length;
+
+	Request						*_client;
 
 	Cgi():Event(PIPE){}
 	void						init(void);
@@ -39,13 +46,13 @@ public:
 	int						_bodyPipe[2];
 	Cgi(Request*); //prendre adresse de request
 
-	void						start();
+	void						start(EventManager &webServ);
 	pid_t					_pid;
 
 	void						createBasicEnv();
 	std::vector<char *>			strToArray(std::vector<std::string>); //to implement
 	void						addFields(std::string field, std::string token);//check for host, type, length and or add
-	void						getFieldFromUri(Request *request);//to call in constructor -> no
+	void						getFieldFromUri();//to call in constructor -> no
 	//do function in request createCgi() to add uri, methode, query without getters
 
 	// void				parseCgiHost(std::string field, std::string token);

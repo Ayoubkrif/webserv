@@ -22,6 +22,15 @@ int	moveCursor(std::string::size_type *cursor, std::string str, std::string toFi
 		return 0;
 }
 
+int	moveCursor(std::string::size_type *cursor, std::string str, int start, std::string toFind)
+{
+	*cursor = str.find(toFind, start);
+	if (*cursor != std::string::npos)
+		return 1;
+	else
+		return 0;
+}
+
 void	printRequest(Request *request)
 {
 	streams.get(LOG_REQUEST) << "[HEADER AFTER PARSING]" << std::endl
