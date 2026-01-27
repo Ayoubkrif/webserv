@@ -62,11 +62,11 @@ void	EventManager::recvFromClient(void)
 		Monitor.printNewLine("Initializing a pipe");
 		cgi->init();
 		// ecoute le pipe cgi
-		EventAdd(cgi->_responsePipe[0], EPOLLIN, cgi);
 		// mute les envois clients
 		EventModify(client.fd, 0, &client);
 		//create pipe fork and send optional body through new pipe and fork here??
-		cgi->start();
+		cgi->start(*this);
+		EventAdd(cgi->_responsePipe[0], EPOLLIN, cgi);
 
 	}
 	else // passe en emission
