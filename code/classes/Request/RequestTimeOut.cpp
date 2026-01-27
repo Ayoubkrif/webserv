@@ -24,5 +24,5 @@ time_t	Request::getLastTime(void)
 
 bool	Request::timeOut(unsigned int sec)
 {
-	return (_lastTimeStamp > sec + std::time(NULL));
+	return (std::time(NULL) - _lastTimeStamp > sec);
 }
