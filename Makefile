@@ -63,9 +63,9 @@ corrval:
 
 corrpost:
 	curl -v \
-		-X POST http://localhost:8002/test.bla \
+		-X POST http://localhost:8002/put_test/test.bla \
 		-H "Content-Type: text/plain" \
 		-H "Connection: close" \
-		--data-ascii "a"
+		--data-ascii "C'est un TOUPPER ou juste ca inverse ??????"
 .PHONY: corrpost
 
