@@ -105,9 +105,11 @@ void	EventManager::EventDelete(int event_fd)
 		}
 }
 
+#include "helpers.hpp"
+
 void	EventManager::zombieCheck(void)
 {
-	if (std::time(NULL) == lastZombieCheck)
+	if (std::time(NULL) <= lastZombieCheck)
 		return ;
 	lastZombieCheck = std::time(NULL);
 	for (std::list<Request*>::iterator it = requests.begin(); it != requests.end(); it++)
@@ -115,17 +117,18 @@ void	EventManager::zombieCheck(void)
 		Request	&req = **it;
 		if (req.isState(EXEC))
 			continue ;
-		if (req.timeOut(5))
+		if (!req.timeOut(5))
+			continue;
+		Monitor.printNewLine("client Timeout !");
+		if (req.isState(CGI))
 		{
-			if (req.isState(CGI))
-			{
-				EventDelete(req.getCgi()->_responsePipe[0]);
-				// delete (req.getCgi());
-				// set cgi pointer to 0
-			}
-			EventModify(req.fd, EPOLLOUT, &req);
-			req.setError(Status(REQUEST_TIMEOUT, 408));
+			EventDelete(req.getCgi()->_responsePipe[0]);
+			// delete (req.getCgi());
+			// set cgi pointer to 0
 		}
+		req.setError(Status(REQUEST_TIMEOUT, 408));
+		req.buildErrorResponse();
+		EventModify(req.fd, EPOLLOUT, &req);
 			
 	}
 }
