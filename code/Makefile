@@ -40,6 +40,7 @@ CLASS_FILES = \
 	Server/Server.cpp \
 	Request/Request.cpp \
 		Request/Getter.cpp \
+		Request/RequestTimeOut.cpp \
 		Request/RequestUtils.cpp \
 		Request/Response.cpp \
 		Request/ResponseUtils.cpp \
