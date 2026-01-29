@@ -33,6 +33,7 @@ public:
 	void							parseBuffer();
 
 	std::string					_header;
+	std::string					_headerLimiter;
 	void							fillHeader(std::string::size_type cursor);
 	void							parseHeader();
 
