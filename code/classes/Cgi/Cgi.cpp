@@ -12,6 +12,7 @@
 #include "Cgi.hpp"
 #include "Request.hpp"
 #include "define_cgi.hpp"
+#include "requestDefines.hpp"
 #include "statusCodes.hpp"
 #include <cstdlib>
 #include <exception>
@@ -161,7 +162,17 @@ void	Cgi::parseBuffer()
 {
 	//can a \r or \n be alone in header???
 	std::string::size_type cursor = 0;
-	if (!moveCursor(&cursor, this->_buffer, DCRLF))
+	if (moveCursor(&cursor, this->_buffer, DCRLF))
+	{
+		this->_headerLimiter = CRLF;
+		this->fillHeader(cursor);
+	}
+	else if (!moveCursor(&cursor, this->_buffer, "\n\n"))
+	{
+		this->_headerLimiter = "\n";
+		this->fillHeader(cursor);
+	}
+	else
 	{
 		//error
 		/**/streams.get(LOG_EVENT) << "(1)[error no DCRLF]" << this->_header << std::endl;
@@ -171,7 +182,6 @@ void	Cgi::parseBuffer()
 	}
 	streams.get(LOG_EVENT) << "[PARSING HEADER]" << std::endl
 		<< std::endl;
-	this->fillHeader(cursor);
 	this->parseHeader();
 
 	if (this->_length != this->_buffer.size())
@@ -204,7 +214,7 @@ void	Cgi::parseHeader()
 	std::string::size_type cursorEnd = 0;
 	if (moveCursor(&cursorStart, this->_header, STATUS))
 	{
-		if (!moveCursor(&cursorEnd, this->_header, cursorStart, CRLF))
+		if (!moveCursor(&cursorEnd, this->_header, cursorStart, this->_headerLimiter))
 		{
 			/**/streams.get(LOG_EVENT) << "(1)[error no CRLF]" << this->_header << std::endl;
 			//error
@@ -215,6 +225,10 @@ void	Cgi::parseHeader()
 		this->_client->_response.str.append("HTTP/1.1");
 		this->_client->_response.str.append(this->_header.substr(cursorStart + STATUS.size(), cursorEnd + 2 - (cursorStart + STATUS.size())));
 		this->_header.erase(cursorStart, cursorEnd + 2);
+	}
+	else
+	{
+		this->_client->_response.str.append("HTTP/1.1 200 OK" + CRLF);
 	}
 	if (!moveCursor(&cursorStart, this->_header, "Content-Type:"))
 	{
@@ -229,7 +243,7 @@ void	Cgi::parseHeader()
 	}
 	else
 	{
-		if (!moveCursor(&cursorEnd, this->_header, cursorStart, CRLF))
+		if (!moveCursor(&cursorEnd, this->_header, cursorStart, this->_headerLimiter))
 		{
 			/**/streams.get(LOG_EVENT) << "(2)[error no CRLF]" << this->_header << std::endl;
 			//error
