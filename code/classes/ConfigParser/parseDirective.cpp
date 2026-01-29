@@ -309,7 +309,7 @@ void	ConfigParser::parseErrorPages(Location &current)
 	}
 
 	// for each token until page
-	for (; it_start < page; it_start++)
+	for (; it_start != page; it_start++)
 	{
 		int	nb;
 		nb = std::strtol(it_start->c_str(), NULL, 10);
@@ -408,13 +408,14 @@ void	ConfigParser::parseCgi(Location &current)
 	//
 	std::vector<std::string>::iterator it_start = _token_it;
 	std::vector<std::string>::iterator exec;
+	std::map<std::string, std::string> suffixes = current.getCgiSuffix();
 	{
 		int	size = 0;
 		for (;get() != ";" && !end(); next())
 		{
 			size++;
-			exec = _token_it;// get last argument (the page)
-						// should be the location of each error_pages
+			exec = _token_it;// get last argument (executant)
+						// should be the path of each exec
 		}
 		if (end())
 			throw (std::runtime_error("Expected ';' at end of" + DIRECTIVE[getDirective()] + "\n-->" + *(--_token_it)));
@@ -423,48 +424,41 @@ void	ConfigParser::parseCgi(Location &current)
 		if (size == 1)
 		{
 			//cle avec valeur vide
-			//return ;
+			suffixes.insert(std::pair<std::string, std::string>(*it_start, *exec));//ok ????
+			current.setCgiSuffixSet(suffixes);
+			return ;
 		}
 		streams.get(LOG_DIRECTIVE) << size - 1 << "cgi to fill" << std::endl;
 	}
 
 	// for each token until page
-	for (; it_start < page; it_start++)
+	for (; it_start != exec; it_start++)
 	{
-		int	nb;
-		nb = std::strtol(it_start->c_str(), NULL, 10);
-		// work in progress thro strtol
-		if (0)
-			throw (std::runtime_error("error page code must be a number argument\n-->" + *it_start));// start with .
-		for (int i = 0; i < max + 1; i++)
-		{
-			if (i == max)
-				throw (std::runtime_error("Unrecognized error page code \n-->" + *it_start));
-			if (codes[i] == nb)
-			{
-				current.setErrorPage(nb, *page);
-				streams.get(LOG_DIRECTIVE) << nb << ": " + *page << std::endl;
-				break ;
-			}
-		}
+		if (it_start[0][0] != '.') //must startb with "."
+			throw (std::runtime_error("error file suffix must start with '.'\n-->" + *it_start));// start with .
+		suffixes.insert(std::pair<std::string, std::string>(*it_start, *exec));//ok ????
+		
 	}
-	streams.get(LOG_DIRECTIVE) << "[succeed]" << std::endl << std::endl;
-}
-// fin error page modifie
-
-	streams.get(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;
-	if (end())
-		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
-
-	std::set<std::string> suffixes = current.getCgiSuffix();
-	for (;get() != ";" && !end(); next())
-	{
-		if (get().at(0) != '.')
-			throw (std::runtime_error("CGI suffix must start with '.'\n-->" + get()));
-		suffixes.insert(get());
-	}
-	if (end())
-		throw (std::runtime_error("Unclosed directive CGI \n-->edit"));
 	current.setCgiSuffixSet(suffixes);
 	streams.get(LOG_DIRECTIVE) << "[succeed]" << std::endl << std::endl;
 }
+
+// fin error page modifie
+// {
+// 	//wtf is this??
+// 	streams.get(LOG_DIRECTIVE) << "[" + DIRECTIVE[getDirective()] + "]"<< std::endl;
+// 	if (end())
+// 		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
+//
+// 	std::map<std::string, std::string> suffixes = current.getCgiSuffix();
+// 	for (;get() != ";" && !end(); next())
+// 	{
+// 		if (get().at(0) != '.')
+// 			throw (std::runtime_error("CGI suffix must start with '.'\n-->" + get()));
+// 		suffixes.insert(std::pair<std::string, std::string>(get(), *exec));//ok ????
+// 	}
+// 	if (end())
+// 		throw (std::runtime_error("Unclosed directive CGI \n-->edit"));
+// 	current.setCgiSuffixSet(suffixes);
+// 	streams.get(LOG_DIRECTIVE) << "[succeed]" << std::endl << std::endl;
+// }

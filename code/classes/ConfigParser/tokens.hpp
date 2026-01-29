@@ -28,7 +28,7 @@ static const std::string	DIRECTIVE[] =
 		"root",					// path (debut du path)
 		"alias",				// expr (remplace location)
 		"autoindex",			// on |off
-		"cgi_ext",			// .expr
+		"cgi",			// .expr
 		"post_directory",		// path
 		"{",					//
 		"}",					//

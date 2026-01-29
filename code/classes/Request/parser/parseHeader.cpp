@@ -150,14 +150,14 @@ void	Request::checkURI(std::string	&remainder)
 		// access --> executant (deprecated)
 	// 	
 	streams.get(LOG_REQUEST) << "Solving remainder "<< "<"+remainder+">" << std::endl;
-	for (std::set<std::string>::const_iterator it = this->_location->getCgiSuffix().begin();
+	for (std::map<std::string, std::string>::const_iterator it = this->_location->getCgiSuffix().begin();
 		it != this->_location->getCgiSuffix().end(); it++)
 	{
-		if (it->size() < remainder.size() && remainder.rfind(*it) == remainder.size() - it->size())
+		if (it->first.size() < remainder.size() && remainder.rfind(it->first) == remainder.size() - it->first.size())
 		{
-			streams.get(LOG_REQUEST) << "[Cgi detected]"<< remainder.rfind(*it) << std::endl;
+			streams.get(LOG_REQUEST) << "[Cgi detected]"<< remainder.rfind(it->first) << std::endl;
 			this->_cgi = new Cgi(this);
-			this->_cgi->_exec = "./ubuntu_cgi_tester";
+			this->_cgi->_exec = it->second;
 			this->_cgi->_arg.push_back(this->_cgi->_exec);
 			_requestedRessource = _location->getRoot() + "/" +_location->getAlias() + "/" + remainder;
 			trimSlash(_requestedRessource);
@@ -268,8 +268,8 @@ void	Request::checkURI(std::string	&remainder)
 
 void	Request::isCGI(void)
 {
-	const std::set<std::string>	&CgiSuffixes = _location->getCgiSuffix();
-	for (std::set<std::string>::const_iterator it = CgiSuffixes.begin(); it != CgiSuffixes.end(); it++)
+	const std::map<std::string, std::string>	&CgiSuffixes = _location->getCgiSuffix();
+	for (std::map<std::string, std::string>::const_iterator it = CgiSuffixes.begin(); it != CgiSuffixes.end(); it++)
 	{
 		std::cout << "Salut" << std::endl;
 	}

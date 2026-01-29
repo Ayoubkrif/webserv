@@ -22,9 +22,6 @@ Location::Location(void):
 	_index(DEFAULT_LOCATION_INDEX),
 	_post_directory(DEFAULT_LOCATION_POST_DIRECTORY)
 {
-	this->addCgiSuffix(DEFAULT_LOCATION_CGI_PYTHON);
-	this->addCgiSuffix(DEFAULT_LOCATION_CGI_PHP);
-
 	this->_methods[GET] = DEFAULT_LOCATION_GET;
 	this->_methods[POST] = DEFAULT_LOCATION_POST;
 	this->_methods[DELETE] = DEFAULT_LOCATION_DELETE;
@@ -40,9 +37,6 @@ Location::Location(const std::string &name):
 	_index(DEFAULT_LOCATION_INDEX),
 	_post_directory(DEFAULT_LOCATION_POST_DIRECTORY)
 {
-	this->addCgiSuffix(DEFAULT_LOCATION_CGI_PYTHON);
-	this->addCgiSuffix(DEFAULT_LOCATION_CGI_PHP);
-
 	this->_methods[GET] = DEFAULT_LOCATION_GET;
 	this->_methods[POST] = DEFAULT_LOCATION_POST;
 	this->_methods[DELETE] = DEFAULT_LOCATION_DELETE;
@@ -134,17 +128,12 @@ unsigned int	Location::getClientMaxBodySize(void) const
 }
 
 // cgi_suffix
-void	Location::setCgiSuffixSet(const std::set<std::string> &cgi_suffix)
+void	Location::setCgiSuffixSet(const std::map<std::string, std::string> &cgi_suffix)
 {
 	this->_cgi_suffix = cgi_suffix;
 }
 
-void	Location::addCgiSuffix(const std::string &cgi_suffix)
-{
-	this->_cgi_suffix.insert(cgi_suffix);
-}
-
-const std::set<std::string>	&Location::getCgiSuffix(void) const
+const std::map<std::string, std::string>	&Location::getCgiSuffix(void) const
 {
 	return (this->_cgi_suffix);
 }
@@ -242,10 +231,10 @@ std::ostream	&operator<<(std::ostream &lhs, const Location &rhs)
 		<< std::endl;
 
 	lhs << "CGI suffixes: ";
-	std::set<std::string>	CGI = rhs.getCgiSuffix();
-	for (std::set<std::string>::iterator it = CGI.begin(); it != CGI.end(); ++it)
+	std::map<std::string, std::string>	CGI = rhs.getCgiSuffix();
+	for (std::map<std::string, std::string>::iterator it = CGI.begin(); it != CGI.end(); ++it)
 	{
-		lhs << "'"<< *it << "' ";
+		lhs << "'"<< it->first << " -> " << it->second << "' ";
 	}
 	lhs << std::endl;
 
