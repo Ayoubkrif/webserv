@@ -424,7 +424,7 @@ void	ConfigParser::parseCgi(Location &current)
 		if (size == 1)
 		{
 			//cle avec valeur vide
-			suffixes.insert(std::pair<std::string, std::string>(*it_start, *exec));//ok ????
+			suffixes.insert(std::pair<std::string, std::string>(*it_start, ""));//ok ????
 			current.setCgiSuffixSet(suffixes);
 			return ;
 		}
