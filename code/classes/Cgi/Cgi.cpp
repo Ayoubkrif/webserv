@@ -121,6 +121,8 @@ void	Cgi::start(EventManager &webServ)
 		execve(_exec.c_str(), arg.data(), env.data());
 		deleteVector(arg);
 		deleteVector(env);
+		/**/streams.get(LOG_EVENT) << "(1)[EXECVE FAIL]" << this->_header << std::endl;
+		
 		exit(1);
 	}
 	else
@@ -167,7 +169,7 @@ void	Cgi::parseBuffer()
 		this->_headerLimiter = CRLF;
 		this->fillHeader(cursor);
 	}
-	else if (!moveCursor(&cursor, this->_buffer, "\n\n"))
+	else if (moveCursor(&cursor, this->_buffer, "\n\n"))
 	{
 		this->_headerLimiter = "\n";
 		this->fillHeader(cursor);
