@@ -27,10 +27,6 @@ corr:
 	$(PROJECT_DIR)/$(BIN) $(CONFIG_TEST)
 .PHONY: run
 
-request:
-	$(MAKE) -C RequestGenerator
-.PHONY: request
-
 post:
 	curl -v \
 		-X POST http://localhost:8002/test \
