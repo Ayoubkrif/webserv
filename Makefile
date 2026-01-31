@@ -45,10 +45,6 @@ delete:
 		-X DELETE http://localhost:8002/test.txt
 .PHONY: delete
 
-get:
-	firefox localhost:8002/
-.PHONY: get
-
 test:
 	bash netcat.sh
 .PHONY: test
@@ -77,3 +73,32 @@ corrpost:
 		--data-ascii "C'est un TOUPPER ou juste ca inverse ??????"
 .PHONY: corrpost
 
+# Liste des navigateurs par ordre de préférence
+BROWSERS := firefox firefox-esr google-chrome brave-browser chromium
+
+# Détection du premier navigateur disponible
+SELECTED_BROWSER := $(shell for b in $(BROWSERS); do if command -v $$b >/dev/null 2>&1; then echo $$b; break; fi; done)
+
+# Vérification si un navigateur a été trouvé, sinon on affiche une erreur propre
+ifeq ($(SELECTED_BROWSER),)
+    BROWSER_CMD := echo "Erreur: Aucun navigateur trouvé ($(BROWSERS))"
+else
+    BROWSER_CMD := $(SELECTED_BROWSER)
+endif
+
+# Règles
+get:
+	$(BROWSER_CMD) localhost:8002/
+.PHONY: get
+
+cgi-php:
+	$(BROWSER_CMD) localhost:8002/cgi-bin/wow.php
+.PHONY: cgi-php
+
+cgi-py:
+	$(BROWSER_CMD) localhost:8002/cgi-bin/wow.py
+.PHONY: cgi-py
+
+cgi-sh:
+	$(BROWSER_CMD) localhost:8002/cgi-bin/wow.sh
+.PHONY: cgi-sh
