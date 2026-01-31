@@ -12,6 +12,23 @@
 #include "Location.hpp"
 #include "default.hpp"
 
+void Location::defaultErrorPagesMapFiller(void)
+{
+    // 4xx Client Errors
+    this->setErrorPage(400, DEFAULT_LOCATION_ERRORPAGES_PATH + "400.html");
+    this->setErrorPage(403, DEFAULT_LOCATION_ERRORPAGES_PATH + "403.html");
+    this->setErrorPage(404, DEFAULT_LOCATION_ERRORPAGES_PATH + "404.html");
+    this->setErrorPage(405, DEFAULT_LOCATION_ERRORPAGES_PATH + "405.html");
+    this->setErrorPage(408, DEFAULT_LOCATION_ERRORPAGES_PATH + "408.html");
+    this->setErrorPage(411, DEFAULT_LOCATION_ERRORPAGES_PATH + "411.html");
+    this->setErrorPage(413, DEFAULT_LOCATION_ERRORPAGES_PATH + "413.html");
+    this->setErrorPage(414, DEFAULT_LOCATION_ERRORPAGES_PATH + "414.html");
+    this->setErrorPage(431, DEFAULT_LOCATION_ERRORPAGES_PATH + "431.html");
+
+    // 5xx Server Errors
+    this->setErrorPage(500, DEFAULT_LOCATION_ERRORPAGES_PATH + "500.html");
+}
+
 Location::Location(void):
 	_name(DEFAULT_LOCATION_NAME),
 	_alias(DEFAULT_LOCATION_ALIAS),
@@ -22,6 +39,7 @@ Location::Location(void):
 	_index(DEFAULT_LOCATION_INDEX),
 	_post_directory(DEFAULT_LOCATION_POST_DIRECTORY)
 {
+	this->defaultErrorPagesMapFiller();
 	this->_methods[GET] = DEFAULT_LOCATION_GET;
 	this->_methods[POST] = DEFAULT_LOCATION_POST;
 	this->_methods[DELETE] = DEFAULT_LOCATION_DELETE;
@@ -37,6 +55,7 @@ Location::Location(const std::string &name):
 	_index(DEFAULT_LOCATION_INDEX),
 	_post_directory(DEFAULT_LOCATION_POST_DIRECTORY)
 {
+	this->defaultErrorPagesMapFiller();
 	this->_methods[GET] = DEFAULT_LOCATION_GET;
 	this->_methods[POST] = DEFAULT_LOCATION_POST;
 	this->_methods[DELETE] = DEFAULT_LOCATION_DELETE;

@@ -25,6 +25,7 @@ class	Location
 	Location(const Location&);
 	~Location(void);
 	Location						&operator=(const Location&);
+	void	defaultErrorPagesMapFiller(void);
 	Location(void);
 	std::string					_name;
 
