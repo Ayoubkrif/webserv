@@ -17,14 +17,15 @@ OBJ_DIR   = build
 # Sources files listing
 SRC_FILES = \
 	main.cpp \
-	utils/strTimestamp.cpp \
-	utils/nbrToString.cpp \
-	utils/hexToLong.cpp \
-	utils/trimSlash.cpp \
-	utils/extractStr.cpp \
 	utils/buildIpPortStr.cpp \
-	utils/trimDots.cpp \
 	utils/canBuildOnDir.cpp \
+	utils/extractStr.cpp \
+	utils/hexToLong.cpp \
+	utils/mimeTypesMapFill.cpp \
+	utils/nbrToString.cpp \
+	utils/strTimestamp.cpp \
+	utils/trimDots.cpp \
+	utils/trimSlash.cpp \
 	\
 
 # Classes files listing
