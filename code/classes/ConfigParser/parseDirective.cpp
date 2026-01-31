@@ -11,6 +11,7 @@
 
 #include <cstdlib>
 #include <limits>
+#include <map>
 #include <stdexcept>
 
 #include "ConfigParser.hpp"
@@ -288,9 +289,6 @@ void	ConfigParser::parseErrorPages(Location &current)
 	if (end())
 		throw (std::runtime_error("Empty directive " + DIRECTIVE[getDirective()]));
 
-	static const int	codes[] = {404, 500};
-	static const int	max = sizeof(codes) / sizeof(int);
-
 	std::vector<std::string>::iterator it_start = _token_it;
 	std::vector<std::string>::iterator page;
 	{
@@ -305,7 +303,7 @@ void	ConfigParser::parseErrorPages(Location &current)
 			throw (std::runtime_error("Expected ';' at end of" + DIRECTIVE[getDirective()] + "\n-->" + *(--_token_it)));
 		if (size < 2)
 			throw (std::runtime_error("Directive" + DIRECTIVE[ERROR_PAGE] + "need at least 2 arguments\n-->" + *(--_token_it)));
-		streams.get(LOG_DIRECTIVE) << size - 1 << " page to fill" << std::endl;
+		streams.get(LOG_DIRECTIVE) << size - 1 << " code to fill with "+ *page << std::endl;
 	}
 
 	// for each token until page
@@ -318,16 +316,12 @@ void	ConfigParser::parseErrorPages(Location &current)
 			throw (std::runtime_error("error page code must be a number argument\n-->" + *it_start));
 		if (0)
 			throw (std::runtime_error("error page code must not exceed int value\n-->" + *it_start));
-		for (int i = 0; i < max + 1; i++)
 		{
-			if (i == max)
-				throw (std::runtime_error("Unrecognized error page code \n-->" + *it_start));
-			if (codes[i] == nb)
-			{
-				current.setErrorPage(nb, *page);
-				streams.get(LOG_DIRECTIVE) << nb << ": " + *page << std::endl;
-				break ;
-			}
+			std::map<int, std::string>::const_iterator	it = current.getErrorPages().find(nb);
+			if (it == current.getErrorPages().end())
+				throw (std::runtime_error("unrecognized error page code\n-->" + *it_start));
+			current.setErrorPage(nb, *page);
+			streams.get(LOG_DIRECTIVE) << nb << ": " + *page << std::endl;
 		}
 	}
 	streams.get(LOG_DIRECTIVE) << "[succeed]" << std::endl << std::endl;
