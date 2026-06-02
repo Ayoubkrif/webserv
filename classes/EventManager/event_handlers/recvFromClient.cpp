@@ -13,7 +13,6 @@
 
 #include "Request.hpp"
 #include "Cgi.hpp"
-#include "colors.hpp"
 #include "stateMachine.hpp"
 #include <cerrno>
 
@@ -22,18 +21,13 @@ bool	EventManager::recvBuffer(Request &client)
 	static char buffer[BUFFER_SIZE] = {0};
 
 	ssize_t count = recv(client.fd, buffer, sizeof(buffer), 0); // kesako
-	if (count <= 0) // client has closed connection
+	if (count <= 0)
 	{
-		if (count == -1)
-			DashBoard.log(VIVID_RED + "Unexpected end from " + client.ip_str +  "recv: "+ strerror(errno) + RESET);
-		else
-			DashBoard.log(MAGENTA + "EOF reveived from " + client.ip_str + " (client socket closed)" + RESET);
 		EventDelete(client.fd);
 		delete (Request *)getPtr();
 		this->requests.remove((Request *)getPtr());
 		return (false);
 	}
-	monitorEventRecv(count, client);
 	client.appendBuffer(buffer, count);
 	return (true);
 }
@@ -55,8 +49,6 @@ void	EventManager::recvFromClient(void)
 		cgi->init();
 		// desarme client
 		EventModify(client.fd, 0, &client);
-		//fork
-		DashBoard.log(VIVID_YELLOW + "Executing requested cgi:" + cgi->_exec + RESET);
 		if (!cgi->start(*this))
 		{
 			this->_alive = false;

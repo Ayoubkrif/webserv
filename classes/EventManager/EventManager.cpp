@@ -27,37 +27,26 @@
 #include "Server.hpp"
 #include "Request.hpp"
 #include "Cgi.hpp"
-#include "colors.hpp"
 #include "helpers.hpp"
 
 std::string intToIPv4(uint32_t);
-static const String	MONITOR_START = "Starting Webserv...";
 EventManager::EventManager(std::vector<Server> &servers): _alive(true), lastZombieCheck(std::time(NULL)), _servers(servers)
 {
-    // 2. Créer une instance epoll
-	DashBoard.log("Creating an epoll instance ");
     _fd = epoll_create1(0);
     if (_fd == -1)
 	{
         perror("epoll_create1");
 		throw (std::runtime_error("epoll"));
     }
-	DashBoard.log("Opening Server fd...");
 	for(std::vector<Server>::iterator it = servers.begin(); it != servers.end(); it++)
 	{
 		it->startListen();
-		DashBoard.log("Listening " + nbrToString(it->getPort()) + " on interface: " + intToIPv4(it->getInterface()) );
-		// 3. Ajouter le socket serveur à epoll
 		EventAdd(it->getFd(), EPOLLIN, &*it);
-		DashBoard.log("Adding listening socket to epoll Succeed !");
 	}
-	// stdin event add
-	EventAdd(STDIN_FILENO, EPOLLIN, &this->_stdin);
 	// building jumptable thx to gemini
 	epollinHandler[0] = &EventManager::serverAcceptClient;
 	epollinHandler[1] = &EventManager::recvFromClient;
 	epollinHandler[2] = &EventManager::handlePipe;
-	epollinHandler[3] = &EventManager::handleStdin;
 }
 
 EventManager::~EventManager(void)
@@ -72,7 +61,6 @@ EventManager::~EventManager(void)
 void	EventManager::run(void)
 {
 	std::signal(SIGPIPE, SIG_IGN);
-	DashBoard.log("STARTING ..");
 	while (_alive)
 	{
 		// for each events
@@ -84,8 +72,6 @@ void	EventManager::run(void)
 				sendToClient();
 			else if (eventIs(EPOLLHUP) && checkEvent() == PIPE)
 				handlePipe();
-			else
-				DashBoard.log(BLACK + "Unrecognized event");
 			if (_alive == false)
 				break;
 		}

@@ -21,10 +21,8 @@
 #include "Server.hpp"
 #include "Request.hpp"
 #include "Cgi.hpp"
-#include "colors.hpp"
 #include "statusCodes.hpp"
 #include "string.hpp"
-#include "helpers.hpp"
 
 void	EventManager::handlePipe()
 {
@@ -34,19 +32,15 @@ void	EventManager::handlePipe()
 	if (count > 0)
 	{
 		cgi._buffer.append(buffer, count);
-		DashBoard.log(BRIGHT_YELLOW + "READ from cgi " + nbrToString(count) + " BYTES !" + RESET);
 		return ;
 	}
-	if (count == -1) // read error : cgi broken ?
+	if (count == -1)
 	{
-		DashBoard.log(VIVID_RED + "Unexpected broken CGI pipe: "+ strerror(errno) + RESET);
 		cgi._client->setError(Status(GATEWAY_TIMEOUT, 504));
 		cgi._client->buildErrorResponse();
 	}
-	else // else -> eof
+	else
 	{
-		DashBoard.log(ORANGE + "CGI successfully ended"  + RESET);
-		//treat info and put into cgi.request.response
 		cgi.parseBuffer();
 		cgi._client->setState(EXEC);
 	}

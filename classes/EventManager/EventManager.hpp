@@ -11,7 +11,6 @@
 
 #pragma once
 
-#include "ServerMonitor.hpp"
 #include <string>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -21,16 +20,10 @@
 #define MAX_EVENTS 10
 #include <sys/epoll.h>
 
-class	Logger;
 class	Server;
 class	Request;
 
 #include "Event.hpp"
-struct	StdinEvent : public Event
-{
-	StdinEvent() : Event(STDIN){}
-	std::string	buf;
-};
 
 class EventManager
 {
@@ -57,13 +50,7 @@ class EventManager
 			bool			recvBuffer(Request&);
 		void			handlePipe(void);
 		void			serverAcceptClient(void);
-		void			handleStdin(void);
 	
-		// Logger
-		ServerMonitor	DashBoard;
-		void			monitorNewEvent(ssize_t);
-		void			monitorEventRecv(ssize_t, Request&);
-
 		// utils
 		void				getNewEvent(void);
 		void				*getPtr(void);
@@ -76,12 +63,11 @@ class EventManager
 		void				EventModify(int, uint32_t, void*);
 		void				EventDelete(int);
 		// allocated request vector
-		void(EventManager::*epollinHandler[4])(void);// jumptable
+		void(EventManager::*epollinHandler[3])(void);// jumptable
 		int					_fd;
 		struct epoll_event	_events[MAX_EVENTS];
 		int					_nEvent;
 		int					_it;
-		StdinEvent			_stdin;
 		bool				_alive;
 
 		void				zombieCheck(void);

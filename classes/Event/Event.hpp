@@ -1,28 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   serverAcceptClient.cpp                             :+:      :+:    :+:   */
+/*   Event.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aykrifa <aykrifa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/14 14:24:34 by aykrifa           #+#    #+#             */
+/*   Created: 2025/12/06 10:41:38 by aykrifa           #+#    #+#             */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "EventManager.hpp"
+#pragma once
 
-#include <fcntl.h>
-#include <unistd.h>
-#include "helpers.hpp"
-
-void	EventManager::handleStdin(void)
+typedef enum e_type
 {
-	static char	buffer[BUFFER_SIZE + 1];
+	SRV = 0,
+	CLIENT,
+	PIPE
+} type;
 
-	ssize_t	rbytes = read(0, buffer, BUFFER_SIZE);
-	if (!rbytes || rbytes == -1)
-	{
-		DashBoard.log(GREEN + "Stopping webserv"  + RESET);
-		_alive = false;
-	}
-}
+struct Event
+{
+	Event(type _type):_type(_type){}
+	type _type;
+private:
+	// Event(const Event &);
+};

@@ -15,8 +15,6 @@
 
 #include "Server.hpp"
 #include "Request.hpp"
-#include "colors.hpp"
-#include "helpers.hpp"
 
 Request	&EventManager::requestAdd(Server &server)
 {
@@ -30,7 +28,6 @@ void	EventManager::serverAcceptClient(void)
 	Server	&server = *(Server*)getPtr();
 	Request	&client = requestAdd(server);
 
-	DashBoard.log(VIVID_GREEN + "New client " + client.ip_str + " accepted !" + RESET);
 	// Configurer le socket client en non-bloquant
 	fcntl(client.fd, F_SETFL, O_NONBLOCK);
 
