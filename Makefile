@@ -79,7 +79,7 @@ INC_DIR = \
 #compilation
 NAME		= WebServ
 CC			= c++
-CFLAGS 		= -Wall -Wextra -Werror -std=c++98 -MMD -MP -g3
+CFLAGS 		= -Wall -Wextra -Werror -std=c++98 -MMD -MP -O2
 PREPROC		=
 INCLUDES	= $(addprefix -I, $(INC_DIR))
 
