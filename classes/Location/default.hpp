@@ -24,7 +24,6 @@ static const Status						DEFAULT_LOCATION_REDIRECTION = Status("", 0);
 static const bool						DEFAULT_LOCATION_AUTOINDEX = false;
 static const std::string				DEFAULT_LOCATION_INDEX = "index.html";
 static const std::string				DEFAULT_LOCATION_POST_DIRECTORY = "";
-const std::string						DEFAULT_LOCATION_ERRORPAGES_PATH = "./classes/Location/default_error_pages/";
 static const bool						DEFAULT_LOCATION_GET = true;
 static const bool						DEFAULT_LOCATION_POST = false;
 static const bool						DEFAULT_LOCATION_DELETE = false;

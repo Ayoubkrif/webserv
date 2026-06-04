@@ -18,8 +18,9 @@
 #include "Request.hpp"
 #include "errors.hpp"
 
-const std::string	MIMES_PATH = "mime.types";
+const std::string	MIMES_PATH = "resources/mime.types";
 const std::string	DEFAULT_CONF_PATH = "configs/default.conf";
+const std::string	DEFAULT_LOCATION_ERRORPAGES_PATH = "./resources/default_error_pages/";
 
 class TooMuchArgs : public std::exception
 {

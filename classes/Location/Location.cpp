@@ -11,6 +11,7 @@
 
 #include "Location.hpp"
 #include "default.hpp"
+#include "webserv.hpp"
 
 void Location::defaultErrorPagesMapFiller(void)
 {
