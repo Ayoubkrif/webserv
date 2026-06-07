@@ -55,7 +55,7 @@ void Request::parseCookies(std::string str)
 		segment = segment.substr(start);
 		// 2. Vérification du format clé=valeur
 		size_t sep = segment.find('=');
-		if (sep == std::string::npos || sep == 0 || sep == segment.size() - 1)
+		if (sep == std::string::npos || sep == 0)
 		{
 			setError(Status("400 Bad Request: Malformed Cookie Header", 400));
 			return ;
